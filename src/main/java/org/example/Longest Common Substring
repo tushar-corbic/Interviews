@@ -1,0 +1,21 @@
+You are given two strings s1 and s2. Your task is to find the length of the longest common substring among the given strings.
+
+Examples:
+
+Input: s1 = "ABCDGH", s2 = "ACDGHR"
+Output: 4
+Explanation: The longest common substring is "CDGH" which has length 4.
+Input: s1 = "ABC", s2 "ACB"
+Output: 1
+Explanation: The longest common substrings are "A", "B", "C" all having length 1
+
+You are given two strings s1 and s2. Your task is to find the length of the longest common substring among the given strings.
+
+Examples:
+
+Input: s1 = "ABCDGH", s2 = "ACDGHR"
+Output: 4
+Explanation: The longest common substring is "CDGH" which has length 4.
+Input: s1 = "ABC", s2 "ACB"
+Output: 1
+Explanation: The longest common substrings are "A", "B", "C" all having length 1

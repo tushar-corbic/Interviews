@@ -1,0 +1,45 @@
+There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+
+For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+Return true if you can finish all courses. Otherwise, return false.
+
+
+class Solution {
+    public boolean canFinish(int V, int[][] arr) {
+        List<List<Integer>> adj = new ArrayList<>();
+        for(int i=0; i<V;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int i =0; i<arr.length; i++){
+            adj.get(arr[i][1]).add(arr[i][0]);
+        }
+
+        int[]indegree = new int[V];
+        for(int i =0;i<V; i++){
+            for(Integer nbr: adj.get(i)){
+                indegree[nbr]++;
+            }
+        }
+        Queue<Integer> que = new LinkedList<>();
+        for(int i=0; i<V; i++){
+            if(indegree[i]==0){
+                que.offer(i);
+            }
+        }
+        int count =0;
+        while(!que.isEmpty()){
+            int node = que.poll();
+            count++;
+            for(Integer nbr: adj.get(node)){
+                indegree[nbr]--;
+                if(indegree[nbr]==0){
+                    que.offer(nbr);
+
+                }
+            }
+        }
+        if(count==V)
+            return true;
+        return false;
+    }
+}

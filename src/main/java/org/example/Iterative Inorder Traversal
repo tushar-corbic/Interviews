@@ -1,0 +1,43 @@
+import java.util.Stack;
+
+/* binary tree node data structure to store data, and its left and right child */
+class TreeNode
+{
+    int data;
+    TreeNode leftNode; 
+    TreeNode rightNode;
+
+    public TreeNode(int item)
+    {
+        data = item;
+        leftNode = rightNode = null;
+    }
+}
+class BinaryTree
+{
+    TreeNode root;
+    void inOrderTraversal()
+    {
+        if (root == null)
+            return;
+
+        Stack<TreeNode> treeStack = new Stack<TreeNode>();
+        TreeNode currentNode = root;
+
+        while (currentNode != null || treeStack.size() > 0)
+        {
+            while (currentNode != null)
+                {
+                    treeStack.push(currentNode);
+                    currentNode = currentNode.leftNode;
+                }
+			
+            currentNode = treeStack.pop();
+
+            currentNode = currentNode.rightNode;
+        }
+    }
+
+   
+}
+

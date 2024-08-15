@@ -1,0 +1,27 @@
+Paths from root with a specified sum
+
+iven a Binary tree and a sum S, print all the paths, starting from root, that sums upto the given sum. Path not necessarily end on a leaf node.
+
+public static ArrayList<ArrayList<Integer>> printPaths(Node root, int sum)
+    {
+        // code here
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        ArrayList<Integer>temp = new ArrayList<>();
+        helper(root, sum, ans, temp);
+        return ans;
+    }
+    static void helper(Node root, int sum, ArrayList<ArrayList<Integer>>  ans,ArrayList<Integer> temp){
+        if(root==null)
+            return;
+             temp.add(root.data);
+        if(sum==root.data)
+        {
+            ans.add(new ArrayList<>(temp));
+            // return;
+        }
+       
+        helper(root.left, sum-root.data, ans, temp);
+        helper(root.right, sum-root.data, ans, temp);
+        temp.remove(temp.size()-1);
+            
+    }

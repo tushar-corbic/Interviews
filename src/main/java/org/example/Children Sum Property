@@ -1,0 +1,67 @@
+Children Sum Property
+
+Problem statement
+Given a binary tree of nodes 'N', you need to modify the value of its nodes, such that the tree holds the Children sum property.
+
+A binary tree is said to follow the children sum property if, for every node of that tree, the value of that node is equal to the sum of the value(s) of all of its children nodes( left child and the right child).
+
+Note :
+ 1. You can only increment the value of the nodes, in other words, the modified value must be at least equal to the original value of that node.
+ 2. You can not change the structure of the original binary tree.
+ 3. A binary tree is a tree in which each node has at most two children.      
+ 4. You can assume the value can be 0 for a NULL node and there can also be an empty tree.
+
+public void changeTree(TreeNode root) {
+        // Base case: If the current node
+        // is null, return and do nothing.
+        if (root == null) {
+            return;
+        }
+
+        // Calculate the sum of the values of
+        // the left and right children, if they exist.
+        int child = 0;
+        if (root.left != null) {
+            child += root.left.val;
+        }
+        if (root.right != null) {
+            child += root.right.val;
+        }
+
+        // Compare the sum of children with
+        // the current node's value and update
+        if (child >= root.val) {
+            root.val = child;
+        } else {
+            // If the sum is smaller, update the
+            // child with the current node's value.
+            if (root.left != null) {
+                root.left.val = root.val;
+            } else if (root.right != null) {
+                root.right.val = root.val;
+            }
+        }
+
+        // Recursively call the function
+        // on the left and right children.
+        changeTree(root.left);
+        changeTree(root.right);
+
+        // Calculate the total sum of the
+        // values of the left and right
+        // children, if they exist.
+        int tot = 0;
+        if (root.left != null) {
+            tot += root.left.val;
+        }
+        if (root.right != null) {
+            tot += root.right.val;
+        }
+
+        // If either left or right child
+        // exists, update the current node's
+        // value with the total sum.
+        if (root.left != null || root.right != null) {
+            root.val = tot;
+        }
+    }

@@ -1,0 +1,27 @@
+113. Path Sum II
+
+Given the root of a binary tree and an integer targetSum, return all root-to-leaf paths where the sum of the node values in the path equals targetSum. Each path should be returned as a list of the node values, not node references.
+
+A root-to-leaf path is a path starting from the root and ending at any leaf node. A leaf is a node with no children.
+
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+         List<List<Integer>> ans = new ArrayList<>();
+        List<Integer>temp = new ArrayList<>();
+        helper(root, sum, ans, temp);
+        return ans;
+    }
+    void helper(TreeNode root, int sum, List<List<Integer>>  ans,List<Integer> temp){
+        if(root==null)
+            return;
+        temp.add(root.val);
+
+        if(sum==root.val && root.left==null && root.right==null)
+            {
+                ans.add(new ArrayList<>(temp));
+            }
+        helper(root.left, sum-root.val, ans, temp);
+        helper(root.right, sum-root.val, ans, temp);
+        temp.remove(temp.size()-1);
+    }
+}

@@ -1,0 +1,90 @@
+Serialize and Deserialize Binary Tree
+
+
+import java.util.Queue;
+import java.util.*;
+// import javax.swing.tree.TreeNode;
+
+/*********************************************************
+ * 
+ * Following is the TreeNode structure:
+ * 
+ * class TreeNode {
+ * int data;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode() {
+ * this.data = 0;
+ * this.left = null;
+ * this.right = null;
+ * }
+ * TreeNode(int data) {
+ * this.data = data;
+ * this.left = null;
+ * this.right = null;
+ * }
+ * TreeNode(int data, TreeNode left, TreeNode right) {
+ * this.data = data;
+ * this.left = left;
+ * this.right = right;
+ * }
+ * };
+ ********************************************************/
+
+public class Solution {
+    public static String serializeTree(TreeNode root) {
+        // Write your code here.
+        StringBuilder sb = new StringBuilder();
+        if (root == null)
+            return "";
+        Queue<TreeNode> que = new LinkedList<>();
+        que.offer(root);
+        while (!que.isEmpty()) {
+            TreeNode temp = que.poll();
+            if (temp == null) {
+                sb.append("-1 ");
+            } else {
+                sb.append(temp.data + " ");
+                que.offer(temp.left);
+                que.offer(temp.right);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static TreeNode deserializeTree(String serialized) {
+        // Write your code here.
+        if (serialized.isEmpty() == true) {
+            return null;
+        }
+        StringBuilder s = new StringBuilder(serialized);
+        int spaceindex = s.indexOf(" ");
+        String str = s.substring(0, spaceindex);
+        s.delete(0, spaceindex + 1);
+        TreeNode root = new TreeNode(Integer.parseInt(str));
+        Queue<TreeNode> que = new LinkedList<>();
+        que.offer(root);
+        while (!que.isEmpty()) {
+            TreeNode temp = que.poll();
+            spaceindex = s.indexOf(" ");
+            str = s.substring(0, spaceindex);
+            s.delete(0, spaceindex + 1);
+            if (!str.equals("-1")) {
+                TreeNode leftnode = new TreeNode(Integer.parseInt(str));
+                temp.left = leftnode;
+                que.offer(leftnode);
+            }
+            spaceindex = s.indexOf(" ");
+            str = s.substring(0, spaceindex);
+            s.delete(0, spaceindex + 1);
+            if (!str.equals("-1")) {
+                TreeNode rightNode = new TreeNode(Integer.parseInt(str));
+                temp.right = rightNode;
+                que.offer(rightNode);
+            }
+        }
+        return root;
+    }
+}
+
+

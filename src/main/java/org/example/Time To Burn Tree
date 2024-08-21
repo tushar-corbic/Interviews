@@ -1,0 +1,106 @@
+Time To Burn Tree
+
+You have a binary tree of 'N' unique nodes and a Start node from where the tree will start to burn. Given that the Start node will always exist in the tree, your task is to print the time (in minutes) that it will take to burn the whole tree.
+
+
+
+It is given that it takes 1 minute for the fire to travel from the burning node to its adjacent node and burn down the adjacent node.
+
+
+
+For Example :
+For the given binary tree: [1, 2, 3, -1, -1, 4, 5, -1, -1, -1, -1]
+
+
+/**********************************************************	
+	
+	Following is the representation of Binary Tree Node:
+ 	
+ 	class BinaryTreeNode<T> {
+		T data;
+		BinaryTreeNode<T> left;
+		BinaryTreeNode<T> right;
+		
+		public BinaryTreeNode(T data) {
+			this.data = data;
+		}
+	}
+
+*********************************************************/
+import java.util.*;
+public class Solution
+{
+	static BinaryTreeNode<Integer>findNode(BinaryTreeNode<Integer>root, int val){
+		if(root==null)
+			return null;
+		if(root.data==val)
+			return root;
+		BinaryTreeNode<Integer>temp1 = findNode(root.left, val);
+		if(temp1!=null)
+			return temp1;
+		BinaryTreeNode<Integer>temp2 = findNode(root.right, val);
+		if(temp2!=null)
+			return temp2;
+		return null;
+	}
+	static void childToParentNode(BinaryTreeNode<Integer> root, Map<BinaryTreeNode<Integer>,BinaryTreeNode<Integer>>map){
+		Queue<BinaryTreeNode<Integer>> que = new LinkedList<>();
+		que.offer(root);
+		while(!que.isEmpty()){
+			BinaryTreeNode<Integer> temp= que.poll();
+			if(temp.left!=null){
+				map.put(temp.left, temp);
+				que.offer(temp.left);
+			}
+			if(temp.right!=null){
+				que.offer(temp.right);
+				map.put(temp.right, temp);
+			}
+
+		}
+	}
+	static int findTime(BinaryTreeNode<Integer>root,BinaryTreeNode<Integer> target, Map<BinaryTreeNode<Integer>,BinaryTreeNode<Integer>> map){
+		Queue<BinaryTreeNode<Integer>> que = new LinkedList<>();
+		que.offer(target);
+		Map<BinaryTreeNode<Integer>,Integer>vis = new HashMap<>();
+		vis.put(target, 1);
+		int maxi = 0;
+		while(!que.isEmpty()){
+			int sz = que.size();
+			int fl= 0;
+			for(int i =0; i<sz; i++){
+				BinaryTreeNode<Integer> node = que.poll();
+				if(node.left!=null &&vis.get(node.left)==null){
+					vis.put(node.left, 1);
+					fl=1 ;
+					que.offer(node.left);
+				}
+				if(node.right!=null && vis.get(node.right)==null){
+					que.offer(node.right);
+					vis.put(node.right,1);
+					fl=1;
+				}
+				if(map.get(node)!=null && vis.get(map.get(node))==null){
+					que.offer(map.get(node));
+					vis.put(map.get(node),1);
+					fl = 1;
+				}
+			}
+			if(fl==1)
+				maxi++;
+		}
+		return maxi;
+
+	}
+public static int timeToBurnTree(BinaryTreeNode<Integer> root, int start)
+    {
+        // Write your code here.
+		BinaryTreeNode<Integer> target = findNode(root, start);
+		HashMap<BinaryTreeNode<Integer>,BinaryTreeNode<Integer>>map = new HashMap<>();
+		childToParentNode(root,map);
+		return findTime(root, target, map);
+		// return target.data;
+    }
+}
+
+

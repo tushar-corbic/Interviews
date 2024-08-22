@@ -1,0 +1,75 @@
+Right View
+
+ Problem statement
+You have been given a Binary Tree of integers.
+
+Your task is to print the Right view of it.
+
+The right view of a Binary Tree is a set of nodes visible when the tree is viewed from the Right side and the nodes are printed from top to bottom order.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+1 <= T <= 100
+1 <= N <= 10^5
+-10^9 <= data <= 10^9
+
+Where 'N' is the number of nodes in the tree and 'data' is the value of a node in the given tree.
+
+Time Limit: 1 sec
+Sample Input 1 :
+1
+2 35 10 2 3 5 2 -1 -1 -1 -1 -1 -1 -1 -1
+Sample Output 1 :
+2 10 2
+Explanation of The Sample Input 1:
+
+
+
+/*************************************************************
+
+    Following is the Binary Tree node structure:
+
+    class BinaryTreeNode<Integer> {
+        int data;
+        BinaryTreeNode<Integer> left;
+        BinaryTreeNode<Integer> right;
+        public BinaryTreeNode(int data) {
+            this.data = data;
+        }
+    }
+
+
+*************************************************************/
+import java.util.*;
+public class Solution {
+    public static ArrayList<Integer> printRightView(BinaryTreeNode<Integer> root) {
+       // Write your code here.
+       ArrayList<Integer>ans = new ArrayList<>();
+       if(root==null)
+            return ans;
+        Map<Integer,BinaryTreeNode<Integer>> map = new TreeMap<>();
+        Queue<BinaryTreeNode<Integer>> que = new LinkedList<>();
+        que.offer(root);
+        int count = 1;
+        while(!que.isEmpty()){
+            int sz = que.size();
+            for(int i =0; i<sz; i++){
+                BinaryTreeNode<Integer> temp = que.poll();
+                map.put(count,temp);
+                if(temp.left!=null)
+                    que.offer(temp.left);
+                if(temp.right!=null)
+                    que.offer(temp.right);
+                
+            }
+            count++;
+        }
+        for(BinaryTreeNode<Integer> tt : map.values()){
+            ans.add(tt.data);
+        }
+        return ans;
+    }
+}
+
+
+

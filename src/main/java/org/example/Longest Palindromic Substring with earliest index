@@ -1,0 +1,45 @@
+Longest Palindromic Substring
+
+Problem statement
+You are given a string ('STR') of length 'N'. Find the longest palindromic substring. If there is more than one palindromic substring with the maximum length, return the one with the smaller start index.
+
+Note:
+A substring is a contiguous segment of a string.
+For example : The longest palindromic substring of "ababc" is "aba", since "aba" is a palindrome and it is the longest substring of length 3 which is a palindrome, there is another palindromic substring of length 3 is "bab" since "aba" starting index is less than "bab", so "aba" is the answer.
+
+import java.util.* ;
+import java.io.*; 
+public class Solution 
+{
+	public static String longestPalinSubstring(String str) 
+	{
+		// Write your code here.
+		if(str.length()<2){
+			return str;
+		}
+		int ans = 1;
+		int index = 0;
+		for(int i =0; i<str.length(); i++){
+			int low = i-1;
+			int high = i+1;
+			while(low>=0 && str.charAt(low)==str.charAt(i))
+			{
+				low--;
+			}
+			while(high<str.length() && str.charAt(high)==str.charAt(i)){
+				high++;
+			}
+			while(low>=0 && high<str.length() && str.charAt(low)==str.charAt(high)){
+				low--;
+				high++;
+			}
+			if(ans<(high-low-1)){
+				ans = high-low-1;
+				index = low+1;
+			}
+		}
+		// System.out.println(ans+"-"+index);
+		// return "";
+		return str.substring(index, index+ans);
+	}
+}

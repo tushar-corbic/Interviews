@@ -1,0 +1,56 @@
+Capacity to Ship Packages within D Days
+ Problem Statement: You are the owner of a Shipment company. You use conveyor belts to ship packages from one port to another. The packages must be shipped within 'd' days.
+The weights of the packages are given in an array 'of weights'. The packages are loaded on the conveyor belts every day in the same order as they appear in the array. The loaded weights must not exceed the maximum weight capacity of the ship.
+Find out the least-weight capacity so that you can ship all the packages within 'd' days.
+
+
+
+
+import java.util.*;
+
+public class tUf {
+    public static int findDays(int[] weights, int cap) {
+        int days = 1; //First day.
+        int load = 0;
+        int n = weights.length; //size of array.
+        for (int i = 0; i < n; i++) {
+            if (load + weights[i] > cap) {
+                days += 1; //move to next day
+                load = weights[i]; //load the weight.
+            } else {
+                //load the weight on the same day.
+                load += weights[i];
+            }
+        }
+        return days;
+    }
+
+    public static int leastWeightCapacity(int[] weights, int d) {
+        //Find the maximum and the summation:
+        int low = Integer.MIN_VALUE, high = 0;
+        for (int i = 0; i < weights.length; i++) {
+            high += weights[i];
+            low = Math.max(low, weights[i]);
+        }
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int numberOfDays = findDays(weights, mid);
+            if (numberOfDays <= d) {
+                //eliminate right half
+                high = mid - 1;
+            } else {
+                //eliminate left half
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+    public static void main(String[] args) {
+        int[] weights = {5, 4, 5, 2, 3, 4, 5, 6};
+        int d = 5;
+        int ans = leastWeightCapacity(weights, d);
+        System.out.println("The minimum capacity should be: " + ans);
+    }
+}
+

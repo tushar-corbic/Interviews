@@ -1,0 +1,14 @@
+class Solution {
+    // Function to reverse a linked list.
+    Node reverseList(Node head) {
+        // code here
+        return helper(head, null);
+    }
+    Node helper(Node cur, Node pre){
+        if(cur==null)
+            return pre;
+        Node temp = cur.next;
+        cur.next = pre;
+        return helper(temp, cur);
+    }
+}

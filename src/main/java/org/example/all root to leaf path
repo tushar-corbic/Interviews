@@ -1,0 +1,29 @@
+public static long treePathsSum(Node root)
+        {
+         //add code here.
+         List<List<Integer>> ans = new ArrayList<>();
+         helper(root, ans, new ArrayList<>());
+         int sum = 0;
+         for(int i =0; i<ans.size(); i++){
+             int tt = 0;
+             for(int j =0; j<ans.get(i).size(); j++){
+                tt = tt*10+ ans.get(i).get(j);
+             }
+            //  System.out.println(ans.get(i));
+             sum+=tt;
+         }
+         return (long)(sum);
+	}
+	public static void helper(Node root,List<List<Integer>>ans, List<Integer>temp){
+	    if(root==null)
+	        return;
+	   temp.add(root.data);
+	   if(root.left==null && root.right==null)
+	    {
+	        ans.add(new ArrayList<>(temp));
+	        return;
+	    }
+	    helper(root.left, ans, new ArrayList<>(temp));
+	    helper(root.right, ans, new ArrayList<>(temp));
+	   // temp.remove(temp.size()-1);
+	}

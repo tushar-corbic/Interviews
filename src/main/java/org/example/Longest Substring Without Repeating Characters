@@ -41,3 +41,34 @@ class Solution {
         return ans;
     }
 }
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+        
+	public static int lengthOfLongestSubstring(String str) {
+		if(str==null || str.length()==0)
+			return 0;
+		// Write your code here.
+		Map<Character,Integer>map = new HashMap<>();
+		int l = 0;
+		int r = 0;
+		int n = str.length();
+		int ans = 1;
+		while(r<n){
+			char ch = str.charAt(r);
+			if(map.containsKey(ch)){
+				l = Math.max(map.get(ch)+1, l);
+				ans = Math.max(ans, r-l+1);
+				map.put(ch, r);
+				r++;
+			}else{
+				map.put(ch,r);
+				ans = Math.max(ans, r-l+1);
+				r++;
+			}
+		}
+		return ans;
+	}
+}

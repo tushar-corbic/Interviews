@@ -1,0 +1,46 @@
+Copy List with Random Pointer
+
+import java.io.*;
+import java.util.* ;
+
+/*************************************************************
+
+    Following is the LinkedListNode class structure
+
+    class LinkedListNode<T> {
+	    T data;
+	    LinkedListNode<T> next;
+	    LinkedListNode<T> random;
+
+	    public LinkedListNode(T data) {
+		    this.data = data;
+	    }
+    }
+
+*************************************************************/
+
+public class Solution {
+	public static LinkedListNode<Integer> cloneRandomList(LinkedListNode<Integer> head) {
+		// Write your code here.
+		Map<LinkedListNode<Integer> , LinkedListNode<Integer> > map= new HashMap<>();
+		LinkedListNode<Integer>  dummy = new LinkedListNode<Integer> (-1);
+		LinkedListNode<Integer>  runner = dummy;
+		LinkedListNode<Integer>  cur = head;
+		while(cur!=null){
+			LinkedListNode<Integer>  temp = new LinkedListNode<Integer> (cur.data);
+			runner.next = temp;
+			map.put(cur, temp);
+			cur = cur.next;
+			runner = runner.next;
+		}
+		cur = head;
+		runner = dummy.next;
+		while(cur!=null){
+			if(cur.random!=null)
+			runner.random = map.get(cur.random);
+			cur  = cur.next;
+			runner = runner.next;
+		}
+		return dummy.next;
+	}
+}

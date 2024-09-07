@@ -1,0 +1,46 @@
+ K Most Frequent Elements
+
+Problem statement
+You are given an Integer array ‘ARR’ and an Integer ‘K’.
+
+
+
+Your task is to find the ‘K’ most frequent elements in ‘ARR’. Return the elements in any order.
+
+
+
+For Example:
+
+You are given ‘ARR’ = {1, 2, 2, 3, 3} and ‘K’ = 2. 
+
+The answer will {2, 3} as 2 and 3 are the elements occurring most times.
+
+import java.util.PriorityQueue;
+import java.util.*;
+public class Solution {
+    public static int[] KMostFrequent(int n, int k, int[] arr) {
+        // Write your code here.
+        int[]ans = new int[k];
+        Map<Integer,Integer>map = new HashMap<>();
+        for(int i =0; i<arr.length; i++){
+            map.put(arr[i], map.getOrDefault(arr[i],0)+1);
+        }
+        PriorityQueue<int[]> pq = new PriorityQueue<>((int[] a, int[] b)->{
+            return a[1]-b[1];
+        });
+        for(Map.Entry<Integer,Integer> entry: map.entrySet()){
+            pq.add(new int[]{entry.getKey(), entry.getValue()});
+            if(pq.size()>k){
+                pq.poll();
+            }
+        }
+        List<Integer>res = new ArrayList<>();
+        while(!pq.isEmpty()){
+            res.add(pq.peek()[0]);
+            pq.poll();
+        }
+        int[] temp = res.stream().mapToInt(i->i).toArray();
+        
+        return res.stream().mapToInt(i->i).toArray();
+    }
+}

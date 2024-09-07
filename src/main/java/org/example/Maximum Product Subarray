@@ -1,0 +1,38 @@
+Maximum Product Subarray
+
+You are given an array “arr'' of integers. Your task is to find the contiguous subarray within the array which has the largest product of its elements. You have to report this maximum product.
+
+An array c is a subarray of array d if c can be obtained from d by deletion of several elements from the beginning and several elements from the end.
+
+For e.g.- The non-empty subarrays of an array [1,2,3] will be- [1],[2],[3],[1,2],[2,3],[1,2,3]. 
+For Example:
+If arr = {-3,4,5}.
+All the possible non-empty contiguous subarrays of “arr” are {-3}, {4}, {5}, {-3,4}, {4,5} and {-3,4,5}.
+The product of these subarrays are -3, 4, 5, -12, 20 and -60 respectively.
+The maximum product is 20. Hence, the answer is 20.
+Follow Up:
+Can you solve this in linear time and constant space complexity?
+Detailed explanation ( Input/output format, Notes, Images )
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+	public static int maximumProduct(ArrayList<Integer> arr, int n) {
+		// Write your code here.
+		int pre = 1;
+		int suf = 1;
+		int ans = Integer.MIN_VALUE;
+		for(int i =0; i<n; i++){
+			if(pre==0)
+				pre = 1;
+			if(suf==0)
+				suf = 1;
+			pre = pre*arr.get(i);
+			suf = suf*arr.get(n-i-1);
+			ans = Math.max(ans, Math.max(pre,suf));
+		}
+		return ans;
+	}
+}

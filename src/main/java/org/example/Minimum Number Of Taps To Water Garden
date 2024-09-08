@@ -1,0 +1,35 @@
+Minimum Number Of Taps To Water Garden
+The gardener wants to water the garden by opening the minimum number of taps. The garden is one-dimensional along the x-axis of length N i.e. the garden starts from point 0 and ends at point N. There are N + 1 tap located at points [0, 1, 2, …, N] in the garden.
+
+You are given an integer N, and an array named “ranges” of size N + 1(0-indexed). The ith tap, if opened, can water the gardener from point (i - ranges[i]) to (i + ranges[i]) including both. The task is to find the minimum number of taps that should be open to water the whole garden, return -1 if the garden can not be watered.
+
+
+public class Solution 
+{
+    public static int minimumTapsToFillGarden(int[] ranges, int n) 
+    {
+          int[] arr = new int[n + 1];
+        for(int i = 0; i < ranges.length; i++) {
+            if(ranges[i] == 0) continue;
+            int left = Math.max(0, i - ranges[i]);
+            arr[left] = Math.max(arr[left], i + ranges[i]);
+        }
+       
+        int ans = 0;
+        int left =0;
+        int right = 0;
+        while(right<n){
+
+            int farCanReach = 0;
+            for(int i =left; i<=right;  i++){
+                farCanReach = Math.max(farCanReach, arr[i]);
+            }
+            if(farCanReach == 0)
+                return -1;
+            left = right+1;
+            right = farCanReach;
+            ans++;
+        }
+        return ans;
+    }
+}

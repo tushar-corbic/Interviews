@@ -1,0 +1,46 @@
+Maximum Sum Rectangle
+Problem statement
+You are given a matrix ‘ARR’ with ‘N’ rows and ‘M’ columns. Your task is to find the maximum sum rectangle in the matrix.
+
+Maximum sum rectangle is a rectangle with the maximum value for the sum of integers present within its boundary, considering all the rectangles that can be formed from the elements of that matrix.
+
+For Example
+Consider following matrix:
+
+The rectangle (1,1) to (3,3) is the rectangle with the maximum sum, i.e. 29.
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution
+{
+public static int maxSumRectangle(int[][] arr, int n, int m)
+    {
+        // Write your code here.
+        int[]dp = new int[n];
+        int maxi = Integer.MIN_VALUE;
+        for(int i = 0; i<m; i++){
+            Arrays.fill(dp,0);
+            for(int j = i; j<m; j++){
+                for(int k=0; k<n;k++){
+                    dp[k] = dp[k]+arr[k][j];
+                }
+                maxi = Math.max(maxi, findMax(dp, maxi));
+            }
+        }
+        return maxi;
+
+    }
+    static int findMax(int[]arr, int maxsum){
+        int cursum = 0;
+        for(int i =0; i<arr.length; i++){
+            if(cursum>0){
+                cursum += arr[i];
+            }else{
+                cursum = arr[i];
+            }
+            maxsum = Math.max(maxsum, cursum);
+        }
+        return cursum;
+    }
+}

@@ -1,0 +1,71 @@
+Longest Decreasing Subsequence
+You are given an array/list ARR consisting of N integers. Your task is to find the length of the longest decreasing subsequence.
+
+A subsequence is a sequence of numbers obtained by deleting zero or more elements from the array/list, keeping the relative positions of elements same as it was in the initial sequence. A decreasing subsequence is a subsequence in which every element is strictly less than the previous number.
+
+Note:
+
+There can be more than one subsequences with the longest length.
+For example:-
+For the given array [5, 0, 3, 2, 9], the longest decreasing subsequence is of length 3, i.e. [5, 3, 2]
+
+import java.util.*;
+
+public class GFG {
+    static int lengthOfLIS(int[] nums) {
+        // Binary search approach
+        int n = nums.length;
+        List<Integer> ans = new ArrayList<>();
+
+        // Initialize the answer list with the
+        // first element of nums
+        ans.add(nums[0]);
+
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > ans.get(ans.size() - 1)) {
+                // If the current number is greater
+                // than the last element of the answer
+                // list, it means we have found a
+                // longer increasing subsequence.
+                // Hence, we append the current number
+                // to the answer list.
+                ans.add(nums[i]);
+            } else {
+                // If the current number is not
+                // greater than the last element of
+                // the answer list, we perform
+                // a binary search to find the smallest
+                // element in the answer list that
+                // is greater than or equal to the
+                // current number.
+
+                // The binarySearch method returns
+                // the index of the first element that is not less than
+                // the current number.
+                int low = Collections.binarySearch(ans, nums[i]);
+
+                // We update the element at the
+                // found position with the current number.
+                // By doing this, we are maintaining
+                // a sorted order in the answer list.
+                if (low < 0) {
+                    low = -(low + 1);
+                }
+                ans.set(low, nums[i]);
+            }
+        }
+
+        // The size of the answer list
+        // represents the length of the
+        // longest increasing subsequence.
+        return ans.size();
+    }
+
+    // Driver program to test above function
+    public static void main(String[] args) {
+        int[] nums = {10, 22, 9, 33, 21, 50, 41, 60};
+        // Function call
+        System.out.println("Length of LIS is " + lengthOfLIS(nums));
+    }
+}
+

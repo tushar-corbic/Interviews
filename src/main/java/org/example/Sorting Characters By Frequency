@@ -1,0 +1,81 @@
+Sorting Characters By Frequency
+You have been given a string ‘S’.
+
+
+
+You must return the string ‘S’ sorted in decreasing order based on the frequency of characters.
+
+If there are multiple answers, return any of them.
+
+
+
+Example :
+Let 'S'= “abAb”. 
+
+Here the characters ‘a’ and ‘A’ have frequency 1 and character ‘b’ has frequency ‘2’.  
+
+Therefore the sorted string is “bbAa”. 
+
+import java.util.*;
+class Pair implements Comparable<Pair>
+{
+	int first;
+	char second;
+	Pair(int first,char second)
+	{
+		this.first = first;
+		this.second = second;
+	}
+	// Custom comparator useful for heap 
+	
+	public int compareTo(Pair a)
+	{
+	// If frequencies are same for two characters 
+	// sort according to their order
+		if(this.first==a.first) 
+			return this.second-a.second;
+		return this.first-a.first;
+	}
+
+}
+class Main {
+	// O(N*LogN) Time, O(Distinct(N)) Space
+	public static String frequencySort(String s) {
+
+		// Creating a HashMap to store the frequency of characters
+		HashMap<Character, Integer> mpp = new HashMap<Character, Integer>();
+
+		// Creating a min heap to store the frequency and corresponding character
+		PriorityQueue<Pair> min_heap = new PriorityQueue<Pair>();
+
+		// Looping through the string to calculate the frequency of each character
+		for (char ch : s.toCharArray()) {
+			mpp.put(ch, mpp.getOrDefault(ch, 0) + 1);
+		}
+
+		// Adding the frequency and character to the min heap
+		for (char m : mpp.keySet()) {
+			min_heap.offer(new Pair(mpp.get(m), m));
+		}
+
+		String ans = "";
+		// Now we have in the TOP - Less Freq chars
+		while (!min_heap.isEmpty()) {
+			Pair pair = min_heap.poll();
+			int freq = pair.first;
+			char ch = pair.second;
+			// Append as many times of frequency
+			for (int i = 0; i < freq; i++) {
+				ans += ch;
+			}
+		}
+		return ans;
+	}
+
+	// Driver code
+	public static void main(String[] args) {
+		String str = "geeksforgeeks";
+		System.out.println(frequencySort(str));
+	}
+
+}

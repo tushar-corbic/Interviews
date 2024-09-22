@@ -1,0 +1,57 @@
+ Convert Bst To The Greater Sum Tree
+
+
+You have been given a Binary Search Tree of integers. You are supposed to convert it to a greater sum tree such that the value of every node in the given BST is replaced with the sum of the values of all the nodes which are greater than the value of the current node in the tree.
+
+A Binary Search Tree is a tree, whose internal nodes each store a value greater than all the values in the node's left subtree and less than those in its right subtree.
+
+Note :
+
+You need to modify the given tree only. You are not allowed to create a new tree.
+For example:
+For the given binary search tree
+
+
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T val;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T val) {
+            this->val = val;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+
+TreeNode<int> *convertBstToGreaterSum(TreeNode<int> *root)
+{
+    // Write your code here.
+    if(root==NULL) return NULL;
+        iánt sum = 0;
+        stack<TreeNode<int>*> s;
+        TreeNode<int>*temp = root;
+        while(!s.empty()||temp!=NULL){
+            while(temp!=NULL){
+                s.push(temp);
+                temp = temp->right;
+            }
+            temp = s.top(); s.pop();
+            int tt = temp->val;
+
+            temp->val = sum;
+            sum = tt+sum;
+            temp = temp->left;
+        }
+        return root;
+}
+

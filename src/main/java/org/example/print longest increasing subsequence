@@ -1,0 +1,63 @@
+import java.util.List;
+import java.util.*;
+public class Solution {
+    public static class pair{
+        int l;
+        int i;
+        int val;
+        String psf;
+        public pair(int l, int i, int val , String psf){
+            this.l = l;
+            this.i = i;
+            this.val = val;
+            this.psf = psf;
+        }
+    }
+    public static List< Integer > printingLongestIncreasingSubsequence(int []arr, int x) {
+        // Write Your Code Here
+        int n = arr.length;
+        int []dp = new int[n];
+        int ans = 0;
+
+        int oi = 0;
+        for(int i =0;i<n; i++){
+            int maxi  = 0;
+            for(int j = 0;j<i; j++){
+                if(arr[j]<=arr[i]){
+                    maxi = Math.max(maxi, dp[j]);
+                }
+            }
+            dp[i] = maxi+1;
+            if(ans<dp[i]){
+                ans = dp[i];
+                oi = i;
+            }
+        }
+        String res = "";
+        Queue<pair>que = new LinkedList<>();
+        que.offer(new pair(ans, oi, arr[oi], ""+arr[oi]));
+        while(!que.isEmpty()){
+            pair temp = que.poll();
+            if(temp.l==1){
+                res = temp.psf;
+                break;
+            }
+            for(int i =0; i<temp.i; i++){
+                if(dp[i]==temp.l && arr[i]<=temp.val){
+                    que.offer(new pair(temp.l-1, i, arr[i], temp.psf+"->"+arr[i]));
+                }
+            }
+        }
+        String[]tt = res.split("->");
+        List<Integer>pychela = new ArrayList<>();
+        System.out.println(res);
+        // for(int i =0; i<tt.length; i++){
+        //     pychela.add(Integer.valueOf(tt[i]));
+        //     System.out.println
+        // }
+        Collections.reverse(pychela);
+        return pychela;
+
+
+    }
+}

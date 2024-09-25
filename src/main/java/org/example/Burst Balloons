@@ -1,0 +1,57 @@
+ Burst Balloons
+
+Problem statement
+You are given an array 'arr' of 'n' balloons, where 'a[i]' represents the coins associated with 'ith' balloon.
+
+
+
+On bursting 'ith' balloon, the number of coins collected is equal to 'a[i-1] * a[i] * a[i+1]'. Also, balloons 'i-1' and 'i+1' now become adjacent.
+
+
+
+Find the maximum possible coins collected after bursting all the balloons. Assume an extra 1 at each boundary.
+
+
+
+Example:
+Input: 'arr' = [5,2,6,9]
+
+Output: 384
+
+Explanation:
+The best way to burst balloons is following:
+Choosing 2nd balloon, we get 5*2*6 coins. Now the array is [5,6,9].
+Choosing 2nd balloon, we get 5*6*9 coins. Now the array is [5,9].
+Choosing 1st balloon, we get 1*5*9 coins. Now the array is [9].
+Choosing the last balloon, we get 1*9*1 coins.
+Finally we get 5*2*6 + 5*6*9 + 1*5*9 + 1*9*1 = 384 coins.
+There's no way to choose the order of bursting balloons such that we get more than 384 coins.
+
+
+import java.util.*;
+public class Solution {
+    public static int burstBalloons(int []ar){
+        // Write your code here.
+        int n = ar.length;
+        	List<Integer>arr = new ArrayList<>();
+		arr.add(1);
+		for(int a : ar)
+			arr.add(a);
+		arr.add(1);
+		int[][]dp= new int[n+2][n+2];
+		for(int[]row : dp)
+			Arrays.fill(row,-1);
+		return helper(arr, 1, arr.size()-2, dp);
+    }
+    static int helper(List<Integer>arr, int i, int j, int[][]dp){
+		if(i>j)
+			return 0;
+		if(dp[i][j]!=-1)
+			return dp[i][j];
+		int ans = Integer.MIN_VALUE;
+		for(int k  = i; k<=j; k++){
+			ans = Math.max(ans, helper(arr, i, k-1, dp)+ helper(arr, k+1, j,dp)+ arr.get(k)*arr.get(i-1)*arr.get(j+1));
+		}
+		return dp[i][j]  = ans;
+	}
+}

@@ -1,0 +1,45 @@
+ Check Bipartite Graph
+
+Given a graph, check whether the graph is bipartite or not. Your function should return true if the given graph's vertices can be divided into two independent sets, ‘U’ and ‘V’ such that every edge (‘u’, ‘v’) either connects a vertex from ‘U’ to ‘V’ or a vertex from ‘V’ to ‘U’.
+
+You are given a 2D array ‘edges’ which contains 0 and 1, where ‘edges[i][j]’ = 1 denotes a bi-directional edge from ‘i’ to ‘j’.
+
+Note:
+If edges[i][j] = 1, that implies there is a bi-directional edge between ‘i’ and ‘j’, that means there exists both edges from ‘i’ to ‘j’ and to ‘j’ to ‘i’.
+For example
+
+Given:
+‘N’ = 3
+‘edges’ = [[0, 1, 1], [0, 0, 1], [0,0,0]]. 
+
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.*;
+public class Solution {
+
+    public static boolean isGraphBirpatite(ArrayList<ArrayList<Integer>> edges) {
+
+        // Write your code here
+        int n = edges.size();
+        int[]vis = new int[n];
+        Arrays.fill(vis, -1);
+        int src = 0;
+        vis[src] = 0;
+        Queue<Integer>que =new LinkedList<>();
+        que.add(src);
+        while(!que.isEmpty()){
+            int i = que.poll();
+            if(edges.get(i).get(i)==1)
+                return false;
+            for(int j =0;j<n;j++){
+                if(edges.get(i).get(j)==1 && vis[j]==-1){
+                    que.offer(j);
+                    vis[j] = 1-vis[i];
+                }else if(edges.get(i).get(j)==1 && vis[j]==vis[i]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}

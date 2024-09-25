@@ -1,0 +1,82 @@
+Count of subsequences consisting of the same element
+
+Given an array A[] consisting of N integers, the task is to find the total number of subsequence which contain only one distinct number repeated throughout the subsequence.
+
+Examples:  
+
+
+Input: A[] = {1, 2, 1, 5, 2} 
+Output: 7 
+Explanation: 
+Subsequences {1}, {2}, {1}, {5}, {2}, {1, 1} and {2, 2} satisfy the required conditions.
+
+
+Input: A[] = {5, 4, 4, 5, 10, 4} 
+Output: 11 
+Explanation: 
+Subsequences {5}, {4}, {4}, {5}, {10}, {4}, {5, 5}, {4, 4}, {4, 4}, {4, 4} and {4, 4, 4} satisfy the required conditions. 
+
+
+
+Approach: 
+Follow the steps below to solve the problem: 
+
+Iterate over the array and calculate the frequency of each element in a HashMap.
+Traverse the HashMap. For each element, calculate the number of desired subsequences possible by the equation:
+
+ Number of subsequences possible by arr[i] = 2freq[arr[i]] – 1 
+
+
+Calculate the total possible subsequences from the given array. 
+
+
+// Java program to implement 
+// the above approach 
+import java.util.*;
+
+class GFG{
+
+// Function to count subsequences in
+// array containing same element
+static void CountSubSequence(int A[], int N)
+{
+	
+	// Stores the count
+	// of subsequences
+	int result = 0;
+
+	// Stores the frequency
+	// of array elements
+	Map<Integer, 
+		Integer> mp = new HashMap<Integer,
+								Integer>();
+
+	for(int i = 0; i < N; i++)
+	{
+		
+		// Update frequency of A[i]
+		mp.put(A[i], mp.getOrDefault(A[i], 0) + 1);
+	}
+
+	for(Integer it : mp.values())
+	{
+		
+		// Calculate number of subsequences
+		result = result + (int)Math.pow(2, it) - 1;
+	}
+	
+	// Print the result
+	System.out.println(result);
+}
+
+// Driver code
+public static void main(String[] args)
+{
+	int A[] = { 5, 4, 4, 5, 10, 4 };
+	int N = A.length;
+	
+	CountSubSequence(A, N);
+}
+}
+
+// This code is contributed by offbeat

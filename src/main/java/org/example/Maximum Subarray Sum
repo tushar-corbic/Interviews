@@ -1,0 +1,28 @@
+Maximum Subarray Sum
+You are given an array/list ARR consisting of N integers. Your task is to find the maximum possible sum of a non-empty subarray(contagious) of this array.
+
+Note: An array C is a subarray of array D if it can be obtained by deletion of several elements(possibly zero) from the beginning and the end of array D.
+
+For e.g.- All the non-empty subarrays of array [1,2,3] are [1], [2], [3], [1,2], [2,3], [1,2,3].
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+    public static long maxSubarraySum(ArrayList<Integer> arr, int n) {
+        // Write your code here
+        long sum =0;
+        Long ans = Long.MIN_VALUE;
+        for(int i =0; i<n; i++){
+            // if(sum<0){
+            //     sum= sum+ (long)arr.get(i);
+            // }else{
+            //     sum = (long)arr.get(i);
+            // }
+            sum = Math.max(sum+(long)arr.get(i),(long) arr.get(i));
+            ans = Math.max(ans,sum);
+        }
+        return ans;
+    }
+}

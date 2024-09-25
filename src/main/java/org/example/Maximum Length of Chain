@@ -1,0 +1,66 @@
+Maximum Length of Chain
+
+Problem statement
+You have been given an array/list “pairs” of ‘N’ pairs of integers. In every pair, the first number is always smaller than the second number. A pair (a, b) can follow another pair (c, d) in a chain if a > d. Now you are supposed to find the length of the longest chain which can be formed.
+
+You can select pairs in any order.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+1 <= T <= 50
+1 <= N <= 1000 
+0 <= pairs[i][0], pairs[i][1] <= 10^6
+
+Time limit: 1 sec
+Sample Input 1 :
+2
+2
+3 6
+4 5
+2
+2 4
+6 9
+Sample output 1 :
+1
+2
+Explanation For Sample output 1 :
+For the first test case, one of the longest chains is (3, 6) of length 1.
+
+For the second test case, the longest chain is (2, 4) -> (6, 9) and its length is 2.
+Sample Input 2 :
+2
+3
+1 2
+2 3
+3 4
+1
+7 8
+Sample output 2 :
+2
+1
+
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution 
+{
+    public static int getLongestChainLength(ArrayList<ArrayList<Integer>> pairs)
+    {
+        //    Write your code here.
+        Collections.sort(pairs, (a,b)->a.get(1)-b.get(1));
+        int ans =0;
+        int i =0;
+        int n = pairs.size();
+        while(i<n){
+            ans++;
+            int end = pairs.get(i).get(1);
+            while(i<n && pairs.get(i).get(0)<=end){
+                i++;
+            }
+        }
+        return ans;
+        // return -1;
+    }
+}

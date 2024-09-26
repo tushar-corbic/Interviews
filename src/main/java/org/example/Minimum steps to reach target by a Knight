@@ -1,0 +1,100 @@
+Minimum steps to reach target by a KnightYou have been given a square chessboard of size ‘N x N’. The position coordinates of the Knight and the position coordinates of the target are also given.
+
+Your task is to find out the minimum steps a Knight will take to reach the target position.
+
+
+Example:
+knightPosition: {3,4}
+targetPosition: {2,1}
+
+The knight can move from position (3,4) to positions (1,3), (2,2) and (4,2). Position (4,2) is selected and the ‘stepCount’ becomes 1. From position (4,2), the knight can directly jump to the position (2,1) which is the target point and ‘stepCount’ becomes 2 which is the final answer. 
+Note:
+
+1. The coordinates are 1 indexed. So, the bottom left square is (1,1) and the top right square is (N, N).
+
+2. The knight can make 8 possible moves as given in figure 1.
+
+3. A Knight moves 2 squares in one direction and 1 square in the perpendicular direction (or vice-versa).
+Detailed explanation ( Input/output format, Notes, Images )
+Sample input 1
+2
+8
+2 1
+8 5
+6
+4 5
+1 1
+Sample output 1
+4
+3
+Explanation of sample input 1:
+Test case 1:
+
+The knight is initially at position [2,1]. It has 3 possible blocks to move to, [4,2], [3,3], and [1,3]. The knight chooses [4,2]. Now, there are 6 more possible blocks to move to. The knight chooses [5,4]. Further, the knight chooses position [7,3]. Finally, the knight moves to the target position which is [8,5] which calculates to 4 steps.
+
+Test case 2:
+The knight moves from position [4,5] to [5,3] to [3,2] and finally to the target position [1,1] which gives us the minimum steps by the knight, that is, 3.
+(4, 5) -> (5, 3) -> (3, 2) -> (1, 1).
+Sample input 2:
+2
+6 
+2 4
+6 4
+6
+1 1
+4 5
+Sample output 2:
+2
+3
+   import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.*;
+
+/*
+class Pair {
+	int first;
+	int second;
+
+	public Pair(int first, int second) {
+		this.first = first;
+		this.second = second;
+	}
+}
+*/
+class PairWithDistance{
+	Pair pair;
+	int dis;
+	public PairWithDistance(Pair a, int b){
+		this.pair = a;
+		this.dis = b;
+	}
+}
+public class Solution{
+	public static int minSteps(Pair knightPosition, Pair targetPosition, int size) {
+	    // Write your code here.
+		boolean[][]vis = new boolean[size+1][size+1];
+		Queue<PairWithDistance> que = new LinkedList<>();
+		que.offer(new PairWithDistance(knightPosition, 0));
+		vis[knightPosition.first][knightPosition.second] = true;
+		int dx[] = { -2, -1, 1, 2, -2, -1, 1, 2 };
+        int dy[] = { -1, -2, -2, -1, 1, 2, 2, 1 };
+		int ans = 0;
+		while(!que.isEmpty()){
+			PairWithDistance temp = que.poll();
+			ans = temp.dis;
+			if(temp.pair.first==targetPosition.first && temp.pair.second==targetPosition.second)
+				return temp.dis;
+			for(int i =0; i<8; i++){
+				int xx = temp.pair.first + dx[i];
+				int yy = temp.pair.second + dy[i];
+				if(xx>=1 && xx<=size && yy>=1 && yy<=size && vis[xx][yy]==false){
+					vis[xx][yy] = true;
+					que.add(new PairWithDistance(new Pair(xx, yy), temp.dis+1));
+				}
+			}
+		}
+		return ans;
+
+	}
+}

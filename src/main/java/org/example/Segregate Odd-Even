@@ -1,0 +1,99 @@
+Segregate Odd-Even
+
+Problem statement
+There is a wedding ceremony at NinjaLand. The bride and groom want everybody to play a game and thus, they have blindfolded the attendees. The people from the bride’s side are holding odd numbers and people from the groom’s side are holding the even numbers. For the game to start quickly, all the bride’s side people should come first, followed by the groom’s side people in the same order.
+
+The attendees of the wedding with their numbers are given in the form of a Singly Linked List, arranged randomly.
+
+A singly linked list is a type of linked list that is unidirectional; that is, it can be traversed in only one direction from head to the last node (tail).
+
+Example:
+The attendees holding numbers from 1, 4, 3 are shown: 
+
+As the organizers are busy, you have to arrange all the people by arranging the bride’s side people first followed by the groom’s side people sequentially.
+
+Note:
+For the above example 1 -> 4 -> 3, 1 -> 3 -> 4 is the only correct answer, i.e nodes should be grouped sequentially. Hence, 3 -> 1 -> 4 is the wrong answer as we have to preserve the same order.
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+1 <= T <= 10
+1 <= N <= 5 * 10^4
+0 <= data <= 10^4 and data != -1
+
+Where 'N' denotes the number of elements in the Singly Linked List and 'data' represents the value of those elements.
+
+Time Limit: 1 sec
+Sample Input 1:
+2
+6 10 7 8 5 -1
+5 10 6 4 7 -1
+Sample Output 1:
+7 5 6 10 8 -1 
+5 7 10 6 4 -1
+Explanation of sample input 1:
+For the first test case:
+The bride’s side attendees are 7, 5. 
+The groom’s side attendees are 6, 10, 8. 
+The final arrangement of the attendees, arranging the groom’s side after the bride’s side, is 7 5 6 10 8 -1. Note that -1 is not a person. 
+
+
+For the second test case:
+The bride’s side attendees are 5, 7. 
+The groom’s side attendees are 10, 6, 4.
+The final arrangement of the attendees, arranging the groom’s side after the bride’s side, is 5 7 10 6 4 -1. Note that -1 is not a person.
+Sample Input 2:
+2
+11 21 31 41 51 -1
+2 4 6 8 10 -1 
+Sample Output 2:
+11 21 31 41 51 -1
+2 4 6 8 10 -1
+
+/*************************************************************
+
+	Following is the class structure of the Node class:
+
+    class Node {
+		public int data;
+		public Node next;
+
+		Node(int data) {
+			this.data = data;
+			this.next = null;
+	  	}
+    }
+
+*************************************************************/
+
+public class Solution {
+	public static Node segregateOddEven(Node head) {
+		// Write your code here.
+		Node odd = new Node(-1);
+		Node even = new Node(-1);
+		Node evenhead= even;
+		Node oddhead = odd;
+		Node cur = head;
+		while(cur!=null){
+			if(cur.data%2==0){
+				even.next = cur;
+				Node temp = cur.next;
+				cur.next = null;
+				cur = temp;
+				even = even.next;
+			}else{
+				odd.next = cur;
+					Node temp = cur.next;
+				cur.next = null;
+				cur = temp;
+				odd = odd.next;
+			}
+			// cur = cur.next;
+		}
+		Node oddtail = oddhead;
+		while(oddtail.next!=null){
+			oddtail = oddtail.next;
+		}
+		oddtail.next = evenhead.next;
+		return oddhead.next;
+	}
+}

@@ -1,0 +1,67 @@
+Minimum Subarray With Required Sum
+
+Problem statement
+You have been given an array(ARR) of positive integers and an integer X. You have to find the minimum length subarray such that the sum of all of its elements is strictly greater than the given integer X.
+
+Note:
+A subarray is a contiguous block of elements that can be formed by deleting some (possibly zero) elements from the beginning or the end of the original array. 
+For example :
+If the given array is [1, 2, 3, 4, 5], then [2, 3, 4], [1, 2], [5] are some subarrays while [1, 3], [2, 3, 5] are not.
+
+If there are multiple subarrays with minimum length, find one which appears earlier in the array (i.e. subarray that starts with lower index).
+
+If there is no such subarray, print an empty line.
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+1 <= N <= 5 * 10^5
+1 <= X <= 10^9
+1 <= ARR[i] <= 10^9
+
+Time Limit: 1 sec
+Sample Input 1:
+4 13
+13 7 6 12
+Sample Output 1:
+13 7
+Explanation For Sample Input 1:
+Out of all the subarrays, we have [13, 7] and [6, 12] with minimum length of 2 and sum of their elements greater than X = 13. As the starting index of [13, 7] is lower, we print it as the output.
+Sample Input 2:
+5 6
+1 2 3 4 5
+Sample Output 2:
+3 4
+
+import java.util.ArrayList;
+
+public class Solution 
+{
+	public static ArrayList<Integer> minSubarray(ArrayList<Integer> arr, int n, int x) 
+	{
+		// Write your code here
+		ArrayList<Integer>ans = new ArrayList<>();
+		int start = 0;
+		int end = 0;
+		int sum =0;
+		int index = -1;
+		int length = n;
+		while(end<n){
+			sum+= arr.get(end);
+			while(sum>x){
+				if(length>end-start+1){
+					length = end-start+1;
+					index = start;
+				}
+				sum -=arr.get(start);
+				start++;
+			}
+			end++;
+		}
+		if(index==-1)
+			return ans;
+		for(int i = index; i<index+length; i++){
+			ans.add(arr.get(i));
+		}
+		return ans;
+		// return arr.subList(index, index+length);
+	}
+}

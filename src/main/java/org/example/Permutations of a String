@@ -1,0 +1,37 @@
+Permutations of a String
+
+You are given a string 'STR' consisting of lowercase English letters. Your task is to return all permutations of the given string in lexicographically increasing order.
+
+String A is lexicographically less than string B, if either A is a prefix of B (and A ≠ B), or there exists such i (1 <= i <= min(|A|, |B|)), that A[i] < B[i], and for any j (1 <= j < i) A[i] = B[i]. Here |A| denotes the length of the string A.
+
+For example :
+
+If the string is “bca”, then its permutations in lexicographically increasing order are { “abc”, “acb”, “bac”, “bca”, “cab”, “cba” }.
+
+import java.util.ArrayList;
+import java.util.*;
+public class Solution {
+	public static ArrayList<String> generatePermutations(String str) {
+		// Write your code here
+		ArrayList<String>ans = new ArrayList<>();
+		helper(new StringBuilder(str), ans , 0);
+		Collections.sort(ans);
+		return ans;
+	}
+	static void helper(StringBuilder sb, ArrayList<String>ans, int index){
+		if(index==sb.length()){
+			ans.add(sb.toString());
+			return;
+		}
+		for(int i = index; i<sb.length(); i++){
+			swap(sb, i, index);
+			helper(sb, ans, index+1);
+			swap(sb, i, index);
+		}
+	}
+	static void swap(StringBuilder sb , int i, int j){
+		char ch = sb.charAt(i);
+		sb.setCharAt(i, sb.charAt(j));
+		sb.setCharAt(j, ch);
+	}
+}

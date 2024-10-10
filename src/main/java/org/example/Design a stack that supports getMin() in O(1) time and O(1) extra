@@ -1,0 +1,50 @@
+Design a stack that supports getMin() in O(1) time and O(1) extra
+
+import java.util.*;
+public class Solution {
+    static class SpecialStack {
+        Stack<Integer>st = new Stack<>();
+        int min = Integer.MAX_VALUE;
+
+        void push(int data) {
+            if(data>=min){
+                st.push(data);
+            }else{
+                st.push((2*data)-min);
+                min = data;
+            }
+        }
+
+        void pop() {
+            if(st.size()<1)
+                return;
+            if(st.peek()>=min){
+                st.pop();
+            }else{
+                min = 2*min - st.pop();
+            }
+            if(st.size()==0)
+                min = Integer.MAX_VALUE;
+            // Implement the pop() function.
+        }
+
+        int top() {
+            if(st.size()<1)
+                return -1;
+           
+            int temp = st.peek();
+            if(temp<min)
+                return min;
+            else
+                return temp;
+            
+        }
+
+        int getMin() {
+            if(min==Integer.MAX_VALUE)
+                return -1;
+            return min;
+            
+        }
+    };
+}

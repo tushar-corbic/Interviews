@@ -1,0 +1,22 @@
+ Non-Decreasing Array
+
+You have been given an integer array/list 'ARR' of size 'N'. Write a solution to check if it could become non-decreasing by modifying at most 1 element.
+
+We define an array as non-decreasing, if ARR[i] <= ARR[i + 1] holds for every i (0-based) such that (0 <= i <= N - 2).
+
+The strategy is to lower a[i-1] to match a[i] if possible - (a[i-2] not exist or no smaller than a[i]);
+otherwise rise a[i] to match a[i-1].
+
+class Solution {
+    public boolean checkPossibility(int[] a) {
+        int modified = 0;
+        for (int i = 1; i < a.length; i++) {
+            if (a[i] < a[i - 1]) {
+                if (modified++ > 0) return false;
+                if (i - 2 < 0 || a[i - 2] <= a[i]) a[i - 1] = a[i]; // lower a[i - 1]
+                else a[i] = a[i - 1]; // rise a[i]
+            }
+        }
+        return true;
+    }
+}

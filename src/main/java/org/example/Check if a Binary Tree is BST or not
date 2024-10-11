@@ -1,0 +1,27 @@
+Check if a Binary Tree is BST or not
+
+[Better Approach – 1] Using specified range of Min and Max Values – O(n) Time and O(h) Space:
+The idea is to use a recursive helper function, isBSTUtil(node, min, max) to check whether a subtree (rooted at a given node) is a binary search tree (BST) within a specified range of minimum (min) and maximum (max) values. If it falls outside this range, it violates BST properties, so we return false. 
+
+
+For the left subtree, we call isBSTUtil() with the updated range as the max is set to (node->data – 1 ) because all values in the left subtree must be smaller than the current node’s value.
+For the right subtree, we call isBSTUtil() with the updated range as the min is set to (node->data + 1) because all values in the right subtree must be greater than the current node’s value.
+Both recursive calls must return true for the entire subtree to be a valid BST.
+
+tatic boolean isBSTUtil(Node node, int min, int max) {
+        if (node == null) return true;
+
+        // If the current node's data 
+        // is not in the valid range, return false
+        if (node.data < min || node.data > max) return false;
+
+        // Recursively check the left and 
+        // right subtrees with updated ranges
+        return isBSTUtil(node.left, min, node.data - 1) &&
+               isBSTUtil(node.right, node.data + 1, max);
+    }
+
+    // Function to check if the entire binary tree is a BST
+    static boolean isBST(Node root) {
+        return isBSTUtil(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }

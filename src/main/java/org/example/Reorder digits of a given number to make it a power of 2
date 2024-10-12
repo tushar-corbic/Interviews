@@ -1,0 +1,54 @@
+Reorder digits of a given number to make it a power of 2
+
+You are given an integer ‘N’. We can reorder the digits in any order (including the original order) such that the leading digit is not zero.
+
+Return true if and only if we can do this so that the resulting number is a power of two. Else, return false.
+
+For Example :
+
+Given :-
+‘N’ = 218
+Then the answer will be true because it can be rearranged to 128, which is 2 raised to the power of 7.
+Detailed explanation ( Input/output format, Notes, Images )
+Sample Input 1 :
+2
+100
+218
+Sample Output 1 :
+0
+1
+Explanation of Sample Input 1 :
+For the first test case :  
+All the possible combinations of 100 start with 0, which is not allowed, and the only permutation where it starts with 1 is 100, which is not a power of 2. Therefore, the answer is false.
+
+For the second test case :
+Then the answer will be true because it can be rearranged to 128, which is 2 raised to the power of 7.
+Sample Input 2 :
+2
+46
+1
+Sample Output 2 :
+1
+1
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static boolean reorderedPowerOf2(int N) {
+		// Write your code here.
+	char[] a1 = String.valueOf(N).toCharArray();
+        Arrays.sort(a1);
+        String s1 = new String(a1);
+        
+        for (int i = 0; i < 31; i++) {
+            char[] a2 = String.valueOf((int)(1 << i)).toCharArray();
+            Arrays.sort(a2);
+            String s2 = new String(a2);
+            if (s1.equals(s2)) return true;
+        }
+        
+        return false;
+	}
+}
+

@@ -1,0 +1,66 @@
+Rat In a Maze All Paths
+
+You are given a 'N' * 'N' maze with a rat placed at 'MAZE[0][0]'. Find and print all paths that rat can follow to reach its destination i.e. 'MAZE['N' - 1]['N' - 1]'. Rat can move in any direc­tion ( left, right, up and down).
+
+Value of every cell in the 'MAZE' can either be 0 or 1. Cells with value 0 are blocked means the rat can­not enter into those cells and those with value 1 are open.
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static ArrayList<ArrayList<Integer>> ratInAMaze(int[][] maze, int n) {
+        // Write your code here.
+        int path[][] = new int[maze.length][maze.length];
+        ArrayList<ArrayList<Integer>>ans = new ArrayList<>();
+		solveMaze(maze,0,0,path, ans);
+        return ans;
+    }
+    public static void solveMaze(int[][] maze, int i, int j, int[][] path,ArrayList<ArrayList<Integer>>ans)
+	{
+		//Check if i,j are valid pair of indices => i,j>=0
+		int n=maze.length;
+		if (i<0 || j<0 || i>=n || j>=n)
+			return;
+		
+		//If cell is already part of the path
+		if (path[i][j]==1)
+			return;
+		
+		//If cell is blocked in maze (cell value=0)
+		if (maze[i][j]==0)
+			return;
+		
+		//If all previous conditions fail, then the cell is a possible path
+		//Include the cell in current path
+		path[i][j]=1;
+		
+		//If we have reached ending point 
+		if (i==n-1 && j==n-1)
+		{
+            ArrayList<Integer>temp = new ArrayList<>();
+			for (int row=0;row<n;row++)
+			{
+				for (int col=0;col<n;col++)
+                {
+                    // System.out.print(path[row][col]+" ");
+                    temp.add(path[row][col]);
+                }					
+				
+				//System.out.println();
+			}
+            ans.add(temp);
+			path[i][j]=0;
+            System.out.println();
+			return;
+		}
+		//Changing the recursive calls to find all the paths
+		solveMaze(maze,i-1,j,path, ans);
+		solveMaze(maze,i,j+1,path, ans);
+		solveMaze(maze,i+1,j,path, ans);
+		solveMaze(maze,i,j-1,path,ans);
+		path[i][j]=0;
+		
+		
+		//If none of the conditions are satisfied, then the path is not working out
+		return;
+	}
+}

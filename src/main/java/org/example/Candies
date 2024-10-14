@@ -1,0 +1,77 @@
+ Candies
+Prateek is a kindergarten teacher. He wants to give some candies to the children in his class. All the children stand in a line and each of them has a grade according to his or her performance in the class. Prateek wants to give at least one candy to each child. If two children are standing adjacent to each other, then the one with the higher rating must get more candies than the other. Prateek wants to minimize the total number of candies he must buy.
+
+Given an array 'STUDENTS' of size 'N' that contains the grades for each student, your task is to find what is the minimum number of candies Prateek must buy so that he can distribute them among his students according to the criteria given above.
+
+Example :
+
+Given students' ratings : [5, 8, 1, 5, 9, 4]. 
+He gives the students candy in the following minimal amounts : [1, 2, 1, 2, 3, 1]. He must buy a minimum of 10 candies.
+
+public class Solution {
+    public static int requiredCandies(int[] ratings) {
+        // Write your code here.
+        int sum=1, i=1, n=ratings.length;
+        while(i<n) {
+            if(ratings[i]==ratings[i-1]) {
+                sum+=1;
+                i++;
+                continue;
+            }
+            int peak=1;
+            while(i<n && ratings[i]>ratings[i-1]) {
+                peak++;
+                sum+=peak;
+                i++;
+            }
+            int down=0;
+            while(i<n && ratings[i]<ratings[i-1]) {
+                down++;
+                sum+=down;
+                i++;
+            }
+            down++;
+            if(down>peak) sum+=(down-peak);
+        }
+        return sum;
+    }
+}
+
+
+
+class Solution {
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        int totalCandies = n;
+        int i = 1;
+
+        while (i < n) {
+            if (ratings[i] == ratings[i - 1]) {
+                i++;
+                continue;
+            }
+
+            int currentPeak = 0;
+            while (i < n && ratings[i] > ratings[i - 1]) {
+                currentPeak++;
+                totalCandies += currentPeak;
+                i++;
+            }
+
+            if (i == n) {
+                return totalCandies;
+            }
+
+            int currentValley = 0;
+            while (i < n && ratings[i] < ratings[i - 1]) {
+                currentValley++;
+                totalCandies += currentValley;
+                i++;
+            }
+
+            totalCandies -= Math.min(currentPeak, currentValley);
+        }
+
+        return totalCandies;        
+    }
+}

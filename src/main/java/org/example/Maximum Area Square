@@ -1,0 +1,32 @@
+Maximum Area Square
+
+You have been given a non-empty grid ‘MAT’ consisting of only 0s and 1s. Your task is to find the area of maximum size square sub-matrix with all 1s.
+
+If there is no such sub-matrix, print 0.
+
+For example, for the following grid:
+
+
+The area of the largest square submatrix with all 1s is 4.
+
+import java.util.*;
+public class Solution {
+
+	public static int maximumAreaSquare(ArrayList<ArrayList<Integer>> mat, int n, int m) {
+		// Write your code here
+		int[][]dp = new int[n][m];
+		int ans =0;
+		for(int i =0; i<n; i++){
+			for(int j =0; j<m; j++){
+				if(mat.get(i).get(j)==1){
+					if(i==0 || j==0)
+						dp[i][j] = 1;
+					else
+						dp[i][j] = Math.min(dp[i-1][j], Math.min(dp[i][j-1], dp[i-1][j-1]))+1;
+				}
+				ans = Math.max(ans, dp[i][j]);
+			}
+		}
+		return ans*ans;
+	}
+}

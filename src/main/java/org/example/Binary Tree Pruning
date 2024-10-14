@@ -1,0 +1,19 @@
+Binary Tree Pruning
+
+You have been given a Binary Tree where the value of each node is either 0 or 1. Your task is to return the same Binary Tree but all of its subtrees that don't contain a 1 have been removed.
+
+Note :
+
+A subtree of a node X is X, plus every node that is a descendant of X.
+For Example :
+
+Look at the below example to see a Binary Tree pruning.
+Input: [1, 1, 1, 0, 1, 0, 1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+
+    public TreeNode pruneTree(TreeNode root) {
+        if (root == null) return null;
+        root.left = pruneTree(root.left);
+        root.right = pruneTree(root.right);
+        if (root.left == null && root.right == null && root.val == 0) return null;
+        return root
+    }

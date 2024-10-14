@@ -1,0 +1,43 @@
+Maximum Size Rectangle Sub-matrix With All 1's
+
+You are given an 'N' * 'M' sized binary-valued matrix 'MAT, where 'N' is the number of rows and 'M' is the number of columns. You need to return the maximum size (area) of the submatrix which consists of all 1’s i.e. the maximum area of a submatrix in which each cell has only the value ‘1’.
+import java.util.*;
+public class Solution {
+	static int helper(int[]histo){
+		
+		Stack < Integer > st = new Stack < > ();
+        int maxA = 0;
+        int n = histo.length;
+        for (int i = 0; i <= n; i++) {
+            while (!st.empty() && (i == n || histo[st.peek()] >= histo[i])) {
+                int height = histo[st.peek()];
+                st.pop();
+                int width;
+                if (st.empty())
+                    width = i;
+                else
+                    width = i - st.peek() - 1;
+                maxA = Math.max(maxA, width * height);
+            }
+            st.push(i);
+        }
+        return maxA;
+	}
+	public static int maximalAreaOfSubMatrixOfAll1(int[][] mat, int n, int m) {
+		// Write your code here.
+		int ans = 0;
+		int[]dp = new int[m];
+		for(int i =0; i<n; i++){
+			for(int j =0;j<m;j++){
+				if(mat[i][j]==0){
+					dp[j] = 0;
+				}else{
+					dp[j]++;
+				}
+			}
+			ans = Math.max(ans, helper(dp));
+		}
+		return ans;
+	}
+
+}

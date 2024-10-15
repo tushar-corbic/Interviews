@@ -1,0 +1,69 @@
+ Distance between two nodes of a Tree
+
+iven a binary tree and the value of two nodes, find the distance between the given two nodes of the Binary Tree.
+
+Distance between two nodes is defined as the minimum number of edges in the path from one node to another.
+
+import java.util.* ;
+import java.io.*; 
+/*************************************************************
+
+	Following is the TreeNode class structure
+
+	class TreeNode
+	{
+		int val;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode(int val)
+		{
+			this.val = val;
+			this.left = null;
+			this.right = null;
+		}
+	}
+
+ *************************************************************/
+
+public class Solution
+{
+	static int solve(TreeNode root, int a, int dist){
+		if(root==null)
+			return -1;
+		if(root.val==a)
+			return dist;
+		int left = solve(root.left, a, dist+1);
+		if(left!=-1)
+			return left;
+		int right = solve(root.right,a, dist+1);
+		if(right!=-1)
+			return right;
+		return -1;
+	}
+	public static int findDistanceBetweenNodes(TreeNode root, int node1, int node2)
+	{
+		// Write your code here.
+		TreeNode lc = lca(root,node1, node2);
+		int a = solve(lc, node1, 0);
+		int b = solve(lc, node2, 0);
+		if(a+b<0)
+			return -1;
+		return a+b;
+	}
+	static TreeNode lca(TreeNode root, int a, int b){
+		if(root==null)
+			return null;
+		if(root.val==a || root.val==b)
+			return root;
+		TreeNode leftans = lca(root.left, a,b);
+		TreeNode rightans = lca(root.right,a ,b);
+		if(leftans!=null && rightans!=null)
+			return root;
+		if(leftans!=null)
+			return leftans;
+		if(rightans!=null)
+			return rightans;
+		return null;
+	}
+}

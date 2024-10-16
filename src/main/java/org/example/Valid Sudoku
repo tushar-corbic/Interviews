@@ -1,0 +1,49 @@
+ Valid Sudoku
+
+You have been given a 9 X 9 2D matrix 'MATRIX' with some cells filled with digits(1 - 9), and some empty cells (denoted by 0).
+
+You need to find whether there exists a way to fill all the empty cells with some digit(1 - 9) such that the final matrix is a valid Sudoku solution.
+
+A Sudoku solution must satisfy all the following conditions-
+
+1. Each of the digits 1 - 9 must occur exactly once in each row.
+2. Each of the digits 1 - 9 must occur exactly once in each column.
+3. Each of the digits 1 - 9 must occur exactly once in each of the 9, 3 x 3 sub-matrices of the matrix.
+
+public class Solution {
+
+	public static boolean isItSudoku(int board[][]) {
+
+		// Write your code here.
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (board[i][j] == 0) {
+					for (char c = 1; c <= 9; c++) {
+						if (isValid(board, i, j, c)) {
+							board[i][j] = c;
+						if (isItSudoku(board))
+							return true;
+						else
+							board[i][j] = 0;
+						}
+					}
+					return false;
+				}
+			}
+		}
+    	return true;
+	}
+	public static boolean isValid(int[][] board, int row, int col, int c) {
+    for (int i = 0; i < 9; i++) {
+      if (board[i][col] == c)
+        return false;
+
+      if (board[row][i] == c)
+        return false;
+
+      if (board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] == c)
+        return false;
+    }
+    return true;
+  }
+}

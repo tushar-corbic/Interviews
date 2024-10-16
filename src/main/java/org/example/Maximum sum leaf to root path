@@ -1,0 +1,23 @@
+Maximum sum leaf to root path
+
+Given a Binary Tree, find the maximum sum path from a leaf to root.
+
+Given a Binary Tree, find the maximum sum path from a leaf to root.
+  public static int maxPathSum(Node root)
+    {
+        //code here
+        int[]ans = new int[1];
+        ans[0] = Integer.MIN_VALUE;
+        helper(root, 0, ans);
+        return ans[0];
+    }
+    static void helper(Node root, int cursum, int[]ans){
+        if(root==null)
+            return ;
+        cursum+= root.data;
+        if(root.left==null && root.right==null)
+            ans[0] = Math.max(ans[0], cursum);
+        helper(root.left, cursum, ans);
+        helper(root.right, cursum, ans);
+    }
+}

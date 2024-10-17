@@ -1,0 +1,62 @@
+Convert A Given Binary Tree To Doubly Linked List
+Problem statement
+Given a Binary Tree, convert this binary tree to a Doubly Linked List.
+
+A Binary Tree (BT) is a data structure in which each node has at most two children.
+
+A Doubly Linked List contains a previous pointer, along with the next pointer and data.
+
+The order of nodes in Doubly Linked List must be the same as Inorder of the given Binary Tree.
+
+The doubly linked list should be returned by taking the next pointer as right and the previous pointer as left.
+
+You need to return the head of the Doubly Linked List.
+
+For the given binary tree :
+
+
+
+import java.util.* ;
+import java.io.*; 
+
+/*************************************************************
+ class BinaryTreeNode<T> {
+	T data;
+	BinaryTreeNode<T> left;
+	BinaryTreeNode<T> right;
+
+	public BinaryTreeNode(T data) {
+		this.data = data;
+	}
+}
+
+*************************************************************/
+
+
+public class Solution {
+	
+	public static BinaryTreeNode<Integer> BTtoDLL(BinaryTreeNode<Integer> root) {
+		// Write your code here
+		BinaryTreeNode<Integer>head=null, pre =null;
+		Stack<BinaryTreeNode<Integer>> st= new Stack<>();
+		while(!st.isEmpty() || root!=null){
+			while(root!=null){
+				st.push(root);
+				root = root.left;
+			}
+			root = st.pop();
+			if(pre==null){
+				pre = root;
+				head = root;
+			}else{
+				pre.right = root;
+				root.left = pre;
+				pre = root;
+			}
+			root = root.right;
+		}
+		return head;
+	}
+	
+
+}

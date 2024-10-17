@@ -1,0 +1,46 @@
+Shortest substring with all characters
+
+You have been given a string 'S' which only consists of lowercase English-Alphabet letters.
+
+Your task is to find the shortest(minimum length) substring of 'S' which contains all the characters of 'S' at least once. If there are many substrings with the shortest length, then find one which appears earlier in the string i.e. substring whose starting index is lowest.
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+
+	public static String shortestSubstring(String str) {
+		Set<Character>set = new HashSet<>();
+		for(int i=0; i<str.length(); i++){
+			set.add(str.charAt(i));
+		}
+		int distince_count =set.size();
+		int current_count =0;
+		int start =0;
+		int end = 0;
+		int[]vis = new int[256];
+		Arrays.fill(vis, 0);
+		int n = str.length();
+		int min_index = 0;
+		int min_length = Integer.MAX_VALUE;
+		while(end<n){
+			vis[str.charAt(end)]++;
+			if(vis[str.charAt(end)]==1)
+				current_count++;
+			if(current_count==distince_count){
+				while(vis[str.charAt(start)]>=2){
+					vis[str.charAt(start)]--;
+					start++;
+				}
+
+				if(min_length>end-start+1)
+				{
+					min_length = end-start+1;
+					min_index = start;
+				}
+			}
+			end++;
+		}
+		return str.substring(min_index, min_index+min_length);
+	}
+}

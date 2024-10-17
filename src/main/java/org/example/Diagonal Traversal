@@ -1,0 +1,51 @@
+Diagonal Traversal
+import java.util.* ;
+import java.io.*; 
+/*************************************************************
+      Following is the Binary Tree node structure.
+      
+      class BinaryTreeNode<T> {
+          T data;
+          BinaryTreeNode<T> left;
+          BinaryTreeNode<T> right;
+
+          BinaryTreeNode(T data) {
+              this.data = data;
+              left = null;
+              right = null;
+          }
+      };
+*************************************************************/
+class pp{
+    BinaryTreeNode<Integer>node;
+    int level;
+    public pp(BinaryTreeNode<Integer>node, int vel){
+        this.node = node;
+        this.level = vel;
+    }
+}
+public class Solution {
+	public static ArrayList<Integer> diagonalPath(BinaryTreeNode<Integer> root) {
+		// Write your code here.
+        ArrayList<Integer>ans = new ArrayList<>();
+        // Map<Integer,ArrayList<Integer>
+        Queue<pp>que = new LinkedList<>();
+        if(root==null)
+            return ans;
+        que.offer(new pp(root,0));
+        while(que.isEmpty()==false){
+            pp temp = que.poll();
+            BinaryTreeNode<Integer> node = temp.node;
+            int level = temp.level;
+            while(node!=null){
+                ans.add(node.data);
+                if(node.left!=null){
+                    que.offer(new pp(node.left, level+1));
+                }
+                node = node.right;
+            }
+        }
+        return ans;
+
+	}
+}

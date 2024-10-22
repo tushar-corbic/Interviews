@@ -1,0 +1,49 @@
+Colorful Knapsack
+You are given 'N' stones labeled from 1 to 'N'. The 'i-th' stone has the weight W[i]. There are 'M' colors labeled by integers from 1 to 'M'. The 'i-th' stone has the color C[i] which is an integer between 1 to 'M', both inclusive.
+
+You have been required to fill a Knapsack with these stones. The Knapsack can hold a total weight of 'X'.
+
+You are required to select exactly 'M' stones; one of each color. The sum of the weights of the stones must not exceed 'X'. Since you paid a premium for a Knapsack with capacity 'X', you are required to fill the Knapsack as much as possible.
+
+Write a program to calculate the best way to fill the Knapsack - that is, the unused capacity should be minimized.
+
+Detailed explanation ( Input/output format, No
+
+
+
+import java.util.*;
+public class Solution {
+
+    public static int colorfulKnapsack(int w[], int c[], int m, int x) {
+        ArrayList<Integer>[] colourCount= new ArrayList[m+1];
+        for(int i =0; i<=m; i++){
+            colourCount[i] = new ArrayList<Integer>();
+        }
+        int n = w.length;
+        for(int i=0; i<w.length; i++){
+            colourCount[c[i]].add(w[i]);
+        }
+        boolean[][]dp = new boolean[m+1][x+1];
+        dp[0][0] = true;
+        for(int i =1; i<=m; i++){
+            for(int j = 1; j<=x; j++){
+                for(int wt: colourCount[i]){
+                    if(j-wt>=0)
+                        dp[i][j] = dp[i][j] | dp[i-1][j-wt];
+                }
+               
+            }
+        }
+       
+        int ans = Integer.MAX_VALUE;
+        for(int i = x; i>=1; i--)
+        {
+            if(dp[m][i]==true)
+            ans = Math.min(ans, x-i);
+        }
+        if(ans==Integer.MAX_VALUE)
+            return -1;
+        return ans;
+    }
+
+}

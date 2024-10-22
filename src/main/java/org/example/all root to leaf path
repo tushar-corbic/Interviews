@@ -27,3 +27,56 @@ public static long treePathsSum(Node root)
 	    helper(root.right, ans, new ArrayList<>(temp));
 	   // temp.remove(temp.size()-1);
 	}
+
+
+
+
+
+
+
+
+
+/********************************************************************
+
+    Following is the class structure of the Node class:
+
+    class BinaryTreeNode {
+	    int data;
+	    BinaryTreeNode left;
+	    BinaryTreeNode right;
+
+    	BinaryTreeNode(int data) {
+	    	this.data = data;
+		    this.left = null;
+		    this.right = null;
+	    }
+    };
+
+********************************************************************/
+import java.util.*;
+public class Solution {
+	public static ArrayList<String> allRootToLeaf(BinaryTreeNode root) {
+		// Write your code here.
+		ArrayList<String>ans = new ArrayList<>();
+		helper(root, ans, "");
+		// Collections.sort(ans,(string a, String b)->{
+
+		// });
+		// Collections.reverse(ans);
+		Collections.sort(ans);
+		return ans;
+	}
+	static void helper(BinaryTreeNode root, ArrayList<String>ans, String temp){
+		if(root.left==null && root.right==null){
+			ans.add(temp+root.data);
+			return;
+		}
+		if(root.left!=null){
+			helper(root.left, ans, temp+root.data+" ");
+		}
+		if(root.right!=null){
+			helper(root.right, ans, temp+ root.data+" ");
+		}
+		
+	}
+}

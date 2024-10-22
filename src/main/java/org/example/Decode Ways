@@ -1,0 +1,46 @@
+Decode Ways
+Given a string ‘strNum’ which represents a number, your task is to find the ways to decode the given string ‘strNum’.
+
+The format of encoding is as follows: ‘A’ - 1, ‘B’ - 2, ‘C’ - 3, ‘D’ - 4, ……………, ‘Z’ - 26.
+
+Encoding is possible in letters from ‘A’ to ‘Z’. There is an encoding between character and number.
+
+Example :
+
+import java.util.*;
+public class Solution {
+    public static long decodeWays(String s) {
+        //  // Write Yor code here
+        //  int n = strNum.length();
+        //  int[]dp = new int[n+1];
+        //  Arrays.fill(dp,-1);
+        //  if(strNum.length()==0)
+        //     return 1;
+        // return helper(strNum, 0, dp);
+        int n=s.length();
+        int[] dp=new int[n+1];
+        dp[n]=1;
+        for(int i=n-1;i>=0;i--)
+            if(s.charAt(i)!='0') {
+                dp[i]=dp[i+1];
+                if(i<n-1&&(s.charAt(i)=='1'||s.charAt(i)=='2'&&s.charAt(i+1)<'7')) 
+					dp[i]+=dp[i+2];
+            }
+        return dp[0];   
+    }
+    static int helper(String str, int index,int[] dp){
+        if(index==str.length())
+            return 1;
+        if(str.charAt(index)=='0')
+            return 0;
+        if(dp[index]!=-1)
+            return dp[index];
+        int res = 0;
+        res= helper(str, index+1, dp);
+        if(index+1<str.length() &&((str.charAt(index)=='1') || (str.charAt(index)=='2' && str.charAt(index+1)<='6')))
+            res+= helper(str, index+2, dp);
+        dp[index] = res;
+        return res;
+    }
+
+}

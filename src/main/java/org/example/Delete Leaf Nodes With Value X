@@ -1,0 +1,42 @@
+Delete Leaf Nodes With Value X
+roblem statement
+You are given a binary tree, in which the data present in the nodes are integers. You are also given an integer X.
+
+Your task is to delete all the leaf nodes with value X. In the process, if the newly formed leaves also have value X, you have to delete them too.
+
+For example:
+
+For the given binary tree, and X = 3:
+
+
+/*
+    Following is the representation of a Binary Tree Node
+
+    class BinaryTreeNode<T> 
+    {
+        T data;
+        BinaryTreeNode<T> left;
+        BinaryTreeNode<T> right;
+
+        public BinaryTreeNode(T data) 
+        {
+            this.data = data;
+        }
+    }
+
+*/
+
+public class Solution 
+{
+    public static BinaryTreeNode<Integer> deleteLeafNodes(BinaryTreeNode<Integer> root, int x) 
+    {
+        //Your code goes here
+        if(root==null)
+            return root;
+       root.left = deleteLeafNodes(root.left, x);
+       root.right = deleteLeafNodes(root.right, x);
+       if(root.data==x && root.right==null && root.left==null)
+            return null;
+        return root;
+    }
+}

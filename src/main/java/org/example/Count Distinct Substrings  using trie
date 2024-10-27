@@ -1,0 +1,55 @@
+Count Distinct Substrings 
+
+Given a string 'S', you are supposed to return the number of distinct substrings(including empty substring) of the given string. You should implement the program using a trie.
+Note :
+
+A string ‘B’ is a substring of a string ‘A’ if ‘B’ that can be obtained by deletion of, several characters(possibly none) from the start of ‘A’ and several characters(possibly none) from the end of ‘A’. 
+
+Two strings ‘X’ and ‘Y’ are considered different if there is at least one index ‘i’  such that the character of ‘X’ at index ‘i’ is different from the character of ‘Y’ at index ‘i’(X[i]!=Y[i]).
+
+
+import java.util.ArrayList;
+import java.util.*;
+class Node{
+	Node[]links= new Node[26];
+	boolean flag;
+	public boolean containsKey(char ch){
+		return links[ch-'a']!=null;
+	}
+	public Node getNode(char ch){
+		return links[ch-'a'];
+	}
+	public void putNode(char ch, Node node){
+		 links[ch-'a']= node;
+	}
+	public void setEnd(){
+		flag = true;
+	}
+	public boolean isEnd(){
+		return this.flag;
+	}
+}
+
+public class Solution 
+{
+
+	public static int countDistinctSubstrings(String s) 
+	{
+		//	  Write your code here.
+		int ans = 0;
+		Node root=  new Node();
+		for(int i=0; i<s.length(); i++){
+			Node node = root;
+			for(int j = i; j<s.length(); j++)
+			{
+				if(!node.containsKey(s.charAt(j))){
+					node.putNode(s.charAt(j), new Node());
+					ans++;
+				}
+				node = node.getNode(s.charAt(j));
+
+			}
+		}
+		return ans+1;
+	}
+}

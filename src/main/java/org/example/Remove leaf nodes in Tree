@@ -1,0 +1,36 @@
+Remove leaf nodes in Tree 
+
+Remove all leaf nodes from a given generic Tree. Leaf nodes are those nodes, which don't have any children.
+Note : Root will also be a leaf node if it doesn't have any child. You don't need to print the tree, just remove all leaf nodes and return the updated root. 
+
+import java.util.*;
+public class Solution {
+
+	/*	TreeNode structure 
+	 * 
+	 * class TreeNode<T> {
+		T data;
+		ArrayList<TreeNode<T>> children;
+
+		TreeNode(T data){
+			this.data = data;
+			children = new ArrayList<TreeNode<T>>();
+		}
+	}*/
+
+	public static TreeNode<Integer> removeLeafNodes(TreeNode<Integer> root) {
+		if(root==null)
+			return null;
+		if(root.children.isEmpty())
+			return null;
+		Iterator<TreeNode<Integer>> it = root.children.iterator();
+		while(it.hasNext()){
+			TreeNode<Integer>node = it.next();
+			if(node!=null && node.children.isEmpty())
+				it.remove();
+			else
+				removeLeafNodes(node);
+		}
+		return root;
+	}
+}

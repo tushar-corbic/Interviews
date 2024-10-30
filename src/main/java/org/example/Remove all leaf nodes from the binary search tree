@@ -1,0 +1,16 @@
+Remove all leaf nodes from the binary search tree
+static Node leafDelete(Node root) {
+        if (root == null)
+            return null;
+        if (root.left == null && root.right == null) {
+            root = null;
+            return null;
+        }
+
+        // Recursively delete in left 
+          // and right subtrees.
+        root.left = leafDelete(root.left);
+        root.right = leafDelete(root.right);
+
+        return root;
+    }

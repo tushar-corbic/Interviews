@@ -11,6 +11,7 @@ Note :
 2. The strings only contain lowercase English letters.
 
 
+i
 import java.util.*;
 public class Solution {
     public static boolean isOneAway(String a, String b) {
@@ -41,10 +42,20 @@ public class Solution {
     }
     static boolean helper2(String a, String b){
         int count =0;
-        for(int i =0; i<b.length(); i++){
-            if(a.charAt(i+count)!=b.charAt(i)){
-                count++;
-                if(count>=2)
+        // for(int i =0; i<b.length(); i++){
+        //     if(a.charAt(i+count)!=b.charAt(i)){
+        //         count++;
+        //         if(count>=2)
+        //             return false;
+        //     }
+        // }
+        int i =0;
+        while(i<b.length()){
+            if(a.charAt(i+count)==b.charAt(i)){
+                i++;
+            }else{
+                count+=1;
+                if(count>1)
                     return false;
             }
         }

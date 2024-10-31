@@ -1,0 +1,81 @@
+ Letter Case Permutation 
+You are given a string 'S'. Your task is to find an array of all possible strings in any order that can be formed by transforming every letter individually to the lowercase or the uppercase.
+
+Note:
+
+1. You can print the array in any order.
+
+2. The string 'S' only contains English alphabets and digits.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+
+1 <= T <= 100
+1 <= |S| <= 12
+
+Where |S| denotes the length of string 'S'.
+
+Time Limit: 1 sec.
+
+Sample Input 1:
+
+1
+a1b
+
+Sample Output 1:
+
+A1B A1b a1B a1b
+
+Explanation for sample input 1:
+
+These are the four strings that we can get after transforming every letter individually to be lowercase or uppercase.
+
+Sample Input 2:
+
+1
+0
+
+Sample Output 2:
+
+0
+
+Explanation for sample input 2:
+
+There is no alphabet in the string, so we get the output same as the input string.
+
+
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+	public static ArrayList<String> letCasePermutation(String s) {
+		// Write your code here.
+		ArrayList<String>ans = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
+		helper(s, 0, sb, ans);
+		return ans;
+	}
+	static void helper(String str, int index, StringBuilder sb, ArrayList<String>ans){
+		if(index==str.length())
+		{
+			ans.add(sb.toString());
+			return;
+		}
+		if(Character.isAlphabetic(str.charAt(index))){
+			sb.append(Character.toLowerCase(str.charAt(index)));
+			helper(str, index+1, sb, ans);
+			sb.deleteCharAt(sb.length()-1);
+			sb.append(Character.toUpperCase(str.charAt(index)));	
+			helper(str, index+1, sb, ans);
+			sb.deleteCharAt(sb.length()-1);
+
+
+		}else{
+			sb.append(str.charAt(index));
+			helper(str, index+1, sb, ans);
+			sb.deleteCharAt(sb.length()-1);
+		}
+	}
+}

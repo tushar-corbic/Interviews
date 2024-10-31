@@ -1,0 +1,34 @@
+Saving the city
+The avengers have the responsibility to save the world. To perform this task they have divided their responsibility such that each one takes the responsibility of one city. Mr. Stark aka Iron Man got the responsibility of the city Malibu. The only safe place in the city is the Stark tower. Now, Iron Man has to shift trapped people from different parts of the city to the Stark tower.
+
+But he can only shift one person at a time. Due to less time he wants to take the shortest possible path. Help him to find the minimum distance that he had to cover to rescue all the trapped people.
+
+Note:
+
+1. Positions are represented by the cells in a 2D grid.
+2. The positions of people don’t overlap.
+3. Iron Man can move only up, down, left, and right to the adjacent cel
+
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+    public static int minDistance(int height, int width, int x1, int y1, int x2, int y2, int n, int[][] persons) {
+        // Write your code here.
+        int sum =0;
+        int temp = Integer.MIN_VALUE;
+        for(int i =0;i<persons.length; i++ ){
+            int distance_to_start = helper(x2, y2, persons[i][0], persons[i][1]);
+            int distance_to_tower = helper(x1, y1, persons[i][0], persons[i][1]);
+            sum+= 2*distance_to_tower;
+            temp = Math.max(temp, distance_to_tower-distance_to_start);
+
+        }
+        return sum-temp;
+    }
+    static int helper(int a1,  int a2, int b1, int b2){
+        return Math.abs(a1-b1) + Math.abs(b2-a2);
+    }
+    
+}

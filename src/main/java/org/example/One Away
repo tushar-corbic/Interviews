@@ -1,0 +1,53 @@
+One Away 
+ou are given two strings, string A and string B. Your task is to determine whether string A can be transformed into string B by performing only one of the following operations at most one (or maybe zero) time.
+
+1. You can delete a character from any position.
+2. You can replace a character with any other character.
+3. You can insert a character at any position. 
+
+Note :
+
+1. The strings are non-empty.
+2. The strings only contain lowercase English letters.
+
+
+import java.util.*;
+public class Solution {
+    public static boolean isOneAway(String a, String b) {
+        // Write your code here.
+        if(Math.abs(a.length()-b.length())>=2)
+            return false;
+        if(a.length()==b.length()){
+            return helper(a, b);
+        }
+        if(a.length()>b.length()){
+            return helper2(a, b);
+        }else{
+            return helper2(b,a);
+        }
+        // return true;
+    }
+    static boolean helper(String a, String b){
+        int count =0;
+        for(int i =0; i<a.length(); i++){
+            if(a.charAt(i)!=b.charAt(i))
+            {
+                count++;
+                if(count>=2)
+                    return false;
+            }
+        }
+        return true;
+    }
+    static boolean helper2(String a, String b){
+        int count =0;
+        for(int i =0; i<b.length(); i++){
+            if(a.charAt(i+count)!=b.charAt(i)){
+                count++;
+                if(count>=2)
+                    return false;
+            }
+        }
+        return true;
+    }
+}

@@ -1,0 +1,25 @@
+ Count Set Bits 
+You are given a positive integer ‘N’. Your task is to find the total number of ‘1’ in the binary representation of all the numbers from 1 to N.
+
+Since the count of ‘1’ can be huge, you are required to return it modulo 1e9+7.
+Note:
+
+Do not print anything, just return the number of set bits in the binary representation of all integers between 1 and ‘N’
+
+
+public class Solution 
+{
+    public static int countSetBits(int n) 
+    {
+        //    Write your code here.
+        int[]dp = new int[n+1];
+        int sum =0;
+        for(int i = 1; i<=n; i++){
+            dp[i] = dp[i/2] + (i%2);
+        }
+        for(int i=1; i<=n; i++){
+            sum = (sum+ dp[i])%1000000007;
+        }
+        return sum;
+    }
+}

@@ -1,0 +1,25 @@
+Paint House 
+ Problem statement
+
+You have been given ‘N’ houses, each house can be painted with any of three colours: green, red and yellow. You are also given a “cost” matrix of ‘N’ * 3 dimension which represents the cost of painting an i-th house (0-th based indexing) with j-th colour. The colour code is as follows: green - 0, red - 1 and yellow - 2. Now, you are supposed to find the minimum cost of painting all houses such that no adjacent houses are painted with the same colour.
+
+public class Solution {
+    public static int minCost(int[][] cost) {
+        // Write your code here.
+        int n = cost.length;
+        if(n==0)
+            return 0;
+        int previousone = cost[0][0];
+        int previoustwo = cost[0][1];
+        int previousthree = cost[0][2];
+        for(int i=1; i<n; i++){
+            int currentone = Math.min(previousthree, previoustwo)+cost[i][0];
+            int currenttwo = Math.min(previousone, previousthree)+ cost[i][1];
+            int currentthree = Math.min(previoustwo, previousone)+cost[i][2];
+            previousone = currentone;
+            previoustwo = currenttwo;
+            previousthree = currentthree;
+        }
+        return Math.min(previousthree, Math.min(previoustwo, previousone));
+    }   
+}

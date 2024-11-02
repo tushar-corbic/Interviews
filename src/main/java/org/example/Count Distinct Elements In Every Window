@@ -1,0 +1,42 @@
+Count Distinct Elements In Every Window 
+ Problem statement
+
+Given an array of integers ‘arr’ of size ‘n’ and an integer ‘k’. You need to find the count of distinct elements in every sub-array of size ‘k’ in the given array. Return an integer array ‘count’ that consists of n - k + 1 integers where ‘count[i]’ is equal to the number of distinct elements in a sub-array of size ‘k’ starting from index ‘i’.
+Note:
+
+1. The sub-array of an array is a continuous part of the array.
+2. Consider ‘0’ based indexing.
+3. ‘k’ will always be less than or equal to ‘n’.
+3. Don’t print anything, just return the integer array ‘count’.
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution 
+{
+	public static ArrayList<Integer> countDistinct(ArrayList<Integer> arr, int n, int k) 
+    {
+        // Write your code here
+        ArrayList<Integer>ans = new ArrayList<>();
+        HashMap<Integer,Integer>map = new HashMap<>();
+        int i = 0;
+        int j =0;
+        while(j<n){
+            map.put(arr.get(j), map.getOrDefault(arr.get(j),0)+1);
+            if(j-i+1==k){
+                ans.add(map.size());
+                if(map.get(arr.get(i))==1){
+                    map.remove(arr.get(i));
+                }else{
+                    map.put(arr.get(i), map.getOrDefault(arr.get(i),0)-1);
+                }
+                i++;
+            }
+            j++;
+        }
+        return ans;
+    }
+}
+
+

@@ -1,0 +1,50 @@
+140. Word Break II
+
+Given a string s and a dictionary of strings wordDict, add spaces in s to construct a sentence where each word is a valid dictionary word. Return all such possible sentences in any order.
+
+Note that the same word in the dictionary may be reused multiple times in the segmentation.
+
+ 
+
+Example 1:
+
+Input: s = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]
+Output: ["cats and dog","cat sand dog"]
+
+Example 2:
+
+Input: s = "pineapplepenapple", wordDict = ["apple","pen","applepen","pine","pineapple"]
+Output: ["pine apple pen apple","pineapple pen apple","pine applepen apple"]
+Explanation: Note that you are allowed to reuse a dictionary word.
+
+Example 3:
+
+Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+Output: []
+
+
+class Solution {
+    public List<String> wordBreak(String s, List<String> wordDict) {
+		return helper(s, wordDict, new HashMap<String,List<String>>());
+        
+    }
+    public static List<String> helper(String str, List<String> dictionary, HashMap<String, List<String>> map){
+		if(map.containsKey(str))
+			return map.get(str);
+		List<String> ans = new ArrayList<>();
+		if(str.length()==0){
+			ans.add("");
+			return ans;
+		}
+		for(String word : dictionary){
+			if(str.startsWith(word)){
+				List<String> sublist= helper(str.substring(word.length()), dictionary, map);
+				for(String sub : sublist){
+					ans.add(word+ (sub.isEmpty()==true?"": " ") + sub);
+				}
+			}
+		}
+		map.put(str, ans);
+		return ans;
+	}
+}

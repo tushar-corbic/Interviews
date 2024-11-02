@@ -1,0 +1,112 @@
+ Keys and Rooms 
+You are given some information about the rooms of a military camp. The rooms are numbered from 0 to 'N-1'. Each room contains keys to some other rooms. You can visit a room only if you have a key to that room. Your task is to determine whether each room can be visited or not.
+
+Note:
+
+1. Room 0 is the only room that is initially unlocked and doesn’t require any key to enter.
+
+2. Any other room can be visited only if you have the key to that room.
+
+3. More than one room can have keys to the same room.
+
+4. You are allowed to visit rooms in any order.
+
+5. You can visit any room multiple times.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+
+1 <= T <= 100
+1 <= N <= 5000
+1 <= M <= 50
+0 <= keys[i] < N
+
+Time Limit: 1sec
+
+Sample Input 1:
+
+1
+5
+2 1 2
+1 0
+2 1 0
+1 4
+1 3
+
+Sample Output 1:
+
+False
+
+Explanation for sample input 1:
+
+In the given example, room 0 has keys to room 1 and room 2. So we can go to room 1 and room 2 using these keys. But none of these two rooms has the keys to room 3 and room 4, so we can’t visit room 3 and room 4. Hence, the answer is False.
+
+Sample Input 2:
+
+1
+5
+2 1 2
+1 3
+2 1 0
+1 4
+1 2
+
+Sample Output 2:
+
+True
+
+Explanation for sample input 2:
+
+In the given example, room 0 has keys to room 1 and room 2. Room 1 has the key to room 3, and room 3 has the key to room 4. So we can visit each and every room. Hence, the answer is True.
+
+
+
+import java.util.ArrayList;
+import java.util.*;
+class graph{
+    List<Integer>[] adj;
+    int n ;
+    public graph(int n){
+        adj = new List[n];
+        for(int i =0; i<n; i++)
+            adj[i] = new ArrayList<>();
+        this.n = n;
+    }
+    public void addEdge(int a, int b){
+        adj[a].add(b);
+    }
+    public boolean isAllVisited(){
+      
+        boolean[]vis = new boolean[this.n];
+        helper(0, vis);
+        for(int i =0; i<this.n; i++){
+            if(vis[i]==false)
+                return false;
+        }
+        return true;
+    }
+    public void helper(int node, boolean[]vis){
+        vis[node] = true;
+        for(int nbr: adj[node]){
+            if(vis[nbr]==false){
+                helper(nbr, vis);
+            }
+        }
+
+    }
+}
+public class Solution {
+    public static boolean isVisitPossible(ArrayList<ArrayList<Integer>> rooms)  {
+        // Write your code here.
+        graph gg = new graph(rooms.size());
+        for(int i =0; i<rooms.size(); i++){
+            for(int j =0;j<rooms.get(i).size(); j++){
+                // if(j==)
+                if(rooms.get(i).get(j)==i)
+                    continue;
+                gg.addEdge(i, rooms.get(i).get(j));
+            }
+        }
+        return gg.isAllVisited();
+    }
+}

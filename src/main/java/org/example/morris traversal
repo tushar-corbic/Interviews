@@ -1,0 +1,90 @@
+morris traversal for inroder and preorder
+/*
+    Following is the TreeNode class structure:
+
+    public class TreeNode {
+        int data;
+        TreeNode left;
+        TreeNode right;
+        TreeNode() {
+            this.data = 0;
+            this.left = null;
+            this.right = null;
+        }
+        TreeNode(int val) {
+            this.data = val;
+            this.left = null;
+            this.right = null;
+        }
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.data = val;
+            this.left = left;
+            this.right = right;
+        }
+    };
+*/
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Stack;
+
+public class Solution {
+    public static List< Integer > getInOrderTraversal(TreeNode root) {
+        // Write your code here.
+        // Stack<TreeNode> st = new Stack<>();
+        // List<Integer> ans = new ArrayList<>();
+        // while(root!=null || !st.empty()){
+        //     while(root!=null){
+        //         st.add(root);
+        //         root = root.left;
+        //     }
+        //     root= st.pop();
+        //     ans.add(root.data);
+        //     root = root.right;
+        // }
+        // return ans;
+        List<Integer> ans = new ArrayList<>();
+        // TreeNode cur = root;
+        // while(cur!=null){
+        //     if(cur.left==null){
+        //         ans.add(cur.data);
+        //         cur = cur.right;
+        //     }else{
+        //         TreeNode pre = cur.left;
+        //         while(pre.right!=null && pre.right!=cur){
+        //             pre = pre.right;
+        //         }
+        //         if(pre.right==null){
+        //             pre.right = cur;
+        //             cur = cur.left;
+        //         }else{
+        //             pre.right = null;
+        //             ans.add(cur.data);
+        //             cur = cur.right;
+        //         }
+        //     }
+        // }
+        // return ans;
+        TreeNode cur = root;
+        while(cur!=null){
+            if(cur.left==null){
+                ans.add(cur.data);
+                cur = cur.right;
+            }else{
+                TreeNode pre = cur.left;
+                while(pre.right!=null && pre.right!=cur){
+                    pre = pre.right;
+                }
+                if(pre.right==null){
+                    pre.right = cur;
+                    cur = cur.left;
+                }else{
+                    pre.right = null;
+                    ans.add(cur.data);
+                    cur = cur.right;
+                }
+            }
+        }
+        return ans;
+    }
+}

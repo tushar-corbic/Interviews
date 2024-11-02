@@ -1,0 +1,62 @@
+Connect Nodes at Same Level 
+A binary tree is a tree where each node has at most two children i.e left child and right child.
+
+You are given a binary tree, where the structure of the node is as follow -:
+
+class BinaryTreeNode {
+ int data;      // Value of the node.
+ BinaryTreeNode *left;  // Pointer to left child node.
+ BinaryTreeNode *right; // Pointer to right child node.
+ BinaryTreeNode *next;  // Pointer to next right node at same level. 
+}
+
+Your task is to connect all the adjacent nodes at the same level in the given binary tree. You can do this by populating each 'next' pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL. Initially, all the next pointers are set to NULL.
+
+For Example:
+
+Consider the figure shown below. The left part represents the initial binary tree and right part represents the binary tree after connecting adjacent nodes at the same level.
+
+
+import java.util.* ;
+import java.io.*; 
+/*
+    ----------------- Binary Tree node class for reference -----------------
+
+    class BinaryTreeNode<T> {
+	    public T data;
+	    public BinaryTreeNode<T> left;
+	    public BinaryTreeNode<T> right;
+	    public BinaryTreeNode<T> next;
+
+	    BinaryTreeNode(T data) {
+	        this.data = data;
+	        left = null;
+	        right = null;
+	        next = null;
+	    }
+	};
+
+*/
+
+public class Solution {
+	public static void connectNodes(BinaryTreeNode<Integer> root) {
+    	// Write your code here.
+		Queue<BinaryTreeNode<Integer>> que = new LinkedList<>();
+		que.offer(root);
+		while(!que.isEmpty()){
+			int size = que.size();
+			BinaryTreeNode<Integer> pre = null;
+			for(int i =0; i<size; i++){
+				BinaryTreeNode<Integer> temp = que.poll();
+				if(pre!=null){
+					pre.next = temp;
+				}
+				pre = temp;
+				if(temp.left!=null)
+					que.offer(temp.left);
+				if(temp.right!=null)
+					que.offer(temp.right);
+			}
+		}
+	}
+}

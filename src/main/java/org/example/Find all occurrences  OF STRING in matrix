@@ -1,0 +1,125 @@
+Find all occurrences  OF STRING in matrixYou are given a 'M' x 'N' matrix of characters, 'CHARACTER_MATRIX' and a string 'WORD'. Your task is to find and print all occurrences of the string in the given character matrix. You are allowed to search the string in all eight possible directions, i.e. North, South, East, West, North-East, North-West, South-East, South-West.
+
+Note: There should not be any cycle in the output path. The entire string must lie inside the matrix boundary. You should not jump across boundaries, i.e. from row 'N' - 1 to 0 or column 'N' - 1 to 0 or vice versa.
+
+Example:
+
+Consider below matrix of characters,
+[ 'D', 'E', 'X', 'X', 'X' ]
+[ 'X', 'O', 'E', 'X', 'E' ] 
+[ 'D', 'D', 'C', 'O', 'D' ]
+[ 'E', 'X', 'E', 'D', 'X' ]
+[ 'C', 'X', 'X', 'E', 'X' ]
+
+If the given string is "CODE", below are all its occurrences in the matrix:
+
+'C'(2, 2) 'O'(1, 1) 'D'(0, 0) 'E'(0, 1)
+'C'(2, 2) 'O'(1, 1) 'D'(2, 0) 'E'(3, 0)
+'C'(2, 2) 'O'(1, 1) 'D'(2, 1) 'E'(1, 2)
+'C'(2, 2) 'O'(1, 1) 'D'(2, 1) 'E'(3, 0)
+'C'(2, 2) 'O'(1, 1) 'D'(2, 1) 'E'(3, 2)
+'C'(2, 2) 'O'(2, 3) 'D'(2, 4) 'E'(1, 4)
+'C'(2, 2) 'O'(2, 3) 'D'(3, 3) 'E'(3, 2)
+'C'(2, 2) 'O'(2, 3) 'D'(3, 3) 'E'(4, 3)
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+
+1 <= M, N <= 100
+1 <= WORD LENGTH <= 5
+
+Time Limit: 1 sec
+
+Sample Input 1:
+
+5 5
+D E X X X
+X O E X E
+D D C O D
+E X E D X 
+C X X E X
+CODE
+
+Sample Output 1:
+
+'C'(2, 2) 'O'(1, 1) 'D'(0, 0) 'E'(0, 1)
+'C'(2, 2) 'O'(1, 1) 'D'(2, 0) 'E'(3, 0)
+'C'(2, 2) 'O'(1, 1) 'D'(2, 1) 'E'(1, 2)
+'C'(2, 2) 'O'(1, 1) 'D'(2, 1) 'E'(3, 0)
+'C'(2, 2) 'O'(1, 1) 'D'(2, 1) 'E'(3, 2)
+'C'(2, 2) 'O'(2, 3) 'D'(2, 4) 'E'(1, 4)
+'C'(2, 2) 'O'(2, 3) 'D'(3, 3) 'E'(3, 2)
+'C'(2, 2) 'O'(2, 3) 'D'(3, 3) 'E'(4, 3)
+
+Explanation of Sample Output 1:
+
+Consider the first line of output:
+(I) The first character of string i.e. 'C' is present in row 2 column 2. 
+
+(II) Second character 'O' is present in row 1 and column 1. 
+
+(III) Third character 'D' is present in row 0 and column 0. 
+
+(IV) Last character 'E' is present in row 0 column 1.
+
+Similarly, other lines of output can be understood.
+
+Sample Input 2:
+
+1 14
+X C O D I X G X I X J A S X
+CODE
+
+Sample Output 2:
+
+No match found
+
+Explanation of Sample Output 2:
+
+Since the string ‘CODE’ does not exist in 'ARR', it'll print 'No match found'.
+
+
+
+#include <bits/stdc++.h> 
+int dx[8]={-1,1,0,0,1,1,-1,-1};
+int dy[8]={0,0,1,-1,1,-1,1,-1};
+
+void helper(vector<vector<char>>&m,vector<vector<int>>&v,int i,int j,string &word,int index,bool &notFound) {
+    if(i<0 || j<0 || i>=m.size() || j>=m[0].size() || m[i][j]!=word[index]) {
+        return;
+    }
+    m[i][j]='#';
+    v.push_back({i,j});
+    if(index==word.length()-1) {
+        int idx=0;
+        for(auto it:v) {
+            cout<<"'"<<word[idx]<<"'("<<it[0]<<", "<<it[1]<<") ";
+            idx++;
+        }
+        cout<<"\n";
+        notFound=false;
+        v.pop_back();
+        m[i][j]=word[index];
+        return;
+    }
+    for(int k=0;k<8;k++) {
+        helper(m, v, i+dx[k], j+dy[k], word, index+1,notFound);
+    }
+    v.pop_back();
+    m[i][j]=word[index];
+}
+void findOccurrences( vector<vector<char>> &characterMatrix, string &word, int m, int n){
+    // Write your code here.
+     bool notFound=true;
+    vector<vector<int>>v;
+    for(int i=0;i<m;i++) {
+        for(int j=0;j<n;j++) {
+            if(characterMatrix[i][j]==word[0]) {
+                helper(characterMatrix,v,i,j,word,0,notFound);
+            }
+        }
+    }
+    if(notFound) {
+        cout<<"No match found\n";
+    }
+}

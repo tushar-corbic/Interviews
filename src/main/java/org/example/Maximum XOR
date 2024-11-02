@@ -1,0 +1,69 @@
+Maximum XOR 
+You are given two arrays of non-negative integers say ‘arr1’ and ‘arr2’. Your task is to find the maximum value of ( ‘A’ xor ‘B’ ) where ‘A’ and ‘B’ are any elements from ‘arr1’ and ‘arr2’ respectively and ‘xor’ represents the bitwise xor operation.
+Detailed explanati
+
+import java.util.ArrayList;
+import java.util.*;
+class Node{
+	Node children[];
+	public Node(){
+		children = new Node[2];
+	}
+	public boolean containsKey(int a){
+		return children[a]!=null;
+	}
+	public void addNode(Node node,int a){
+		children[a] = node;
+	}
+	public Node getNode(int a){
+		return children[a];
+	}
+};
+class Trie{
+	Node root;
+	public Trie(){
+		root = new Node();
+	}
+	public void insert(int a){
+		Node node = root;
+		for(int i = 31; i>=0; i--){
+			int bit = (a>>i)&1;
+			if(!node.containsKey(bit)){
+				node.addNode(new Node(), bit);
+			}
+			node = node.getNode(bit);
+		}
+	}
+	public int getMax(int a){
+		Node node = root;
+		int ans = 0;
+		for(int i = 31 ; i>=0; i--){
+			int bit = (a>>i)&1;
+			if(node.containsKey(1-bit)){
+				ans = ans| (1<<i);
+				node = node.getNode(1-bit);
+			}else{
+				node = node.getNode(bit);
+			}
+		}
+		return ans;
+	}
+};
+public class Solution 
+{
+
+	public static int maxXOR(int n, int m, ArrayList<Integer> arr1, ArrayList<Integer> arr2) 
+	{
+	    // Write your code here.   
+		Trie tt = new Trie();
+		for(int i =0; i<arr1.size();  i++){
+			tt.insert(arr1.get(i));
+		}
+		int ans = 0;
+		for(int i =0; i<arr2.size(); i++){
+			ans = Math.max(ans,tt.getMax(arr2.get(i)));
+		}
+		return ans;
+	}
+
+}

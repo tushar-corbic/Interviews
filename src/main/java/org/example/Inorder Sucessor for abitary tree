@@ -1,0 +1,54 @@
+Inorder Sucessor for abitary tree
+/*******************************************************
+
+	Following is the BinaryTreeNode class structure:
+
+	class BinaryTreeNode<T> {
+    	T data;
+    	BinaryTreeNode<T> left;
+    	BinaryTreeNode<T> right;
+
+    	public BinaryTreeNode(T data) {
+        	this.data = data;
+    	}
+	}
+	
+*******************************************************/
+
+public class Solution {
+	public static BinaryTreeNode<Integer> inorderSuccesor(BinaryTreeNode<Integer> root, BinaryTreeNode<Integer> node) {
+    	// Write you code here.
+		boolean targetfound = true;
+		BinaryTreeNode<Integer> cur = root;
+		while(cur!=null){
+			if(cur.left==null){
+				if(targetfound==true){
+					return cur;
+				}
+				if(cur.data==node.data)
+					targetfound=true;
+				cur = cur.right;
+			}else{
+				BinaryTreeNode<Integer> pre = cur.left;
+                while (pre.right != null && 
+                       pre.right != cur) {
+                    pre = pre.right;
+                }
+				if (pre.right == null) {
+                    pre.right = cur;
+                    cur = cur.left;
+                }else{
+					  pre.right = null;
+                    if (targetfound) {
+                        return cur;
+                    }
+                    if (cur.data == node.data) {
+                        targetfound = true;
+                    }
+                    cur = cur.right;
+				}
+			}
+		}
+		return null;
+	}
+}

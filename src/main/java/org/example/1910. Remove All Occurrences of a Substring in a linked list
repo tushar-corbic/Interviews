@@ -1,0 +1,106 @@
+1910. Remove All Occurrences of a Substring in a linked list Problem statement
+
+You have been given a linked list where each node has a single character. You have also been given a string 'STR'.
+
+You have to remove all the occurrences of string STR from the linked list.
+Note:
+
+1. Start checking from the end of the linked list and not from the beginning. For example, if the linked list is ( a, b, a ,b, a)  and the string is equal to “aba” , then the answer should be (a b), not (b a).
+
+2. After removing an occurrence check again for new formations.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+
+1 <= T <= 10
+0 <= N <= 10^3  
+0 <= K <= 10^2
+
+Where 'N' is the size of the singly linked list and 'K' is the size of the string.
+
+Time limit: 1 sec
+
+Sample Input 1 :
+
+2
+abcbcaab
+bca
+ny
+nytq
+
+Sample Output 1 :
+
+a b 
+n y
+
+Explanation of The Sample Output 1:
+
+In test case 1, after 1st removal of the string from the linked list: abcbcaab -> abcab. Now again, after 2nd removal of the string from the linked list: abcab -> ab. Thus ab is the updated linked list.
+
+In test case 2, no occurrence of the string is present in the linked list, thus the linked list will be unchanged. 
+
+Sample Input 2 :
+
+1
+qcacca
+cac
+xxxxxxxxxxxxxx
+xxx
+
+Sample Output 2 :
+
+q c a
+x x
+
+Explanation of The Sample Output 2 :
+
+In test case 1, after the 1st removal of the string from the linked list: qcacca  ->  qca. Thus qca is the updated linked list.
+
+In test case 2, as we can see there are total 4 occurrences of xxx, and by removing each occurrence: xxxxxxxxxxxxxx -> xxxxxxxxxxx -> xxxxxxxx -> xxxxx -> xx. Thus no more occurrence of the string is possible and hence the updated linked list will be xx.
+
+
+
+import java.util.* ;
+import java.io.*; 
+/****************************************************************
+
+    Following is the class structure of the Node class:
+
+    class Node<Character> {
+        char data;
+        Node<Character> next;
+
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+ *****************************************************************/
+
+public class Solution {
+    public static Node<Character> removeStr(Node<Character> head, String str) {
+       // Write your code here.
+       return helper(head, str);
+    }
+    static Node<Character> helper(Node<Character> head, String str){
+        if(head==null)
+            return head;
+        if(str.length()==0)
+            return head;
+        head.next = helper(head.next, str);
+        Node<Character> temp = head;
+        int j =0;
+        for(;j<str.length(); j++){
+            if(temp==null || temp.data!=str.charAt(j))
+                break;
+            else
+                temp =temp.next;
+        }
+        if(j==str.length())
+            return temp;
+        else
+           return head;
+
+    }
+}

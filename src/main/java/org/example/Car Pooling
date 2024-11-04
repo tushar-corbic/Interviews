@@ -1,0 +1,89 @@
+Car Pooling 
+ Problem statement
+
+You are working as a cab driver. Your car moves in a straight line and moves toward the forward direction only. Initially, you have ‘C’ empty seats for the passengers.
+
+Now, you are given ‘N’ number of trips that you have to make. In each trip, you are given three integers ‘Num’, ‘pickPoint’, and ‘dropPoint’ denoting that there are ‘Num’ numbers of passengers standing at 'pickpoint’ and you have to drop them at 'droppoint’.
+
+Your task is to find if it is possible to pick up and drop off all the passengers of all the given trips or not.
+Note :
+
+You have a special type of car containing any number of seats.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+
+1 <= T <= 50
+1 <= C <= 10^5
+1 <= N <= 10^3
+0 <= passengers <= 100
+0 <= pickPoint, dropPoint <= 1000
+
+Where ‘T’ is the number of test cases, ‘C’ is the car’s capacity, and “N’ is the number of trips you have to make.
+
+Time limit: 1 sec.
+
+Sample Input 1 :
+
+2
+3 2
+2 1 5
+3 5 7
+4 2
+2 1 5
+3 3 7
+
+Sample Output 1 :
+
+True
+False
+
+Explanation Of Sample Input 1 :
+
+Test Case 1 : 
+At point 1 :
+
+We have 2 passengers. So, two seats will be filled. 
+Now Empty seats: 1 
+
+At point 5: 
+
+Two passengers descend from the car. So Empty seats = 3.
+At the same time, 3 passengers ascend on the car. So Empty seats = 0.
+
+At point 7:
+
+All three passengers descend from the car. Now empty seats = 3.
+So, it is possible to complete the trips, hence print True.
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static boolean carPooling(int[][] trips, int n, int c)  {
+        int[] prefixSum = new int[1001];
+ 
+        // Calculate the prefix sum of passengers at each location
+        for (int[]trip : trips) {
+            prefixSum[trip[1]] += trip[0];
+            prefixSum[trip[2]] -= trip[0];
+        }
+ 
+        // Iterate over the prefix sum and check capacity at each location
+        for (int i = 0; i < prefixSum.length; i++) {
+            c -= prefixSum[i];
+            if (c < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+class pair{
+    int first;
+    int second;
+    public pair(int a, int b){
+        first= a;
+        second = b;
+    }
+}

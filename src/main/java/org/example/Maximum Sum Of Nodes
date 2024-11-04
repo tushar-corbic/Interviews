@@ -1,0 +1,87 @@
+Maximum Sum Of Nodes 
+Given a binary tree with a value associated with each node, we need to choose a subset of these nodes such that the sum of selected nodes is maximum under a constraint that no two chosen nodes in the subset should be directly connected, that is, if we have taken a node in our sum then we can’t take any of its children in consideration and vice versa
+
+
+Return a pair for each node in the binary tree such that the first of the pair indicates the maximum sum when the data of a node is included and the second indicates the maximum sum when the data of a particular node is not included
+
+Follow the below steps to solve the problem:
+
+    Recur to solve the problem for the root node
+    If the root is NULL return 0 (Base Case)
+    Create a pair of <int, int> sum1 and set sum1 equal to the answer of root->left child
+    Create a pair of <int, int> sum2 and set sum2 equal to the answer of root->right child
+    Create a pair of <int, int> sum and set sum.first equal to sum1.second + sum2.second + root->data
+    Set sum.second equal to the maximum of (sum1.first, sum1.second) + maximum of (sum2.first, sum2.second)
+    Return sum
+
+
+
+// Java program to find maximum sum in Binary Tree
+// such that no two nodes are adjacent.
+public class FindSumOfNotAdjacentNodes {
+
+	public static Pair maxSumHelper(Node root)
+	{
+		if (root == null) {
+			Pair sum = new Pair(0, 0);
+			return sum;
+		}
+		Pair sum1 = maxSumHelper(root.left);
+		Pair sum2 = maxSumHelper(root.right);
+		Pair sum = new Pair(0, 0);
+
+		// This node is included (Left and right children
+		// are not included)
+		sum.first = sum1.second + sum2.second + root.data;
+
+		// This node is excluded (Either left or right
+		// child is included)
+		sum.second = Math.max(sum1.first, sum1.second)
+					+ Math.max(sum2.first, sum2.second);
+
+		return sum;
+	}
+
+	// Returns maximum sum from subset of nodes
+	// of binary tree under given constraints
+	public static int maxSum(Node root)
+	{
+		Pair res = maxSumHelper(root);
+		return Math.max(res.first, res.second);
+	}
+
+	// Driver code
+	public static void main(String args[])
+	{
+		Node root = new Node(10);
+		root.left = new Node(1);
+		root.left.left = new Node(2);
+		root.left.left.left = new Node(1);
+		root.left.right = new Node(3);
+		root.left.right.left = new Node(4);
+		root.left.right.right = new Node(5);
+		System.out.print(maxSum(root));
+	}
+}
+
+/* A binary tree node structure */
+class Node {
+	int data;
+	Node left, right;
+	Node(int data)
+	{
+		this.data = data;
+		left = right = null;
+	}
+};
+
+/* Pair class */
+class Pair {
+	int first, second;
+	Pair(int first, int second)
+	{
+		this.first = first;
+		this.second = second;
+	}
+}
+// This code is contributed by Gaurav Tiwari

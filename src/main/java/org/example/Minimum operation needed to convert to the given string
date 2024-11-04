@@ -1,0 +1,86 @@
+Minimum operation needed to convert to the given string 
+ Problem statement
+
+You are given two strings 'str1' and 'str2'. Find the minimum operations required to convert str1 into str2.
+An Operation is defined as:
+
+A character from an index of a string(str1) is put at the end of it, is defined as a single operation.
+
+ Note :
+
+You cannot perform any operation on the string, str2.
+
+
+ Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+
+1 <= T <= 10
+1 <= N <= 10^5
+1 <= M <= 10^5
+Where N and M are the lengths of the input strings 'str1', and 'str2' respectively.
+
+Time Limit: 1 sec
+
+Sample Input 1 :
+
+2
+ABC
+ACB
+AbcD
+bcAD
+
+Sample Output 1 :
+
+1
+2
+
+Explanation of Sample Input 1:
+
+For the first test case, we can move 'B' to the end of str1 so str1 becomes 'ACB' which is equal to the str2. Hence 1 operation was needed.
+
+For the second test case, move 'A' to the end of str1 so new string becomes 'bcDA', Now move 'D' to the end so we have now str1 = 'bcAD' which is equal to the str2. Hence 2 operations were needed.
+
+Sample Input 2 :
+
+1
+IFDfxPCdNvCNXPe
+NFfPICxeCNDdXPv
+
+Sample Output 2 :
+
+14
+
+import java.util.HashMap;
+import java.util.*;
+public class Solution {
+
+	public static int minCostToGivenString(String str1, String str2) {
+		//Your code goes here
+		HashMap<Character,Integer>map =new HashMap<>();
+		for(char ch: str1.toCharArray()){
+			map.put(ch, map.getOrDefault(ch, 0)+1);
+		}
+		for(char ch : str2.toCharArray()){
+			map.put(ch, map.getOrDefault(ch, 0)-1);
+		}
+		for(Map.Entry<Character,Integer> e: map.entrySet()){
+			if(e.getValue()!=0)
+				return -1;
+		}
+		if(str2.length()!=str1.length())
+			return -1;
+		int n = str1.length();
+		int i =0;
+		int j=0;
+		while(i<n && j<n){
+			if(str1.charAt(i)==str2.charAt(j)){
+				i++;
+				j++;
+			}else{
+				i++;
+			}
+		}
+		return n-j;
+	}
+
+}

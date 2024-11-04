@@ -1,0 +1,30 @@
+Permutations  of arary
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	static ArrayList<ArrayList<Integer>> permutations(ArrayList<Integer> arr, int size) {
+		// Write your code here.
+		ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+		ArrayList<Integer> temp = new ArrayList<>();
+		helper(arr, 0, res, temp);
+		return res;
+	}
+	static void helper(ArrayList<Integer> arr, int index, ArrayList<ArrayList<Integer>> res, ArrayList<Integer> temp){
+		if(index==arr.size())
+		{
+			res.add(new ArrayList<>(arr));
+			return;
+		}
+		for(int i = index; i<arr.size(); i++){
+			swap(arr, i, index);
+			helper(arr, index+1, res, temp);
+			swap(arr, i, index);
+		}
+	}
+	static void swap(ArrayList<Integer> arr, int i, int j){
+		int temp = arr.get(i);
+		arr.set(i, arr.get(j));
+		arr.set(j, temp);
+	}
+}

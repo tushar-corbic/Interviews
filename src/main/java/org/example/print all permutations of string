@@ -1,0 +1,28 @@
+print all permutations of string
+
+public class Solution {
+
+	public static void FindPermutations(String str) {
+		// Write your code here
+		StringBuilder sb = new StringBuilder(str);
+		helper(str, 0, sb);
+
+
+	}
+	public static void helper(String str, int index, StringBuilder sb){
+		if(index==str.length()){
+			System.out.println(sb.toString());
+			return;
+		}
+		for(int idx = index; idx<str.length(); idx++){
+			swap(sb, idx, index);
+			helper(str, index+1, sb);
+			swap(sb, idx, index);
+		}
+	}
+	public static void swap(StringBuilder sb, int a, int b){
+		char ch = sb.charAt(a);
+		sb.setCharAt(a, sb.charAt(b));
+		sb.setCharAt(b, ch);
+	}
+}

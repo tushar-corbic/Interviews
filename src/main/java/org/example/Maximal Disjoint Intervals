@@ -1,0 +1,33 @@
+Maximal Disjoint Intervals
+Approach:  
+
+    Sort the intervals, with respect to their end points.
+    Now, traverse through all the intervals, if we get two overlapping intervals, then greedily choose the interval with lower end point since, choosing it will ensure that intervals further can be accommodated without any overlap.
+    Apply the same procedure for all the intervals and print all the intervals which satisfy the above criteria.
+
+Below is the implementation of the above approach:  
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int disjointIntervals(ArrayList<ArrayList<Integer>> arr, int n) {
+        // Write your code here.
+        Collections.sort(arr, (a, b)->{
+            if(a.get(1)==b.get(1)){
+                return a.get(0)-b.get(0);
+            }
+            return a.get(1)-b.get(1);
+        });
+        int prev_start = arr.get(0).get(0);
+        int prev_end = arr.get(0).get(1);
+        int ans = 1;
+        for(int i= 1; i<arr.size(); i++){
+           int start = arr.get(i).get(0);
+           if(start>prev_end){
+               ans++;
+               prev_end = arr.get(i).get(1);
+           }
+        }
+        return ans;
+    }
+
+}

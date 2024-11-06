@@ -1,0 +1,74 @@
+Josephus
+ Problem statement
+
+‘N’ people are standing in a circle numbered from ‘1’ to ‘N’ in clockwise order. First, the person numbered 1 will proceed in a clockwise direction and will skip K-1 persons including itself and will kill a Kth person. Now (K+1)th person from 1 will start and will kill the Kth person from itself.
+
+You have to find the position of the last person surviving with respect to initial numbering.
+Note:
+
+A person can also kill himself.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Sample Input 1
+
+2
+4 2 
+7 3
+
+Sample Output 1:
+
+1
+4
+Explanation :-
+
+For the first TestCase:-
+
+The position of the last person is 1.Hence ans is 1.
+For the second case:-
+The first starting point is 1 and 3 is killed.
+The starting point is 4 and 6 is killed.
+The starting point is 7 and 2 is killed.
+The starting point is 4 and 7 is killed.
+The starting point is 1 and 1 is killed.
+
+Sample Input 2
+
+2
+5 6
+3 6
+
+Sample Output2
+
+4 
+1
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    
+    public static int josephus(int n, int k) {
+        // Write your code here. 
+        ArrayList<Integer> arr = new ArrayList<>();
+        for(int i =1; i<=n; i++)
+            arr.add(i);
+        // return helper(arr, k-1, 0); 
+        return helper2(n,k);  
+    }
+    // public static int helper(ArrayList<Integer>arr, int k , int index){
+    //     if(arr.size()==1){
+    //         return arr.get(0);
+    //     }
+    //     index = (index+k)%arr.size();
+    //     arr.remove(index);
+    //     return helper(arr, k, index);
+    // }
+    public static int helper2(int n, int k){
+        int ans = 0;
+        for(int i = 1; i<=n; i++){
+            ans = (ans+k)%i;
+
+        }
+        return ans+1;
+    }
+}

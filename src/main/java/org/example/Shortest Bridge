@@ -1,0 +1,155 @@
+Shortest Bridge 
+ Problem statement
+
+Every story has an Endgame. This is another such story.
+
+Tony Stark and Thanos live in two different islands. Tony wants to reach Thanos's island in minimum time to save the world.
+
+You are given a 2-D binary array of 'N' rows and 'M' columns. If the element of the array is 1 it means it has land in there else if the element is 0 means it has water in there. There are exactly two islands in this array. In one island Tony lives and in another island, Thanos lives. An island is a 4 – directionally connected component of 1’s.
+
+For example
+
+In the above figure, there are two islands coloured in brown and orange respectively.
+
+Tony wants to build a bridge between these two islands. With the help of Friday Tony can build the bridge by changing 1 or more 0’s to 1’s. Size of the bridge is the number of 0’s changed to 1’s. Tony wants to minimize the size of the bridge as it minimizes time to reach Thanos.
+
+For example
+
+Here Bridge is marked in red colour and 1 is the minimum size of bridge possible.
+
+Tony is busy assembling all the avengers, so he called you to solve this problem.
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+
+1 <= T <= 5
+1 <= N, M <= 100
+0 <= ARR[i][j] <= 1
+
+Where ‘ARR[i][j]’ is the value of the elements of the 2-D array.
+
+Time Limit: 1 sec.
+
+Sample Input 1:
+
+2
+4 4
+0 1 0 0
+0 0 0 0
+0 1 0 0
+1 1 1 1
+3 3
+1 1 0
+1 0 0
+0 0 1
+
+Sample Output 1:
+
+1 
+2
+
+Explanation For Sample Input 1:
+
+Test Case 1: Cells of the bridge are marked using B.  
+0 1 0 0
+0 B 0 0
+0 1 0 0
+1 1 1 1
+
+Here the minimum size of the bridge is 1. So, the answer is 1.
+
+Note: Below shown bridge is also a valid bridge but its size is 3 which is not minimum.
+0 1 B 0
+0 0 B 0
+0 1 B 0
+1 1 1 1
+
+Test Case 2: Cells of the bridge are marked using B.  
+1 1 0
+1 0 0
+B B 1
+
+Here the minimum size of the bridge is 2. So, the answer is 2.
+
+Sample Input 2:
+
+1
+5 5
+0 1 1 1 1
+0 0 0 0 0
+0 0 0 0 0
+1 1 1 1 1
+1 1 1 1 1
+
+Sample Output 2:
+
+2
+
+Explanation For Sample Input 2:
+
+Test Case 1: 
+Cells of the bridge are marked using B.
+
+0 1 1 1 1
+0 0 B 0 0
+0 0 B 0 0
+1 1 1 1 1
+1 1 1 1 1
+
+Here the minimum size of the bridge is 2. So, the answer is 2.
+
+
+
+import java.util.*;
+public class Solution {
+    static void dfs(ArrayList<ArrayList<Integer>>arr, int i, int j, boolean[][]vis, Queue<int[]> que){
+    if(i<0 || j<0 || i>=arr.size() || j>=arr.get(0).size() || vis[i][j]==true || arr.get(i).get(j)==0){
+        return;
+    }
+    vis[i][j] = true;
+    que.offer(new int[]{i,j});
+    dfs(arr, i+1,j, vis,que);
+    dfs(arr, i, j+1, vis, que);
+    dfs(arr, i-1, j, vis, que);
+    dfs(arr, i, j-1, vis, que);
+    }
+    public static int shortestBridge(ArrayList<ArrayList<Integer>> arr, int n, int m) {
+        // Write your code here.
+        boolean[][]vis = new boolean[n][m];
+        int []dx = new int[]{1,0,-1,0};
+        int []dy = new int[]{0,1, 0, -1};
+        boolean found = false;
+        Queue<int[]> que = new LinkedList<>();
+        for(int i =0; i<n; i++){
+            if(found==true)
+                break;
+            for(int j =0; j<m; j++){
+                if(arr.get(i).get(j)==1){
+                    dfs(arr, i,j , vis, que);
+                    found = true;
+                    break;
+                }
+            }
+        }
+        int step =0;
+        while(!que.isEmpty()){
+            int size = que.size();
+            while(size-- >0){
+                int[]temp = que.poll();
+                for(int k =0; k<4; k++){
+                    int xx = temp[0]+dx[k];
+                    int yy = temp[1] + dy[k];
+                    if(xx>=0 && xx<n && yy>=0 && yy<m && vis[xx][yy]==false){
+                        if(arr.get(xx).get(yy)==1){
+                            return step;
+                        }
+                        vis[xx][yy] = true;
+                        que.offer(new int[]{xx, yy});
+
+                    }
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
+}

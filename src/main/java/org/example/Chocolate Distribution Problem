@@ -1,0 +1,40 @@
+Chocolate Distribution ProblemGiven an array arr[] of n integers where arr[i] represents the number of chocolates in ith packet. Each packet can have a variable number of chocolates. There are m students, the task is to distribute chocolate packets such that: 
+
+    Each student gets exactly one packet.
+    The difference between the maximum and minimum number of chocolates in the packets given to the students is minimized.
+
+// Java program to solve chocolate distribution
+// problem using Sliding Window
+
+import java.util.Arrays;
+
+class GfG {
+
+    static int findMinDiff(int[] arr, int m) {
+        int n = arr.length;
+
+        // Sort the given packets
+        Arrays.sort(arr);
+
+        int minDiff = Integer.MAX_VALUE;
+
+        for (int i = 0; i + m - 1 < n; i++) {
+
+            // calculate difference of current window
+            int diff = arr[i + m - 1] - arr[i];
+
+            // if current difference is smaller
+            // then update the minimum difference
+            if (diff < minDiff)
+                minDiff = diff;
+        }
+        return minDiff;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {7, 3, 2, 4, 9, 12, 56};
+        int m = 3;
+
+        System.out.println(findMinDiff(arr, m));
+    }
+}

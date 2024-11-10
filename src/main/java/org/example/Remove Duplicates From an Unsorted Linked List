@@ -1,0 +1,21 @@
+
+public static LinkedListNode<Integer> removeDuplicates(LinkedListNode<Integer> head) {
+
+        // Write your code here	
+        HashSet<Integer>set = new HashSet<>();
+        LinkedListNode<Integer> cur = head;
+        LinkedListNode<Integer> pre= null;
+        while(cur!=null){
+            if(set.contains(cur.data)){
+                pre.next = cur.next;
+                cur = cur.next;
+            }else{
+                set.add(cur.data);
+                pre = cur;
+                cur = cur.next;
+            }
+        }
+        return head;
+        
+        
+	}

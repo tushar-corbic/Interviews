@@ -1,0 +1,60 @@
+ay 25 : Queue Using Stac
+ Problem statement
+
+Implement a queue data structure which follows FIFO(First In First Out) property, using only the instances of the stack data structure.
+
+
+Note:
+
+1. To implement means you need to complete some predefined functions, which are supported by a normal queue such that it can efficiently handle the given input queries which are defined below.
+
+
+2. The implemented queue must support the following 
+
+import java.util.*;
+public class Solution{
+    static class Queue {
+        Stack<Integer>st1;
+        Stack<Integer>st2;
+        // Define the data members(if any) here.
+
+        Queue() {
+            st1 = new Stack<>();
+            st2 = new Stack<>();
+            // Initialize your data structure here.
+        }
+
+        void enQueue(int val) {
+            while(st1.isEmpty()==false){
+                st2.push(st1.pop());
+            }
+            st1.push((val));
+            while(st2.isEmpty()==false){
+                st1.push(st2.pop());
+            }
+            // Implement the enqueue() function.
+        }
+
+        int deQueue() {
+            if(st1.isEmpty())
+                return -1;
+            return st1.pop();
+            // Implement the dequeue() function.
+        }
+
+        int peek() {
+            if(st1.isEmpty()==true)
+                return -1;
+            return st1.peek();
+            // Implement the peek() function here.
+        }
+
+        boolean isEmpty() {
+            return st1.isEmpty();
+            // Implement the isEmpty() function here.
+        }
+    }
+}
+
+
+https://www.geeksforgeeks.org/queue-using-stacks/

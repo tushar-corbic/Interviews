@@ -1,0 +1,81 @@
+Coin Change( not Finite Supply) 
+#include <bits/stdc++.h>
+
+using namespace std;
+
+long long mod = 1000000007;
+
+
+ 
+
+long long solve(int index, int target, vector<int> &nums, vector<int> &freq,
+
+                vector<vector<vector<long long>>> &dp) {
+
+  if (index == 0) {
+
+    if (target % nums[index] == 0) {
+
+      if (target / nums[index] <= freq[index]) {
+
+        return 1;
+
+      } else {
+
+        return 0;
+
+      }
+
+    } else {
+
+      return 0;
+
+    }
+
+  }
+
+
+ 
+
+  if (dp[index][target][freq[index]] != -1)
+
+    return dp[index][target][freq[index]];
+
+
+ 
+
+  // Option 1: Don't take the current coin
+
+  long long not_take = solve(index - 1, target, nums, freq, dp);
+
+
+ 
+
+  // Option 2: Take the current coin if possible
+
+  long long take = 0;
+
+  if (target >= nums[index] && freq[index] > 0) {
+
+    freq[index]--;
+
+    take = solve(index, target - nums[index], nums, freq, dp);
+
+    freq[index]++;
+
+  }
+
+
+ 
+
+  return dp[index][target][freq[index]] = (take + not_take) % mod;
+
+}
+int coinChange(int n, vector<int> &coins, vector<int> &freq, int v) {
+    // Write your code here.
+     vector<vector<vector<long long>>> dp(n, vector<vector<long long>>(v + 1, vector<long long>(101, -1)));
+
+  long long ans = solve(n - 1, v, coins, freq, dp);
+
+  return ans % mod;
+}

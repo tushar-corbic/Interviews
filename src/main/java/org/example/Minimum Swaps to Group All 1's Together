@@ -1,0 +1,42 @@
+ Minimum Swaps to Group All 1's Together 
+You are given an array/list ‘ARR’ of size ‘N’. ‘ARR' is binary i.e. it contains only 0s and 1s (ARR[i] = {0, 1}). Your task is to find out the minimum number of swaps required to group all 1s together.
+
+Note: If ‘ARR’ contains only 0’s then print -1.
+
+Example:
+
+Let ‘ARR’ = [ 0, 1, 0, 1]. We can group all 1s together in the following ways: ‘ARR’ =[0, 0, 1, 1] or ‘ARR’ = [0, 1, 1, 0]. 
+
+In this example, we need only 1 swap to group all 1’s together which is the minimum possible. 
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int groupAllOneTogether(int arr[], int n) {
+        // Write your code here.
+        int numofOnes = 0;
+        for(int i =0;i<arr.length; i++)
+            if(arr[i]==1)
+                numofOnes++;
+        int x= numofOnes;
+        if(x==0)
+            return -1;
+        int current_count =0;
+        int max_count =0;
+        for(int i =0; i<x; i++){
+            if(arr[i]==1)
+                current_count++;
+        }
+        max_count = current_count;
+        for(int i =1; i+x-1<n; i++){
+            if(arr[i-1]==1){
+                current_count--;
+            }
+            if(arr[i+x-1]==1)
+                current_count++;
+            max_count = Math.max(max_count, current_count);
+        }
+        return x-max_count;
+    }
+}

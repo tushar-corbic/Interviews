@@ -1,0 +1,18 @@
+Find the missing element in an array of integers represented in binary format
+Given N strings which represents all integers from 0 to N in binary format except any one. The task is to find the missing number. Input consists of an array of strings where array elements are represented in binary format.
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+	public static String findMissingNumber(ArrayList<String> binaryNums, int n)  {
+		// Write your code here
+		int sum =0;
+		for(String ss: binaryNums){
+			sum+= Integer.parseInt(ss, 2);
+		}
+		int ans = 0;
+		ans =n*(n+1)/2;
+		return Integer.toBinaryString(ans-sum);
+	}
+}

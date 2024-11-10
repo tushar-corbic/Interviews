@@ -1,0 +1,162 @@
+ Clone Graph 
+
+ Problem statement
+
+You are given a reference/address of a node in a connected undirected graph containing N nodes and M edges. You are supposed to return a clone of the given graph which is nothing but a deep copy. Each node in the graph contains an integer “data” and an array/list of its neighbours.
+
+The structure of the graphNode class is as follows:
+
+class graphNode 
+{  
+    public:
+        int data;
+        vector<graphNode*> neighbours;
+}
+
+Note :
+
+1. Nodes are numbered from 1 to N.
+
+2. Your solution will run on multiple test cases. If you are using global variables make sure to clear them.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+
+1 <= T <= 5
+2 <= N <= 100000
+1 <= M <= min(N(N-1)/2,100000)
+1 <= E[i][0], E[i][1] <= N
+
+Where  ‘N’ is the number of nodes in the given graph, ‘M’ denotes the number of edges and ‘E’ denotes the edge matrix.
+
+Time Limit: 1 sec.
+
+Sample Input 1 :
+
+2
+5
+6
+1 2
+4 1
+2 4
+3 4
+5 2
+1 3
+3
+2
+1 2
+1 3
+
+Sample Output 1 :
+
+true
+true
+
+Explanation of Input 1 :
+
+In the first test case, the returned graph contains 5 nodes and 6 edges which are:
+1 2
+4 1
+2 4
+3 4
+5 2
+1 3
+Since it is similar to the given graph with different address nodes then the solution is correct.
+
+In the second test case, the returned graph contains 3 nodes and 2 edges which are:
+1 2
+1 3
+Since it is similar to the given graph with different address nodes then the solution is correct.
+
+Sample Input 2 :
+
+2
+5
+4
+1 2
+2 3
+3 4
+4 5
+2
+1
+1 2
+
+Sample Output 2 :
+
+true
+true
+
+Explanation of Input 2 :
+
+In the first test case, the returned graph contains 5 nodes and 4 edges which are:
+1 2
+2 3
+3 4
+4 5
+Since it is similar to the given graph with different address nodes then the solution is correct.
+
+In the second test case, the returned graph contains 2 nodes and 1 edge which is:
+1 2
+
+Since it is similar to the given graph with different address nodes then the solution is correct.
+
+
+
+import java.util.* ;
+
+// import com.sun.tools.javac.code.Attribute.Array;
+
+import java.io.*; 
+/***************************************************************************
+
+  Class for graph node is as follows:
+
+  class graphNode {
+      public int data;
+      public ArrayList<graphNode> neighbours;
+
+      graphNode() {
+          data = 0;
+          neighbours = new ArrayList<graphNode>();
+      }
+
+      graphNode(int val) {
+          data = val;
+          neighbours = new ArrayList<graphNode>();
+      }
+
+      graphNode(int val, ArrayList<graphNode> neighbours) {
+          data = val;
+          this.neighbours = neighbours;
+      }
+    }
+
+******************************************************************************/
+
+public class Solution {
+    public static graphNode cloneGraph(graphNode node) {
+        // Write your code here.
+        Map<graphNode,graphNode>map = new HashMap<>();
+        if(node==null)
+            return node;
+        if(node.neighbours.size()==0){
+            graphNode copyy = new graphNode(node.data);
+            return copyy;
+        }
+        return helper(node, map);
+    }
+    public static graphNode helper(graphNode node, Map<graphNode, graphNode>map){
+        graphNode clone = new graphNode(node.data);
+        map.put(node, clone);
+        ArrayList<graphNode> nn = new ArrayList<>();
+        for(graphNode gg : node.neighbours){
+            if(map.containsKey(gg)){
+                nn.add(map.get(gg));
+            }else{
+                nn.add(helper(gg, map));
+            }
+        }
+        clone.neighbours= nn;
+        return clone;
+    }
+}

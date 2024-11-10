@@ -1,0 +1,82 @@
+Longest Common Prefix 
+class Node{
+	Node[] children;
+	boolean isEnd ;
+	char chh;
+	public Node(){
+		children = new Node[26];
+		isEnd =false;
+	}
+	public int getChilrenNumber(){
+		int count =0;
+		for(int i =0; i<26; i++){
+			if(children[i]!=null)
+				count++;
+		}
+		return count;
+	}
+	public Node getOnlyNode(){
+		for(int i =0; i<26; i++){
+			if(children[i]!=null)
+				return children[i];
+		}
+		return null;
+	}
+	public boolean isNodePresent(char ch){
+		return children[ch-'a']!=null;
+	}
+	public Node getNode(char ch){
+		return children[ch-'a'];
+	}
+	public void addNode(char ch, Node node){
+		children[ch-'a'] = node;
+		children[ch-'a'].chh = ch;
+	}
+	public boolean isEnd(){
+		return isEnd;
+	}
+	public void setEnd(){
+		isEnd = true;
+	}
+}
+class trie{
+	Node root ;
+	public trie(){
+		root = new Node();
+	}
+	
+	public void addWord(String str){
+		Node node =root;
+		for(char ch : str.toCharArray()){
+			if(node.isNodePresent(ch)==false){
+				node.addNode(ch, new Node());
+			}
+			node = node.getNode(ch);
+		}
+		node.setEnd();
+	}
+	public String getPrefix(){
+		StringBuilder sb = new StringBuilder();
+		Node node = root;
+		while(node.getChilrenNumber()==1){
+			node = node.getOnlyNode();
+			sb.append(node.chh);
+			if(node.isEnd()){
+				break;
+			}
+		}
+		return sb.toString();
+	}
+}
+class Solution {
+    public String longestCommonPrefix(String[] arr) {
+trie tt = new trie();
+		for(String ss : arr){
+            if(ss.equals(""))
+                return "";
+			tt.addWord(ss);
+            
+        }
+		return tt.getPrefix();
+    }
+}

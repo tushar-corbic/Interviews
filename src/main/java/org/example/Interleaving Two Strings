@@ -1,0 +1,81 @@
+Interleaving Two Strings
+You are given three strings 'A', 'B' and 'C'. Check whether 'C' is formed by an interleaving of 'A' and 'B'.
+
+'C' is said to be interleaving 'A' and 'B', if the length of 'C' is equal to the sum of the length of 'A' and length of 'B', all the characters of 'A' and 'B' are present in 'C' and the order of all these characters remains the same in all three strings.
+For Example:
+
+If A = “aab”, 'B' = “abc”, 'C' = “aaabbc”
+Here 'C' is an interleaving string of 'A' and 'B'. because 'C' contains all the characters of 'A' and 'B' and the order of all these characters is also the same in all three strings.
+
+If 'A' = “abc”, 'B' = “def”, 'C' = “abcdefg”
+Here 'C' is not an interleaving string of 'A' and 'B'. 'B'ecause neither A nor 'B' contains the character ‘g’.
+
+Detailed explanation ( Input/output format, Notes, Images )
+'C'onstraints:
+
+1 <= T <= 10
+1 <= |'A'|, |'B'| <= 150
+1 <= |'C'| <= 300
+
+where |A|, |'B'|, |'C'| denotes the length of string 'A', 'B' and 'C' respectively.   
+All the characters of the strings 'A', 'B' and 'C' contain lowercase English letters only.
+
+Time limit: 1 sec
+
+Sample Input 1:
+
+2
+abdd fef abfddef
+aab abc aabbc
+
+Sample Output 1:
+
+True
+False
+
+Explanation for sample 1:
+
+For the first test case, all the characters of A and B are present in C, in the same order.
+For the second case,'C' < ('A' + 'B').
+
+Sample Input 2:
+
+2
+zxry qwr qwzxxryr
+a a aa
+
+Sample output 2:
+
+False
+True
+
+Explanation for sample 2:
+
+For the first test case, 'C' > ('A' + 'B').
+For the second test case, all the characters of A and B are present in C in the same order.
+
+
+
+public class Solution {
+    public static boolean isInterleave(String a, String b, String c) {
+        // Write your code here!
+        if(c.length()!=a.length()+b.length())
+            return false;
+        boolean [][]dp = new boolean[a.length()+1][b.length()+1];
+        for(int i=0; i<=a.length(); i++){
+            for(int j =0;j<=b.length(); j++){
+                if(i==0 && j==0){
+                    dp[i][j] = true;
+                }else if(i==0){
+                    dp[i][j] = dp[i][j-1] && b.charAt(j-1)==c.charAt(i+j-1);
+                }else if(j==0){
+                    dp[i][j] = dp[i-1][j] && a.charAt(i-1)==c.charAt(i+j-1);
+                }else{
+                    dp[i][j] = (dp[i-1][j] && a.charAt(i-1)==c.charAt(i+j-1) ) || (dp[i][j-1] && b.charAt(j-1)==c.charAt(i+j-1));
+                }
+            }
+          
+        }
+          return dp[a.length()][b.length()];
+    }
+}

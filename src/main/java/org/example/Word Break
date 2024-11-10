@@ -1,0 +1,105 @@
+Word Break
+ Problem statement
+
+You are given a list of “N” strings A. Your task is to check whether you can form a given target string using a combination of one or more strings of A.
+Note :
+
+You can use any string of A multiple times.
+
+Examples :
+
+A =[“coding”, ”ninjas”, “is”, “awesome”]  target = “codingninjas”
+Ans = true as we use “coding” and “ninjas” to form “codingninjas”
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+
+1 <= T <= 5 
+1 <= N, | target | <= 10^2
+1 <= | A[i] | <= 10
+
+Where | A[i] | denotes length of string i,| target | denotes the length of the string target and A[i] contains only lowercase English characters.
+
+Time limit: 1 sec
+
+Sample Input 1 :
+
+2 
+2
+ab cd
+abcd
+2
+do the
+hello
+
+Sample Output 1 :
+
+1
+0
+
+Explanation For Sample Input 1:
+
+For the first test case, A = [ “ab”, “cd”], target = “abcd”
+We can get “abcd” using “ab” and “cd”
+So answer will be 1.
+
+For the second test case, A = [ “do”, “the”], target = “hello”
+We can’t make a target using one or more strings of A.
+So the answer will be 0.
+
+Sample Input 2 :
+
+2 
+2
+aa a
+aaaaa
+1
+do
+d
+
+Sample Output 2 :
+
+1
+0
+
+Explanation For Sample Input 2:
+
+For the first test case, A =[ “aa”, “a”], target = “aaaaa”
+We can use “a” 5 times to get “aaaaa”.
+So the answer will be 1.
+
+For the second test case, A =[ “do”], target = “d”
+We can’t make d using [“do”].
+So the answer will be 0.
+
+
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static Boolean wordBreak(String[] arr, int n, String target) {
+        // Write your code here.
+        Map<String,Boolean>dp = new HashMap<>();
+        // Set<String>set = new HashSet<>(arr);
+        Set<String>set = new HashSet<>();
+        for(String ss : arr){
+            set.add(ss);
+        }
+        return helper(target, set, dp);
+    }
+    public static boolean helper(String target,Set<String> set, Map<String,Boolean>dp){
+        if(dp.containsKey(target))
+            return dp.get(target);
+        if(set.contains(target))
+            return true;
+        for(int i =1; i<target.length(); i++){
+            String prefix = target.substring(0, i);
+            if(set.contains(prefix) && helper(target.substring(i), set, dp)){
+                dp.put(target, true);
+                return true;
+            }
+        }
+        dp.put(target, false);
+        return false;
+    }
+}

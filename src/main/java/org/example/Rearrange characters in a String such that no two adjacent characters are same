@@ -1,0 +1,48 @@
+Rearrange characters in a String such that no two adjacent characters are same
+You are given a string “S”. Your task is to rearrange the characters of a string “S”, such that it does not contain any two adjacent characters which are the same.
+
+If it is possible to rearrange the string “S”, then print any possible arrangement. else, print “not possible” without quotes.
+
+For Example:
+
+For a string  “qaacde”, This string has two same adjacent characters.
+So, one possible way to rearrange the string is “qacade”. Now, this string does not have two adjacent characters that are the same. 
+
+
+import java.util.* ;
+import java.io.*; 
+class Pair{
+  char ca;
+  int freq;
+  Pair(char ca,int freq){
+    this.ca=ca;
+    this.freq=freq;
+  }
+}
+public class Solution {
+
+    public static String reArrangeString(String s) {
+        Queue<Pair> pq=new PriorityQueue<>((x,y)->y.freq-x.freq);
+       Map<Character,Integer> hm=new HashMap<>();
+       for(char c:s.toCharArray()) hm.put(c,hm.getOrDefault(c,0)+1);;
+       for(Map.Entry<Character,Integer> m:hm.entrySet())
+             pq.add(new Pair(m.getKey(), m.getValue()));
+
+       StringBuilder sb=new StringBuilder();
+       Pair p=pq.poll();
+       sb.append(p.ca);
+       p.freq--;
+
+       while(!pq.isEmpty()){
+         Pair curr=pq.poll();
+         sb.append(curr.ca);
+         curr.freq--;
+         if(p.freq>0) pq.add(p);
+         p=curr;
+       }
+       return (p.freq>0)?"not possible": sb.toString();
+
+    
+    }
+
+}

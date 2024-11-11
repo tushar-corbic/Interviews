@@ -53,3 +53,55 @@ public String reverseWords(String s) {
       a[j--] = t;
     }
   }
+
+
+
+
+
+// import jdk.internal.jshell.tool.resources.l10n;
+
+public class Solution {
+	public static String reverseWordWise(String input) {
+		// Write your code here
+		char[]arr = input.toCharArray();
+		reverse(arr, 0, arr.length-1);
+		step2(arr);
+		return step3(arr);
+
+	}
+	public static String step3(char[]arr){
+		int i = 0;
+		int j =0;
+		int n = arr.length;
+		while(j<n){
+			while(j<n && arr[j]==' ')j++;
+			while(j<n && arr[j]!=' ')arr[i++]=arr[j++];
+			while(j<n && arr[j]==' ')j++;
+			if(j<n){
+				arr[i++] = ' ';
+			}
+		}
+		return new String(arr).substring(0, i);
+	}
+	public static void step2(char[]arr){
+		int i =0;
+		int j =0;
+		int n = arr.length;
+		while(i<n){
+			i= j;
+			while( i<n && arr[i]==' ')i++;
+			j = i;
+			while(j<n && arr[j]!=' ')j++;
+			reverse(arr, i, j-1);
+		}
+	}
+	public static void reverse(char[]arr, int i, int j){
+		while(i<j){
+			char temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+			i++;
+			j--;
+		}
+	}
+}

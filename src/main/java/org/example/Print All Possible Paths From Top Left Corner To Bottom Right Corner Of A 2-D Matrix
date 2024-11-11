@@ -1,0 +1,28 @@
+ Print All Possible Paths From Top Left Corner To Bottom Right Corner Of A 2-D Matrix
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int[][] printAllPaths(int[][] mat, int m, int n) {
+        // Write your code here
+        ArrayList<ArrayList<Integer>>ans = new ArrayList<>();
+        helper(mat, 0, 0, m, n, ans, new ArrayList<>());
+        // int[][]
+        // return ans;
+        // return ans.stream().map(x -> x.stream().mapToInt(i->i).toArray()).toArray(int[][]::new);
+        return ans.stream().map(x->x.stream().mapToInt(i->i).toArray()).toArray(int [][]::new);
+    }
+    public static void helper(int[][]arr, int i, int j, int n, int m, ArrayList<ArrayList<Integer>> ans, ArrayList<Integer>temp){
+        if(i<0 || j<0 || i>=n || j>=m )
+            return ;
+        if(i==n-1 && j==m-1){
+            temp.add(arr[i][j]);
+            ans.add(new ArrayList<>(temp));
+            temp.remove(temp.size()-1);
+            return;
+        }
+        temp.add(arr[i][j]);
+        helper(arr, i+1, j , n, m, ans, temp);
+        helper(arr, i, j+1, n, m, ans, temp);
+        temp.remove(temp.size()-1);
+    }
+}

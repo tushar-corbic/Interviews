@@ -1,0 +1,22 @@
+Lexicographically smallest string formed by appending a character from the first K characters of a given string
+import java.util.PriorityQueue;
+
+public class Solution {
+    public static String getTransformedString(String str, int k) {
+        // Your code goes here.
+        StringBuilder sb = new StringBuilder();
+        PriorityQueue<Character> pq= new PriorityQueue<>();
+        for(int i=0; i<str.length(); i++){
+            if(i<k){
+                pq.offer(str.charAt(i));
+            }else{
+                sb.append(pq.poll());
+                pq.offer(str.charAt(i));
+            }
+        }
+        while(pq.size()>0){
+            sb.append(pq.poll());
+        }
+        return sb.toString();
+    }
+}

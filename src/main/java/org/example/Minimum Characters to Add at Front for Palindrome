@@ -1,0 +1,71 @@
+Minimum Characters to Add at Front for Palindrome
+Given a string s, the task is to find the minimum number of characters to be added to the front of s to make it palindrome. A palindrome string is a sequence of characters that reads the same forward and backward.
+
+Examples: 
+
+Input: s = “abc”
+Output: 2
+Explanation: We can make above string palindrome as “cbabc”, by adding ‘b’ and ‘c’ at front.
+
+Input: str = “aacecaaaa”
+Output: 2
+Explanation: We can make above string palindrome as “aaaacecaaaa” by adding two a’s at front of string.
+
+public class Solution {
+    static int[] computeLPSArray(String pat) {
+        int n = pat.length();
+        int[] lps = new int[n];
+        lps[0] = 0;
+        int len = 0;
+        int i = 1;
+        while (i < n) {
+            if (pat.charAt(i) == pat.charAt(len)) {
+                len++;
+                lps[i] = len;
+                i++;
+            }
+            else {
+                if (len != 0) {
+                    len = lps[len - 1];
+                }
+                else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return lps;
+    }
+    public static int[] formlps(String str){
+        int n = str.length();
+        int[]lps = new int[n];
+        int len =0;
+        lps[0] = len;
+        int i = 1;
+        while(i<n){
+            if(str.charAt(len)==str.charAt(i)){
+                len++;
+                lps[i] = len;
+                i++;
+            }else{
+                if(len==0){
+                    lps[i] = 0;
+                    i++;
+                }else{
+                    len = lps[len-1];
+                }
+            }
+        }
+        return lps;
+    }
+
+    public static int minCharsforPalindrome(String str) {
+        //Write your code here
+        String ss = new StringBuffer(str).reverse().toString();
+        int[] lps= formlps(str+"$"+ss);
+        // int[] lps = computeLPSArray(str+"$"+ss);
+        return str.length()-lps[lps.length-1];
+    }
+
+}
+

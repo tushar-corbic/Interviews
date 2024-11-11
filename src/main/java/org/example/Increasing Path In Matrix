@@ -1,0 +1,67 @@
+Increasing Path In Matrix
+Given an m x n integers matrix, return the length of the longest increasing path in matrix.
+
+From each cell, you can either move in four directions: left, right, up, or down. You may not move diagonally or move outside the boundary (i.e., wrap-around is not allowed).
+
+class Solution {
+    public int longestIncreasingPath(int[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int ans = 0;
+	
+
+        // Initialize dp table
+        int[][] memo = new int[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                memo[i][j] = -1;
+            }
+        }
+
+        // Check longest increasing path
+        // for each cell.
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                ans = Math.max(
+                    ans, pathRecur(i, j, matrix, memo));
+            }
+        }
+
+        return ans;
+    }
+    static boolean validCell(int i, int j, int[][] matrix,
+                             int prev) {
+        return (i >= 0 && i < matrix.length && j >= 0
+                && j < matrix[0].length
+                && matrix[i][j] > prev);
+    }
+
+    static int pathRecur(int i, int j, int[][] matrix,
+                         int[][] memo) {
+
+        // If answer exists in memo table.
+        if (memo[i][j] != -1)
+            return memo[i][j];
+
+        // include current cell in answer
+        int ans = 1;
+
+        // direction vector to move in 4 directions
+        int[][] dir
+            = { {1,0},{0,1},{-1,0},{0,-1} };
+
+        for (int[] d : dir) {
+            int x = i + d[0], y = j + d[1];
+
+            // Check if the cell is valid
+            if (validCell(x, y, matrix, matrix[i][j])) {
+                ans = Math.max(
+                    ans, 1 + pathRecur(x, y, matrix, memo));
+            }
+        }
+
+        // Memoize the answer and return it.
+        memo[i][j] = ans;
+        return ans;
+    }
+}

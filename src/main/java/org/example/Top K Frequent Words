@@ -1,0 +1,38 @@
+class pp{
+	String str;
+	int fre;
+	public pp(String str, int n){
+		this.str = str;
+		this.fre= n;
+	}
+}
+class Solution {
+    public List<String> topKFrequent(String[] words, int k) {
+        Map<String,Integer>map = new HashMap<>();
+		for(String str : words){
+			map.put(str, map.getOrDefault(str, 0)+1);
+		}
+		PriorityQueue<pp>pq = new PriorityQueue<>((pp a,pp b)->{
+			if(a.fre==b.fre){
+				return -(a.str).compareTo(b.str);
+			}
+			return a.fre-b.fre;
+		});
+		for(Map.Entry<String,Integer> entry : map.entrySet()){
+			if(pq.size()<k){
+				pq.offer(new pp(entry.getKey(), entry.getValue()));
+			}else{
+				pq.offer(new pp(entry.getKey(), entry.getValue()));
+				pq.poll();
+			}
+		}
+		List<String>ans = new ArrayList<>();
+		while(pq.isEmpty()==false){
+			ans.add(pq.poll().str);
+		}
+		Collections.reverse(ans);
+		// Collections.sort(ans);
+		return ans;
+        
+    }
+}

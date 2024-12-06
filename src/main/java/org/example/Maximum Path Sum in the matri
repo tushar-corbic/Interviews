@@ -1,0 +1,194 @@
+Maximum Path Sum in the matri
+ Problem statement
+
+You have been given an N*M matrix filled with integer numbers, find the maximum sum that can be obtained from a path starting from any cell in the first row to any cell in the last row.
+
+From a cell in a row, you can move to another cell directly below that row, or diagonally below left or right. So from a particular cell (row, col), we can move in three directions i.e.
+
+Down: (row+1,col)
+Down left diagonal: (row+1,col-1)
+Down right diagonal: (row+1, col+1)
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+
+1 <= T <= 50
+1 <= N <= 100
+1 <= M <= 100
+-10^4 <= matrix[i][j] <= 10^4
+
+Where 'T' is the number of test cases.
+Where 'N' is the number of rows in the given matrix, and 'M' is the number of columns in the given matrix.
+And, matrix[i][j] denotes the value at (i,j) cell in the matrix.
+
+Time Limit: 1sec
+
+Input 1 :
+
+2
+4 4
+1 2 10 4
+100 3 2 1
+1 1 20 2
+1 2 2 1
+3 3
+10 2 3
+3 7 2
+8 1 5
+
+Output 1 :
+
+105
+25
+
+Explanation Of Input 1 :
+
+In the first test case for the given matrix,
+
+The maximum path sum will be 2->100->1->2, So the sum is 105(2+100+1+2).
+
+In the second test case for the given matrix, the maximum path sum will be 10->7->8, So the sum is 25(10+7+8).
+
+Input 2 :
+
+2
+3 3
+1 2 3
+9 8 7
+4 5 6
+4 6
+10 10 2 -13 20 4
+1 -9 -81 30 2 5
+0 10 4 -79 2 -10
+1 -5 2 20 -11 4
+
+Output 2 :
+
+17
+74
+
+Explanation Of Input 2 :
+
+In the first test case for the given matrix, the maximum path sum will be 3->8->6, So the sum is 17(3+8+6).
+
+In the second test case for the given matrix, the maximum path sum will be 20->30->4->20, So the sum is 74(20+30+4+20)
+
+
+
+import java.util.*;
+
+class TUF {
+    // Function to find the maximum path sum in the matrix using dynamic programming
+    static int getMaxUtil(int i, int j, int m, int[][] matrix, int[][] dp) {
+        // Base Conditions
+        if (j < 0 || j >= m)
+            return (int) Math.pow(-10, 9);
+        if (i == 0)
+            return matrix[0][j];
+
+        if (dp[i][j] != -1)
+            return dp[i][j];
+
+        // Calculate three possible paths: moving up, left diagonal, and right diagonal
+        int up = matrix[i][j] + getMaxUtil(i - 1, j, m, matrix, dp);
+        int leftDiagonal = matrix[i][j] + getMaxUtil(i - 1, j - 1, m, matrix, dp);
+        int rightDiagonal = matrix[i][j] + getMaxUtil(i - 1, j + 1, m, matrix, dp);
+
+        // Store the maximum of the three paths in dp
+        return dp[i][j] = Math.max(up, Math.max(leftDiagonal, rightDiagonal));
+    }
+
+    // Function to find the maximum path sum in the matrix
+    static int getMaxPathSum(int[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        int dp[][] = new int[n][m];
+        for (int row[] : dp)
+            Arrays.fill(row, -1);
+
+        int maxi = Integer.MIN_VALUE;
+
+        // For each starting column, find the maximum path sum and update maxi
+        for (int j = 0; j < m; j++) {
+            int ans = getMaxUtil(n - 1, j, m, matrix, dp);
+            maxi = Math.max(maxi, ans);
+        }
+
+        return maxi;
+    }
+
+    public static void main(String args[]) {
+        int matrix[][] = {{1, 2, 10, 4},
+                          {100, 3, 2, 1},
+                          {1, 1, 20, 2},
+                          {1, 2, 2, 1}};
+
+        // Call the getMaxPathSum function and print the result
+        System.out.println(getMaxPathSum(matrix));
+    }
+}
+
+
+
+
+
+import java.util.*;
+
+class TUF {
+    // Function to find the maximum path sum in the matrix using dynamic programming
+    static int getMaxPathSum(int[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        int dp[][] = new int[n][m];
+
+        // Initializing the first row - base condition
+        for (int j = 0; j < m; j++) {
+            dp[0][j] = matrix[0][j];
+        }
+
+        // Calculate the maximum path sum for each cell in the matrix
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                int up = matrix[i][j] + dp[i - 1][j];
+
+                int leftDiagonal = matrix[i][j];
+                if (j - 1 >= 0) {
+                    leftDiagonal += dp[i - 1][j - 1];
+                } else {
+                    leftDiagonal += (int) Math.pow(-10, 9);
+                }
+
+                int rightDiagonal = matrix[i][j];
+                if (j + 1 < m) {
+                    rightDiagonal += dp[i - 1][j + 1];
+                } else {
+                    rightDiagonal += (int) Math.pow(-10, 9);
+                }
+
+                // Store the maximum of the three paths in dp
+                dp[i][j] = Math.max(up, Math.max(leftDiagonal, rightDiagonal));
+            }
+        }
+
+        // Find the maximum value in the last row of dp
+        int maxi = Integer.MIN_VALUE;
+        for (int j = 0; j < m; j++) {
+            maxi = Math.max(maxi, dp[n - 1][j]);
+        }
+
+        return maxi;
+    }
+
+    public static void main(String args[]) {
+        int matrix[][] = {{1, 2, 10, 4},
+                          {100, 3, 2, 1},
+                          {1, 1, 20, 2},
+                          {1, 2, 2, 1}};
+
+        // Call the getMaxPathSum function and print the result
+        System.out.println(getMaxPathSum(matrix));
+    }
+}
+

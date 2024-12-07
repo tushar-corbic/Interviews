@@ -1,0 +1,39 @@
+Climbing the leaderboard 
+Given a leaderboard of a game with the following ranking pattern:
+
+The player with the highest score is ranked number 1 on the leaderboard.
+
+Players who have equal scores receive the same ranking number, and the next player(s) receive the immediately following ranking number.
+
+You are given game scores of a player of ‘M’ rounds. Your task is to return the position obtained in each round.
+Note:
+
+The leaderboard scores are in descending order.
+The game scores are given in ascending order.
+
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+class Solution {
+	static ArrayList<Integer> findPosition(ArrayList<Integer> leaderboardScore, int n, ArrayList<Integer> playerScore, int m ){
+	    // Write your code here.
+		List<Integer>leadercode = new ArrayList<>();
+		leadercode.add(leaderboardScore.get(0));
+		for(int a : leaderboardScore){
+			if(leadercode.get(leadercode.size()-1)!=a){
+				leadercode.add(a);
+			}
+		}
+		ArrayList<Integer>ans = new ArrayList<>();
+		int i = leadercode.size()-1;
+		for(int p : playerScore){
+			while(i>=0 && p>=leadercode.get(i)){
+				i--;
+			}
+			ans.add(i+2);
+		}
+		return ans;
+    }
+}

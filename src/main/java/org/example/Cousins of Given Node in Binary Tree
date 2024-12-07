@@ -1,0 +1,62 @@
+Cousins of Given Node in Binary Tree 
+Given a binary tree of N nodes and a node of this tree, you need to return a list containing the values of the cousins of the given node in the given binary tree sorted by non-decreasing order of their values.
+Note:
+
+Two nodes of a binary tree are cousins if they have the same depth or level, but have different parents.
+
+No two nodes in the given binary tree will have the same data values
+import java.util.* ;
+import java.io.*; 
+/*******************************************************
+Following is the BinaryTreeNode class structure
+
+class BinaryTreeNode<T> {
+    T data;
+    BinaryTreeNode<T> left;
+    BinaryTreeNode<T> right;
+    
+    public BinaryTreeNode(T data) {
+        this.data = data;
+    }
+}
+*******************************************************/
+
+public class Solution 
+{
+    public static List<Integer> cousinsOfNode(BinaryTreeNode<Integer> root, int node) 
+    {
+        // Write you code here
+        List<Integer>ans = new ArrayList<>();
+        Queue<BinaryTreeNode<Integer>> que = new LinkedList<>();
+        que.offer(root);
+        boolean found = false;
+        while(!que.isEmpty()){
+            int size = que.size();
+            for(int i =0; i<size; i++){
+                BinaryTreeNode<Integer> temp = que.poll();
+                if(temp.left!=null && temp.left.data==node){
+                    found = true;
+                    continue;
+                }
+                if(temp.right!=null && temp.right.data==node)
+                   {
+                       found=true;
+                       continue;
+                   }
+                    if(temp.left!=null)
+                        que.offer(temp.left);
+                    if(temp.right!=null)
+                        que.offer(temp.right);
+            }
+            if(found==true){
+                while(que.isEmpty()==false){
+                    ans.add(que.poll().data);
+                }
+                Collections.sort(ans);
+                return ans;
+            }
+        }    
+        return ans;
+    }
+
+}

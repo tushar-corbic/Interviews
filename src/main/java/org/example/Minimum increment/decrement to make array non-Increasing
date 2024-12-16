@@ -1,0 +1,30 @@
+Minimum increment/decrement to make array non-Increasing/non-decreasing
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+
+    public static int sortArray(int n, int[] arr) {
+        // Write your code here
+        int []temp = new int[n];
+        for(int i =0; i<n; i++){
+            temp[i] = -1*arr[i];
+
+        }
+        return Math.min(helper(arr, n), helper(temp, n));
+    }
+    static int helper(int[] arr,int n){
+        int ans =0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for(int i =0; i<n; i++){
+            if(!pq.isEmpty() && pq.peek()<arr[i]){
+                ans+= (arr[i]-pq.peek());
+                pq.poll();
+                pq.add(arr[i]);
+            }
+            pq.add(arr[i]);
+        }
+        return ans;
+    }
+    
+}

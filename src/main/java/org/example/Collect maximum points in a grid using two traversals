@@ -1,0 +1,53 @@
+Collect maximum points in a grid using two traversals
+You are given a two-dimensional matrix of integers of dimensions N*M, where each cell represents the number of coins in that cell. Alice and Bob have to collect the maximum number of coins. The followings are the conditions to collect coins:
+
+Alice starts from top left corner, i.e., (0, 0) and should reach left bottom corner, i.e., (N-1, 0). Bob starts from top right corner, i.e., (0, M-1) and should reach bottom right corner, i.e., (N-1, M-1).
+
+From a point (i, j), Alice and Bob can move to (i+1, j+1) or (i+1, j-1) or (i+1, j)
+
+They have to collect all the coins that are present at a cell. If Alice has already collected coins of a cell, then Bob gets no coins if goes through that cell again.
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int maximumCoin(int[][] mat, int n, int m) {
+		// Write your code here.
+		int [][][]dp = new int[n+1][m+1][m+1];
+		for(int i =0; i<=n; i++){
+			for(int j =0; j<=m; j++){
+				Arrays.fill(dp[i][j], -1);
+			}
+		}
+		return helper(mat, 0, 0, m-1, n, m, dp);
+	}
+	static int helper(int[][]mat, int x, int y1, int y2, int n, int m, int[][][]dp){
+		if(x<0 || y1<0 || y2<0 || x>=n || y1>=m || y2>=m)
+			return Integer.MIN_VALUE;
+		if(x==n-1 && y1==0 && y2==m-1){
+			if(y1==y2)
+				return mat[x][y1];
+			return mat[x][y1] + mat[x][y2];
+		}
+		if(dp[x][y1][y2]!=-1)
+			return dp[x][y1][y2];
+		int temp = 0;
+		if(y1==y2)
+			temp= mat[x][y1];
+		else
+			temp = mat[x][y1] + mat[x][y2];
+		int ans = Integer.MIN_VALUE;
+		ans = Math.max(ans, temp+ helper(mat, x+1, y1-1, y2, n, m, dp));
+		ans = Math.max(ans, temp+ helper(mat, x+1, y1+1, y2, n, m, dp));
+		ans = Math.max(ans, temp+ helper(mat, x+1, y1, y2, n, m, dp));
+		ans = Math.max(ans, temp+ helper(mat, x+1, y1-1, y2+1, n, m, dp));
+		ans = Math.max(ans, temp+ helper(mat, x+1, y1+1, y2+1, n, m, dp));
+		ans = Math.max(ans, temp+ helper(mat, x+1, y1, y2+1, n, m, dp));
+		ans = Math.max(ans, temp+ helper(mat, x+1, y1-1, y2-1, n, m, dp));
+		ans = Math.max(ans, temp+ helper(mat, x+1, y1, y2-1, n, m, dp));
+		ans = Math.max(ans, temp+ helper(mat, x+1, y1+1, y2-1, n, m, dp));
+
+		dp[x][y1][y2] = ans;
+		return ans;
+	}
+
+}

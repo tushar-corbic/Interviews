@@ -1,0 +1,70 @@
+ The Skyline ProblemYou are given 'N' rectangular buildings in a 2-dimensional city. Your task is to compute the skyline of these buildings, eliminating hidden lines return the skyline formed by these buildings collectively. A city's skyline is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance. The geometric information of each building is given in the array of buildings where BUILDINGS[i] = [LEFT_i, RIGHT_i, HEIGHT_i]:
+
+-> LEFT_i is the x coordinate of the left edge of the ith building.
+
+-> RIGHT_i is the x coordinate of the right edge of the ith building.
+
+-> HEIGHT_i is the height of the ith building.
+
+You may assume all buildings are perfect rectangles grounded on an absolutely flat surface at height 0.
+
+The skyline should be represented as a list of "key points" sorted by their x-coordinate in the form [[x1, y1], [x2, y2], ...]. Each key point is the left endpoint of some horizontal segment in the skyline except the last point in the list, which always has a y-coordinate 0 and is used to mark the skyline's termination where the rightmost building ends. Any ground between the leftmost and rightmost buildings should be part of the skyline's contour.
+
+Note:
+There must be no consecutive horizontal lines of equal height in the output skyline. For instance, [...,[2 3], [4 5], [7 5], [11 5], [12 7],...] is not acceptable; the three lines of height 5 should be merged into one in the final output.
+
+As such: [..., [2 3], [4 5], [12 7],...]. 
+
+Also, the buildings are sorted by a non-decreasing order.
+
+For more clarification see sample case 1.
+import java.util.* ;
+import java.io.*; 
+class pair implements Comparable<pair>{
+    int x;
+    int ht;
+    public pair(int a, int b){
+        this.x = a;
+        this.ht = b;
+    }
+    @Override
+    public int compareTo(pair b){
+        if(x!=b.x){
+            return x-b.x;
+        }
+        return ht-b.ht;
+    }
+
+}
+public class Solution {
+    public static int[][] getBuildingSkyline(int[][] buildings) {
+        // Write your code here.
+        List<pair>list = new ArrayList<>();
+        for(int i =0; i<buildings.length; i++){
+            int startpoint = buildings[i][0];
+            int endpoint = buildings[i][1];
+            int ht = buildings[i][2];
+            list.add(new pair(startpoint, -ht));
+            list.add(new pair(endpoint, ht));
+        }
+        Collections.sort(list);
+        List<int[]> ans = new ArrayList<>();
+        PriorityQueue<Integer>pq =new PriorityQueue<>(Collections.reverseOrder());
+        int currentht= 0;
+        pq.offer(0);
+        for(int i =0; i<list.size(); i++){
+            int x = list.get(i).x;
+            int ht = list.get(i).ht;
+            if(ht<0){
+                pq.offer(-ht);
+            }else{
+                pq.remove(ht);
+            }
+            if(currentht!=pq.peek()){
+                ans.add(new int[]{x, pq.peek()});
+                currentht= pq.peek();
+            }
+        }
+        return ans.stream().toArray(int[][]::new);
+    }
+}

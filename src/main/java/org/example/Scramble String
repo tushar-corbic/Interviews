@@ -1,0 +1,47 @@
+Scramble String
+Problem statement
+You are given an integer ‘N’ and two strings ‘S’ and 'R' each having size = ‘N’. You can scramble the string ‘S’ to obtain string 'R' using the following operations:
+
+1. If the length of the string is greater than 1:
+
+Select any random index and split the string into two non-empty substrings. For e.g: if the string is ‘S’, then divide it into two non-empty substrings ‘A’ and ‘B’ such that ‘S’ = ‘A’ + ‘B’.
+You can choose to swap the two substrings or keep them in the same order, i.e., after this operation string ‘S’ may become either ‘S’ = ‘A’ + ‘B’ or ‘S’ = ‘B’ + ‘A’.
+Apply the first step recursively on each of the two strings ‘A’ and ‘B’.
+2. If the length of the string is equal to 1 then stop.
+
+Your task is to return true if 'R' is a scrambled string of ‘S’ else return false.
+
+Note:
+
+1. Both the strings are non-empty and are of the same length.
+
+2. You can apply the above operations any number of times on ‘S’.
+
+3. The operations can only be applied on the string ‘S’.
+
+4. ‘S’ and 'R' consist of lowercase letters only.
+
+#include <bits/stdc++.h> 
+bool f(string a, string b, unordered_map<string, bool> &mp) {
+    if(a==b) return 1;
+    if(a.size() != b.size()) return 0;
+    string key=a+'*'+b;
+    if(mp.find(key) != mp.end()) return mp[key];
+    int i, n=a.size();
+    bool swap=0, notSwap=0;
+    for(i=1;i<n;i++) {
+        swap=f(a.substr(0, i), b.substr(n-i, i), mp) and 
+                f(a.substr(i, n-i), b.substr(0, n-i), mp);
+        notSwap=f(a.substr(0, i), b.substr(0, i), mp) and 
+                f(a.substr(i, n-i), b.substr(i, n-i), mp);
+        if(swap || notSwap) return mp[key] = 1;
+    }
+    return mp[key] = 0;
+}
+bool isScramble(string s, string r)
+{
+    // Write your code here.
+        unordered_map<string, bool> mp;
+    return f(s, r, mp);
+
+}

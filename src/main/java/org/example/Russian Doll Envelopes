@@ -1,0 +1,54 @@
+ Russian Doll Envelopes
+You are given a set of ‘N’ rectangular envelopes. The height and width of each envelope are given by arrays, ‘height’ and ‘width’ respectively, each consisting of ‘N’ positive integers. The height, width of the ith envelope is given by ‘height[i]’ and ‘width[i]’ respectively.
+
+You can put one envelope inside another envelope if and only if both the height and width of one envelope is strictly greater than the height and width of the other envelope.
+
+What is the maximum number of envelopes you can Russian doll? (put one inside other)
+
+import java.util.ArrayList;
+import java.util.*;
+class pp implements Comparable<pp>{
+	int w;
+	int h;
+	public pp(int a, int b){
+		this.w = a;
+		this.h = b;
+	}
+	@Override
+	public int compareTo(pp a){
+		if(this.w==a.w){
+			return a.h-this.h;
+		}
+		return this.w-a.w;
+	}
+}
+public class Solution {
+	public static int findMaxEnvelopes(ArrayList<Integer> height, ArrayList<Integer> width, int n) {
+		// Write your code here.
+		List<pp> list = new ArrayList<>();
+		for(int i =0; i<height.size(); i++){
+			list.add(new pp(width.get(i), height.get(i)));
+		}
+		Collections.sort(list);
+
+		int []dp = new int[height.size()];
+		int size= 0;
+		for(pp env: list){
+			int left = 0;
+			int right= size;
+			int middle = 0;
+			while(left<right){
+				middle = left + (right-left)/2;
+				if(dp[middle]<env.h){
+					left = middle+1;
+				}else{
+					right = middle;
+				}
+			}
+			dp[left] = env.h;
+			if(left==size)
+				size++;
+		}
+		return size;
+	}
+}

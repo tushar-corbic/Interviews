@@ -1,0 +1,148 @@
+ Check If Given Words Are Present In A String
+Given a string 'S' and a list 'wordList' that consists of 'N' distinct words. Let 'Wi' denote word at index 'i' in 'wordList'. For each word 'Wi' in 'wordList', you need to determine whether it is present in string 'S' or not. Return a boolean array, where a boolean value at index ‘i’ represents whether the word ‘Wi’ is present in the string ‘S’ or not.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+1 <= T <= 50
+1 <= |S| <= 10^3
+1 <= N <= 10^3
+1 <= |W| <= 10
+
+Where ‘|S|’ denotes the length of string and |W| denotes the maximum length of the word present in ‘wordList’.
+
+Time limit: 1 sec
+Sample Input 1 :
+2
+This is a large String
+4
+This this is age 
+ILikeCodingNinjas
+3
+Ninja Coding Code
+Sample Output 1 :
+True False True False
+True True False
+Explanation Of Sample Input 1 :
+Test case 1:
+
+Here String ‘S’ is “This is a large String” and ‘wordList’ is [“This”, “this”, “is”, “age”] 
+
+The word “This” is present from index ‘0’ to index ‘3’ in ‘S’.
+The word “this” is not present in ‘S’.
+The word “is” is present from index ‘2’ to index ‘3’’ and from  ‘5’ to index ‘6’  in ‘S’. 
+The word  “age” is not present in ‘S’.
+Note:  All words are case sensitive and we consider 0 based indexing in 'S'.
+
+Test case 2:
+
+Here String ‘S’ is “ILikeCodingNinjas” and ‘wordList’ is [“Ninja” “Coding” “Code”] 
+
+The word “Ninja” is present from index ‘11’ to index ‘15’ in ‘S’.
+The word “Coding” is present from index ‘5’ to index ‘10’ in ‘S’.
+The word “Code” is not present in  ‘S’. 
+Sample Input 2 :
+ 3
+ This is String
+ 2
+ This String
+ Code Infy
+ 3
+ C I F
+ coding
+ 1
+ CodingNinjas
+Sample Output 2 :
+True True 
+True True False 
+False 
+Explanation Of Sample Input 2 :
+Test case 1:
+Here String ‘S’ is “This is String” and ‘wordList’ is [“This”, “String” ] 
+
+The word “This” is present from index ‘0’ to index ‘3’ in ‘S’.
+The word  “String” is present from index ‘8’ to index ‘13’’ in ‘S’. 
+
+Test case 2:
+
+Here String ‘S’ is “Code Infy” and ‘wordList’ is [“C” “I” “F”] 
+
+The word “C” is present at index ‘0’ ’ in ‘S’.
+The word “I”  is present at index ‘5’ in ‘S’.
+The word “F” is not present in  ‘S’. 
+
+Test case 3:
+
+Here String ‘S’ is “Coding” and ‘wordList’ is [“ CodingNinjas”] 
+
+The word “CodingNinjas” is not in ‘S’.
+
+
+
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+class Node{
+    Node[] children = new Node[256];
+    public boolean containsKey(char ch){
+        // System.out.println(ch);
+        return children[ch]!=null;
+    }
+    public void addKey(char ch, Node node){
+        children[ch] = node;
+    }
+    public Node getNode(char ch){
+        return children[ch];
+    }
+
+
+}
+class Trie{
+    Node node;
+    public Trie(){
+        node = new Node();
+
+    }
+    public void insertWord(String str){
+        Node cur = node;
+        for(char ch : str.toCharArray()){
+            if(!cur.containsKey(ch)){
+                cur.addKey(ch, new Node());
+            }
+            cur  = cur.getNode(ch); 
+        }
+
+    }
+    public boolean isPresent(String str){
+        Node cur = node;
+        for(char ch : str.toCharArray()){
+            if(!cur.containsKey(ch))
+                return false;
+            cur = cur.getNode(ch);
+        }
+        return true;
+    }
+}
+public class Solution 
+{
+    public static boolean[] checkWordsInString(String s, int n, ArrayList<String> wordList) 
+    {
+        Trie tt = new Trie();
+        // String[]temp = s.split(" ");
+        // for()
+        for(int i = s.length()-1; i>=0; i--){
+            tt.insertWord(s.substring(i));
+        }
+        ArrayList<Boolean> ans = new ArrayList<>();
+        for(String ss : wordList){
+            ans.add(tt.isPresent(ss));
+        }
+        boolean[] res = new boolean[n];
+        for(int i =0; i<n; i++){
+            res[i] = ans.get(i);
+        }
+        return res;
+        // return ans.stream().toArray(boolean[]:: new);
+        // Write your code here
+    }
+}
+

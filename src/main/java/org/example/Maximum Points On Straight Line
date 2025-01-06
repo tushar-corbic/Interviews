@@ -1,0 +1,73 @@
+ Maximum Points On Straight Line
+
+Problem statement
+You are given a 2-D plane, and some 'N' integer coordinates in the form of (X, Y), where 'X' is the x-coordinate and 'Y' is the y-coordinate, all of which lie on that plane. You need to find the maximum number of coordinates among these which can form a straight line.
+
+Note:
+1. All the coordinates are integer coordinates.
+2. There can be two identical coordinates.
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+1 <= T <=  50
+1 <= N <= 10^3
+-10^4 <= X, Y <= 10^4
+
+Time Limit: 1 sec
+Sample Input 1:
+2
+2
+1 1
+5 5
+6
+-1 -1
+0 0
+1 1
+2 2
+3 3
+3 4
+Sample Output 1:
+2
+5 
+Explanation For Sample Output 1:
+For the first test case, since there are only two points, they can always form  a straight line.
+
+For the second test case, look at the picture below.
+
+We can easily see that 5 out of 6 points lie on a straight line. Hence 5 is the answer.
+
+
+import java.util.*;
+public class Solution {
+	public static int maxPointsOnLine(int[][] points, int n) {
+		// Write your code here.
+		if(n==0)
+			return 0;
+		int ans = 0;
+		for(int i =0; i<n; i++){
+			Map<String,Integer> map = new HashMap<>();
+			int duplicate = 0;
+			int max = 0;
+			for(int j = i+1; j<n; j++){
+				int deltax = points[i][0] - points[j][0];
+				int deltay = points[i][1] - points[j][1];
+				if(deltax==0 && deltay==0){
+					duplicate++;
+					continue;
+				}
+				int gcd = gcd(deltax, deltay);
+				deltax = deltax/gcd;
+				deltay = deltay/gcd;
+				map.put(deltax+","+deltay, map.getOrDefault(deltax+","+deltay, 0)+1);
+				max = Math.max(max, map.get(deltax+","+deltay));
+
+			}
+			ans = Math.max(ans, duplicate+max);
+		}
+		return ans+1;
+	}
+	static int gcd(int a, int b){
+		if(b==0)
+			return a;
+		return gcd(b, a%b);
+	}
+}

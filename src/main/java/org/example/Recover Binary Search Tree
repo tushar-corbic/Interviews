@@ -1,0 +1,197 @@
+
+
+You are given the root of a binary search tree (BST), where the values of exactly two nodes of the tree were swapped by mistake. Recover the tree without changing its structure.
+
+ 
+
+Example 1:
+
+
+Input: root = [1,3,null,null,2]
+Output: [3,1,null,null,2]
+Explanation: 3 cannot be a left child of 1 because 3 > 1. Swapping 1 and 3 makes the BST valid.
+Example 2:
+
+
+Input: root = [3,1,4,null,null,2]
+Output: [2,1,4,null,null,3]
+Explanation: 2 cannot be in the right subtree of 3 because 2 < 3. Swapping 2 and 3 makes the BST valid.
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [2, 1000].
+-231 <= Nod
+                                
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    public TreeNode(int x) {
+        val = x;
+        left = null;
+        right = null;
+    }
+}
+
+class Solution {
+    // Function to store the inorder traversal
+    private void inorder(TreeNode root, List<Integer> values) {
+        if (root == null) return;
+        inorder(root.left, values);
+        values.add(root.val);
+        inorder(root.right, values);
+    }
+
+    public void recoverTree(TreeNode root) {
+        List<Integer> sortedVals = new ArrayList<>();
+        // Perform an inorder traversal
+        // to obtain values in sorted order
+        inorder(root, sortedVals);
+
+        // Convert obtained values to an array
+        Integer[] sortedArray = sortedVals.toArray(new Integer[0]);
+        Arrays.sort(sortedArray);
+
+        // Initialize pointers for tree
+        // traversal and sortedVals array
+        TreeNode current = root;
+        int index = 0;
+
+        // Morris Traversal to traverse the
+        // tree without recursion or stack
+        while (current != null) {
+            // If there is no left subtree
+            if (current.left == null) {
+                // Compare the current node's
+                // value with the sortedVals array
+                if (current.val != sortedArray[index]) {
+                    // Update the current node's
+                    // value if there's a mismatch
+                    current.val = sortedArray[index];
+                }
+                ++index;
+                // Move to the right subtree
+                current = current.right;
+            } else {
+                // Find the predecessor of the current node
+                TreeNode predecessor = current.left;
+                while (predecessor.right != null && predecessor.right != current) {
+                    predecessor = predecessor.right;
+                }
+
+                // If the right pointer of
+                // predecessor is not set
+                if (predecessor.right == null) {
+                    // Set the threaded pointer
+                    // to the current node
+                    predecessor.right = current;
+                    // Move to the left subtree
+                    current = current.left;
+                } else {
+                    // Revert threaded
+                    // pointer back to null
+                    predecessor.right = null;
+
+                    // Compare the current node's
+                    // value with the sortedVals array
+                    if (current.val != sortedArray[index]) {
+                        // Update the current node's
+                        // value if there's a mismatch
+                        current.val = sortedArray[index];
+                    }
+                    ++index;
+                    // Move to the right subtree
+                    current = current.right;
+                }
+            }
+        }
+    }
+}
+
+// Utility function to
+// insert nodes into the BST
+class Main {
+    static TreeNode insert(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+
+        if (val < root.val) {
+            root.left = insert(root.left, val);
+        } else {
+            root.right = insert(root.right, val);
+        }
+
+        return root;
+    }
+
+    // Utility function to perform
+    // inorder traversal of the BST
+    static void inorderTraversal(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        inorderTraversal(root.left);
+        System.out.print(root.val + " ");
+        inorderTraversal(root.right);
+    }
+
+    // Function to swap two tree
+    // nodes and their subtrees
+    static void swapNodes(TreeNode a, TreeNode b) {
+        // Swap values of the nodes
+        int temp = a.val;
+        a.val = b.val;
+        b.val = temp;
+
+        // Swap left subtrees of the nodes
+        TreeNode tempLeft = a.left;
+        a.left = b.left;
+        b.left = tempLeft;
+
+        // Swap right subtrees of the nodes
+        TreeNode tempRight = a.right;
+        a.right = b.right;
+        b.right = tempRight;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        // Create the BST
+        TreeNode root = null;
+        root = insert(root, 3);
+        insert(root, 1);
+        insert(root, 4);
+        insert(root, 2);
+
+        System.out.print("Original BST: ");
+        inorderTraversal(root);
+        System.out.println();
+
+        // Intentionally swapping two nodes (4 and 2)
+        TreeNode node4 = root.right;
+        TreeNode node2 = root.left.right;
+        swapNodes(node4, node2);
+
+        System.out.print("BST with swapped nodes: ");
+        inorderTraversal(root);
+        System.out.println();
+
+        // Recover the BST
+        solution.recoverTree(root);
+
+        System.out.print("Recovered BST: ");
+        inorderTraversal(root);
+        System.out.println();
+    }
+}
+                                
+                            

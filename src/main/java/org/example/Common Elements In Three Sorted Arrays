@@ -1,0 +1,74 @@
+Common Elements In Three Sorted Arrays
+You are given three arrays 'A', 'B' and 'C' of length 'N', 'M' and 'K' respectively. All the three arrays are sorted in non-decreasing order. Your task is to find all such elements which are present in all the three given arrays.
+
+Note:
+
+1. The output array should have the same ordering of elements as the original arrays.
+2. Even if a particular element appears more than once in each of the three arrays, it should still be present only once in the output array.
+3. If there are no common elements in the arrays, return an empty array.
+For example:
+
+Consider the three arrays A = [ 2, 3, 4, 7 ] , B = [ 0, 0, 3, 5 ] , C = [ 1, 3, 8, 9 ]
+The output array should be [ 3 ] as 3 is the only element which is present in all the three arrays.
+
+import java.util.* ;
+import java.io.*; 
+public class Solution 
+{
+	public static ArrayList<Integer> findCommonElements(ArrayList<Integer> a, ArrayList<Integer> b, ArrayList<Integer> c) 
+    {
+		// Write your code here.
+		// Map<Integer,Integer> map  = new TreeMap<>();
+		// for(int e : a){
+		// 	map.put(e, 1);
+		// }
+		// for(int e : b){
+		// 	if(map.getOrDefault(e,0)==1){
+		// 		map.put(e, 2);
+		// 	}
+		// }
+		// for(int e : c){
+		// 	if(map.getOrDefault(e, 0)==2){
+		// 		map.put(e,3);
+		// 	}
+		// }
+		// ArrayList<Integer> ans = new ArrayList<>();
+		// for(Integer e : map.keySet()){
+		// 	if(map.get(e)==3)
+		// 	ans.add(e);
+		// }
+		// return ans;
+		return helper2(a, b, c);
+	}
+	static ArrayList<Integer> helper2(ArrayList<Integer>a,ArrayList<Integer>b, ArrayList<Integer> c){
+		ArrayList<Integer> ans = new ArrayList<>();
+		int i =0;
+		int j =0;
+		int k =0;
+		while(i<a.size() && j<b.size() && k<c.size()){
+			if(a.get(i)==b.get(j) && b.get(j)==c.get(k)){
+				ans.add(a.get(i));
+				i++;
+				j++;
+				k++;
+				while(i<a.size() && a.get(i)==a.get(i-1)){
+					i++;
+				}
+				while(j<b.size() && b.get(j)==b.get(j-1)){
+					j++;
+				}
+				while(k<c.size() && c.get(k)==c.get(k-1)){
+					k++;
+				}
+			}
+			else if(a.get(i)<b.get(j)){
+				i++;
+			}else if(b.get(j)<c.get(k)){
+				j++;
+			}else{
+				k++;
+			}
+		}
+		return ans;
+	}
+}

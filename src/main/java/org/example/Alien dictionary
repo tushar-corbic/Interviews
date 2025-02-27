@@ -1,0 +1,74 @@
+Alien dictionary
+
+Problem statement
+You have been given a sorted (lexical order) dictionary of an alien language.
+
+
+
+Write a function that returns the order of characters as a string in the alien language. This dictionary will be given to you as an array of strings called 'dictionary', of size 'N'.
+
+
+
+Example :
+If the dictionary consists of the following words:-
+["caa", "aaa", "aab"], and 'K' is 3.
+
+Then, the order of the alphabet is -
+['c', 'a', 'b']
+Note:
+
+
+import java.util.*;
+public class Solution {
+    public static String getAlienLanguage(String []arr, int k) {
+        // Write your code here.
+        List<List<Integer>> adj = new ArrayList<>();
+        for(int i =0; i<k; i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int i =0; i<arr.length-1; i++){
+            String str1 = arr[i];
+            String str2 = arr[i+1];
+            int len = Math.min(str1.length(), str2.length());
+            for(int ptr = 0; ptr<len; ptr++){
+                if(str1.charAt(ptr)!=str2.charAt(ptr)){
+                    adj.get(str1.charAt(ptr)-'a').add(str2.charAt(ptr)-'a');
+                    break;
+                }
+            }
+
+        }
+        List<Integer> ans = helper(adj, k);
+        StringBuilder sb = new StringBuilder();
+        for(int i =0; i<ans.size(); i++){
+            sb.append((char)(ans.get(i)+(int)('a')));
+        }
+        return sb.toString();
+    }
+    static List<Integer> helper(List<List<Integer>> adj, int k){
+        int indegree[] = new int[k];
+        for(int i =0; i<adj.size(); i++){
+            for(int nbr: adj.get(i)){
+                indegree[nbr]++;
+            }
+        }
+        Queue<Integer> que = new LinkedList<>();
+        for(int i =0; i<k; i++){
+            if(indegree[i]==0){
+                que.add(i);
+            }
+        }
+        List<Integer> ans = new ArrayList<>();
+        while(que.isEmpty()==false){
+            int node = que.remove();
+            ans.add(node);
+            for(int nbr: adj.get(node)){
+                indegree[nbr]--;
+                if(indegree[nbr]==0){
+                    que.add(nbr);
+                }
+            }
+        }
+        return ans;
+    }
+}

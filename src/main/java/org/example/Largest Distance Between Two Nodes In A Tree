@@ -1,0 +1,104 @@
+
+You are given an arbitrary unweighted rooted tree which consists of N nodes, 0 to N - 1. Your task is to find the largest distance between two nodes in the tree.
+
+The distance between two nodes is the number of edges in a path between the nodes (there will always be a unique path between any pair of nodes since it is a tree).
+
+Note :
+Use zero-based indexing for the nodes.
+
+The tree is always rooted at 0.
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+1 <= T <= 100 
+2 <= N <= 3000
+0 <= u , v < N
+
+Time Limit: 1 sec
+Sample Input 1 :
+1
+10
+0 1
+0 2
+0 3
+1 4
+2 5
+2 6
+4 7
+4 8
+6 9
+Sample Output 1 :
+6
+Explanation for sample input 1 :
+For the first test case, the tree is shown below. The longest path in the tree is {7, 4, 1, 0, 2, 6, 9} with a length of 6.
+
+import java.util.* ;
+import java.io.*; 
+public class Solution{
+
+  class Pair<T,V> {
+        T first; // maximum distance Node
+        V second; // distance of maximum distance node
+         
+        //Constructor
+        Pair(T first, V second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
+    public static int largestDistance(int n, int[][] edges){
+
+        //Write your code here
+        graph gg = new graph(n);
+        for(int i =0; i<edges.length; i++){
+            gg.addEdge(edges[i][0], edges[i][1]);
+        }
+        Pair<Integer,Integer> temp1 = gg.bfs(0);
+        Pair<Integer,Integer> temp2 = gg.bfs(temp1.second);
+        return temp2.first;
+        
+    }
+    static class graph{
+        int v;
+        List<Integer>[]adj;
+        graph(int n){
+            this.v = n;
+            adj = new List[n];
+            for(int i =0; i<n; i++){
+                adj[i] = new ArrayList<>();
+            }
+        }
+        void addEdge(int a, int b){
+            adj[a].add(b);
+            adj[b].add(a);
+        }
+
+        Pair<Integer,Integer> bfs(int u){
+            int[]dis = new int[this.v];
+            Arrays.fill(dis, -1);
+            Queue<Integer> que = new LinkedList<>();
+            dis[u] = 0;
+            que.add(u);
+            while(que.isEmpty()==false){
+                int node= que.remove();
+                for(int nbr : adj[node]){
+                    if(dis[nbr]==-1){
+                        que.add(nbr);
+                        dis[nbr] = dis[node]+1;
+                    }
+                }
+            }
+            int maxindex = -1;
+            int maxdis = -1;
+            for(int i =0; i<dis.length; i++){
+                if(maxdis<dis[i]){
+                    maxindex = i;
+                    maxdis = dis[i];
+                }
+            }
+            return new Pair<Integer,Integer>(maxdis, maxindex);
+        }
+
+    }
+}
+
+

@@ -1,0 +1,117 @@
+Kth smallest element in a row-wise and column-wise sorted 2D array
+Given an n x n matrix, every row and column is sorted in non-decreasing order. Given a number K where K lies in the range [1, n*n], find the Kth smallest element in the given 2D matrix.
+
+Example:
+
+Input:  mat ={{10, 20, 30, 40},
+                        {15, 25, 35, 45},
+                        {24, 29, 37, 48},
+                        {32, 33, 39, 50 }}
+K = 3
+Output: 20
+Explanation: The 3rd smallest element is 20 
+
+
+
+Input:  mat ={{10, 20, 30, 40},
+                        {15, 25, 35, 45},
+                        {24, 29, 37, 48},
+                        {32, 33, 39, 50 }}
+K = 7
+Output: 30
+Explanation: The 7th smallest element is 30
+
+This approach uses binary search to iterate over possible solutions. As answer lies in the range from mat[0][0] to mat[N-1][N-1], So we do a binary search on this range and in each  iteration determine the no of elements smaller than or equal to our current middle element.
+
+
+Kth-smallest-element-in-a-row-wise-and-column-wise-sorted-2D-array
+
+
+Finding-count-of-smaller-or-equal-elements-than-mid--1.webpFinding-count-of-smaller-or-equal-elements-than-mid--1.webp
+
+Follow the steps below to solve the problem:
+
+Initialize a variable, say low equals to the mat[0][0] (minimum value of matrix).
+Initialize a variable, say high equals to the mat[n-1][n-1] (maximum value of matrix).
+Initialize ans to 0.
+Perform Binary Search on the range from low to high:
+Calculate the midpoint in the range say mid.
+If the CountSmallerEqual(function which will return the count of elements less than or equal to mid) is less than k, update low to mid+ 1.
+if the returned value is greater or equal to K , this can be our possible ans. So, update ans to mid and narrow the search range by setting high to mid – 1.
+CountSmallerEqual Function (Helper function that counts the number of elements in the matrix less than or equal to the given mid.)
+Initialize a pointer, say row and col points to 0 and n-1 respectively. And a variable count = 0.
+If the mat[row][col] is greater than mid, move left in the matrix by decrementing col.
+If the mat[row][col] is less than or equal to mid, increment the count as count += col+ 1 and move down in the matrix by incrementing row.
+Below is the implementation of the above approach:
+
+
+//Java program to find the Kth smallest element using Binary Serach
+
+import java.util.Arrays;
+
+public class GFG {
+    
+    // Function to count the number of elements less than or equal to x
+    public static int countSmallerEqual(int[][] matrix, int x) {
+        int n = matrix.length;
+        int count = 0;
+        int row = 0;
+        int col = n - 1;
+
+        // Traverse from the top-right corner
+        while (row < n && col >= 0) {
+            if (matrix[row][col] <= x) {
+                // If current element is less than or equal to x,
+                // all elements in this row up to the current column are <= x
+                count += (col + 1);
+                row++;
+            } else {
+                // Move left in the matrix
+                col--;
+            }
+        }
+
+        return count;
+    }
+
+    // Function to find the Kth smallest element in a sorted 2D matrix using binary search
+    public static int findKthSmallest(int[][] matrix, int k) {
+        int n = matrix.length;
+        int low = matrix[0][0];
+        int high = matrix[n - 1][n - 1];
+        int ans = 0;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            
+            // Count elements less than or equal to mid
+            int count = countSmallerEqual(matrix, mid);
+
+            if (count < k) {
+                // If there are less than k elements <= mid, the kth smallest is larger
+                low = mid + 1;
+            } else {
+                // Otherwise, mid might be the answer, but we need to check for smaller values
+                ans = mid;
+                high = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        // Define the sorted 2D matrix
+        int[][] matrix = {
+            {1, 5, 9},
+            {10, 11, 13},
+            {12, 13, 15}
+        };
+        
+        // Find the Kth smallest element
+        int k = 8;
+        int result = findKthSmallest(matrix, k);
+        
+        System.out.println("The " + k + "th smallest element is: " + result);
+    }
+}

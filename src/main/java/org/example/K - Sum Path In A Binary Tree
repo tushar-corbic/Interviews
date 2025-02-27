@@ -1,0 +1,129 @@
+ K - Sum Path In A Binary Tree
+Problem statement
+You are given a binary tree in which each node contains an integer value and a number ‘K’. Your task is to print every path of the binary tree with the sum of nodes in the path as ‘K’.
+
+Note:
+
+1. The path does not need to start or end at the root or a leaf, but it must go downwards (traveling only from parent nodes to child nodes).
+
+2. Output the paths in the order in which they exist in the tree from left to right. Example: In the below example, path {1,3} is followed by {3,1} and so on.
+Example:
+
+For K = 4 and tree given below:
+
+The possible paths are:
+1 3
+3 1
+-1 4 1
+4 
+-1 5
+
+The sum of values of nodes of each of the above-mentioned paths gives a sum of 4.
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+1 <= T <= 50
+1 <= N <= 10^2
+-10^9 <= K <= 10^9
+-10^7 <= DATA <= 10^7
+
+Where ‘N’ is the number of nodes in the tree, ‘K’ denotes the sum, and 'DATA' denotes data contained in the node of a binary tree.
+
+Time Limit: 1 sec
+Sample Input 1:
+2
+10 5 -3 3 2 -1 11 3 -2 -1 1 -1 -1 -1 -1 -1 -1 -1 -1
+8
+1 3 -2 2 1 4 5 -1 -1 1 -1 1 2 -1 6 -1 -1 -1 -1 -1 -1 -1 -1 
+5
+Sample Output 1:
+5 3    5 2 1    -3 11
+3 2    3 1 1    1 3 1   4 1   1 -2 4 2     5   
+Explanation For Sample Input 1:
+Test case 1:
+
+Clearly, the output contains the values of the nodes which sum up to 8 in the order in which they exist in the tree from left to right are:
+
+Path 1: 5 3
+Starting from node 5, we traverse to its left child. The sum of nodes is equal to 5 + 3 = 8, which is equal to 'K'.
+
+Path 2: 5 2 1
+Starting from node 5, we traverse to its right child which is 2, and then further to its right child which is 1. The sum of nodes is equal to 5 + 2 + 1= 8, which is equal to k.
+
+Path 3: -3 11
+Starting from node -3, we traverse to its right child. The sum of nodes is equal to -3 + 11= 8, which is equal to 'K'.
+
+
+Test case 2:
+The sum of values of the nodes which sum to 5 are:
+3 2
+3 1 1 
+1 3 1 
+4 1
+1 -1 4 1
+5
+1 -1 5
+Sample Input 2:
+2
+1 3 4 1 2 -1 6 -1 -1 -1 -1 -1 -1 
+5
+1 -2 2 5 3 -1 1 -1 -1 3 -1 -1 -1 -1 -1
+4
+Sample Output 2:
+1 3 1   3 2   1 4
+1 -2 5  -2 3 3    1 2 1
+
+
+
+
+import java.util.* ;
+import java.io.*; 
+/*************************************************************
+    
+    Following is the Binary Tree node structure.
+    
+    class BinaryTreeNode<T> {
+	      T data;
+	      BinaryTreeNode<T> left;
+	      BinaryTreeNode<T> right;
+ 
+	      BinaryTreeNode(T data) {
+	          this.data = data;
+	          left = null;
+	          right = null;
+	      }
+	}
+    
+*************************************************************/
+
+import java.util.ArrayList;
+
+public class Solution {
+    public static ArrayList < ArrayList < Integer >> kPathSum(BinaryTreeNode < Integer > root, int k) {
+        // Write your code here.
+		ArrayList<Integer> ans = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+		helper(root, k, res, ans);
+		return res;
+    }
+	static void helper(BinaryTreeNode<Integer> root, int k, ArrayList<ArrayList<Integer>> res, ArrayList<Integer> temp){
+		if(root==null)
+			return ;
+		temp.add(root.data);
+		helper(root.left, k, res, temp);
+		helper(root.right, k, res, temp);
+		int tempsum=0;
+		for(int i = temp.size()-1; i>=0; i--){
+			tempsum+= temp.get(i);
+			if(tempsum==k){
+				ArrayList<Integer> tt = new ArrayList<>();
+				for(int j = i; j<temp.size(); j++){
+					tt.add(temp.get(j));
+
+				}
+				res.add(tt);
+			}
+		}
+		temp.remove(temp.size()-1);
+	}
+}
+

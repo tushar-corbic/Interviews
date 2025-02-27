@@ -96,3 +96,90 @@ public class Node{
  * int param_1 = obj.get(key);
  * obj.put(key,value);
  */
+
+
+
+import java.util.*;
+public class Solution {
+    static class Node{
+        int key;
+        int value;
+        Node pre;
+        Node next;
+        public Node(int a, int b){
+            this.key = a;
+            this.value = b;
+            pre = null;
+            next = null;
+        }
+    }
+
+    static class LRUCache {
+        private Map<Integer,Node> map = new HashMap<>();
+        int count = 0;
+        int capacity = 0;
+        Node head;
+        Node tail;
+        LRUCache(int capacity) {
+            this.count = 0;
+            this.capacity = capacity;
+            head = new Node(-1,0);
+            tail = new Node(-1, 1);
+            head.next = tail;
+            tail.pre = head;
+            // Write your code here.
+        }
+        void addNode(Node node){
+            node.next = head.next;
+            node.pre = head;
+            head.next.pre =  node;
+            head.next = node;
+        }
+        void removeNode(Node node){
+            node.next.pre = node.pre;
+            node.pre.next = node.next;
+            node.next = null;
+            node.pre = null;
+        }
+        void removeNodeAndMoveToHead(Node node){
+            removeNode(node);
+            addNode(node);
+        }
+         Node removeNodeFromEnd(){
+            Node temp = tail.pre;
+            removeNode(temp);
+            return temp;
+        }
+
+        int Get(int key) {
+            if(map.containsKey(key)){
+                Node node = map.get(key);
+                removeNodeAndMoveToHead(node);
+                return node.value;
+            }else{
+                return -1;
+            }
+            // Write your code here.
+        }
+
+        void Put(int key, int value) {
+            // Write your code here.
+            if(map.containsKey(key)){
+                Node node = map.get(key);
+                node.value = value;
+                removeNodeAndMoveToHead(node);
+            }else{
+                Node newNode = new Node(key, value);
+                map.put(key, newNode);
+                this.count++;
+                addNode(newNode);
+                if(count>this.capacity){
+                    Node removedNode = removeNodeFromEnd();
+                    map.remove(removedNode.key);
+                    count--;
+                }
+            }
+        }
+    };
+}
+

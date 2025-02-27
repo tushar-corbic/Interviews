@@ -1,0 +1,93 @@
+ Rearrange Linked List
+Problem statement
+You have been given a singly Linked List in the form of 'L1' -> 'L2' -> 'L3' -> ... 'Ln'. Your task is to rearrange the nodes of this list to make it in the form of 'L1' -> 'Ln' -> 'L2' -> 'Ln-1' and so on. You are not allowed to alter the data of the nodes of the given linked list.
+
+For example:
+If the given linked list is 1 -> 2 -> 3 -> 4 -> 5 -> NULL.
+
+Then rearrange it into 1 -> 5 -> 2 -> 4 -> 3 -> NULL. 
+
+import java.util.* ;
+import java.io.*; 
+/************************************************************
+
+    Following is the linked list node structure
+    
+    class Node {
+	int data;
+	Node next;
+
+	Node(int data) {
+		this.data = data;
+		this.next = null;
+	    }
+   }
+
+************************************************************/
+
+public class Solution {
+	public static Node rearrangeList(Node head)
+	{
+		// Write your code here.
+		if(head==null || head.next==null)
+			return head;
+		Node slow = head;
+		Node fast = head;
+		Node pre = null;
+		while(fast!=null && fast.next!=null){
+			pre = slow;
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		pre.next = null;
+		slow = reverse(slow);
+		// return slow;
+		// return null;
+		return merge(head, slow);
+	}
+	static Node reverse(Node head){
+		if(head==null)
+			return head;
+		Node pre = null;
+		Node cur = head;
+		while(cur!=null){
+			Node temp = cur.next;
+			cur.next = pre;
+			pre = cur;
+			cur = temp;
+		}
+		return pre;
+	}
+	static Node merge(Node first, Node second){
+		Node dummy =new Node(-1);
+		Node ans = dummy;
+		while(first!=null && second!=null){
+			dummy.next = first;
+			dummy = dummy.next;
+			first = first.next;
+			dummy.next = second;
+			dummy = dummy.next;
+			second = second.next;
+		}
+		if(first!=null){
+			dummy.next = first;
+		}
+		if(second!=null)
+			dummy.next = second;
+		return ans.next;
+	}
+	static Node merge2(Node l1, Node l2) {
+      while (l1 != null) {
+        Node n1 = l1.next, n2 = l2.next;
+        l1.next = l2;
+        
+        if (n1 == null)
+          break;
+            
+        l2.next = n1;
+        l1 = n1;
+        l2 = n2;
+      }
+	  return l1;
+    }
+}

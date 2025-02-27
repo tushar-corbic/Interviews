@@ -1,0 +1,79 @@
+Arithmetic Expression Evaluation
+import java.util.* ;
+import java.io.*; 
+public class Solution
+{
+    public static int evaluateArithmeticExpression(String expression) 
+    {
+        // Write your code here
+        String postfix = infixToPostFix(expression);
+        System.out.println(postfix);
+        return evalPostFix(postfix);
+        // System.out.println(postfix);
+        // return -1;
+    }
+    static class ss{
+        int first;
+        public ss(int a){
+            this.first = a;
+        }
+    }
+    static int prec(char ch){
+        switch(ch){
+            case '+':
+            case '-':
+                return 1;
+            case '*':
+            case '/':
+                return 2;
+            case '^':
+                return 3;
+            
+        }
+        return -1;
+    }
+    static int evalPostFix(String str){
+        Stack<ss>st = new Stack<>();
+        for(char ch : str.toCharArray()){
+            if(!Character.isLetterOrDigit(ch)){
+                ss first = st.pop();
+                ss second = st.pop();
+                if(ch=='+'){
+                    st.push(new ss(first.first+ second.first));
+                }else if(ch=='-'){
+                    st.push(new ss(first.first-second.first));
+                }else if(ch=='*'){
+                    st.push(new ss(first.first * second.first));
+                }else if(ch=='/'){
+                    st.push(new ss(first.first/second.first));
+                }
+            }else{
+                st.push(new ss(Integer.valueOf(ch)));
+            }
+        }
+        return st.pop().first;
+    }
+
+    static String infixToPostFix(String str){
+        StringBuilder sb = new StringBuilder();
+        Stack<Character>st = new Stack<>();
+        for(char ch : str.toCharArray()){
+            if(Character.isLetterOrDigit(ch))
+                sb.append(ch);
+            else if(ch=='('){
+                st.push(ch);
+            }else if(ch==')'){
+                while(!st.isEmpty() && st.peek()!='('){
+                    sb.append(st.pop());
+                }
+                st.pop();
+            }else{
+                while(!st.isEmpty()  && prec(ch)<=prec(st.peek())){
+                    sb.append(st.pop());
+                }
+                st.push(ch);
+            }
+        }
+        return sb.toString();
+    }
+}

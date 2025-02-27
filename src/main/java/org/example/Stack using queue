@@ -1,0 +1,46 @@
+ Stack using queue
+import java.util.*;
+public class Solution{
+    static class Stack {
+        // Define the data members.
+
+        Queue<Integer> que;
+        public Stack() {
+            // Implement the Constructor.
+            que = new LinkedList<>();
+        }
+
+        /*----------------- Public Functions of Stack -----------------*/
+
+        public int getSize() {
+            return que.size();
+            // Implement the getSize() function.
+        }
+
+        public boolean isEmpty() {
+            return que.isEmpty();
+            // Implement the isEmpty() function.
+        }
+
+        public void push(int element) {
+            que.add(element);
+            int size = que.size();
+            for(int i =0; i<size-1; i++){
+                que.add(que.remove());
+            }
+            // Implement the push(element) function.
+        }
+
+        public int pop() {
+            if(que.isEmpty())
+                return -1;
+            return que.remove();
+            // Implement the pop() function.
+        }
+
+        public int top() {
+            return que.peek();
+            // Implement the top() function.
+        }
+    }
+}

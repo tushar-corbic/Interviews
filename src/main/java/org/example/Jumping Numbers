@@ -1,0 +1,114 @@
+ Jumping Numbers
+You are given a positive integer N, your task is to find all the Jumping Numbers smaller than or equal to N.
+
+A number is defined as a Jumping Number if all adjacent digits in it have an absolute difference of 1.
+
+Example :
+2, 23, and 4343456 are Jumping numbers but 296 and 89498 are not.
+import java.util.*;
+
+class JumpingNumbers {
+  
+  public static void printJumping(int x) {
+    int number, temp, lastDigit;
+    boolean isJumping;
+    
+    for (number = 0; number <= x; number++) {
+      if (number < 10) {
+        System.out.print(number + " ");
+        continue;
+      }
+      
+      isJumping = true;
+      temp = number;
+      lastDigit = temp % 10;
+      temp /= 10;
+      
+      while (temp != 0) {
+        if (Math.abs(lastDigit - (temp % 10)) != 1) {
+          isJumping = false;
+          break;
+        }
+        lastDigit = temp % 10;
+        temp /= 10;
+      }
+      
+      if (isJumping) {
+        System.out.print(number + " ");
+      }
+    }
+  }
+
+  public static void main(String[] args) {
+    int x = 105;
+    printJumping(x);
+  }
+}
+
+
+The approach uses Breadth-First Search (BFS) to generate Jumping Numbers starting from digits 1 to 9. Each number expands by appending its last digit ±1 (if valid), ensuring adjacent digits differ by 1. The process continues until numbers exceed x, taking O(k) time and space, where k is the count of valid Jumping Numbers less than or equal to x.
+
+
+// Finds and prints all jumping numbers smaller than or
+// equal to x.
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+
+    // Prints all jumping numbers smaller than or equal to x starting
+    // with 'num'. It mainly does BFS starting from 'num'.
+    public void bfs(int x, int num)
+    {
+        // Create a queue and enqueue 'i' to it
+        Queue<Integer> q = new LinkedList<Integer>();
+        q.add(num);
+
+        // Do BFS starting from i
+        while (!q.isEmpty()) {
+            num = q.peek();
+            q.poll();
+            if (num <= x) {
+                System.out.print(num + " ");
+                int last_digit = num % 10;
+
+                // If last digit is 0, append next digit only
+                if (last_digit == 0) {
+                    q.add((num * 10) + (last_digit + 1));
+                }
+
+                // If last digit is 9, append previous digit only
+                else if (last_digit == 9) {
+                    q.add((num * 10) + (last_digit - 1));
+                }
+
+                // If last digit is neither 0 nor 9, append both
+                // previous and next digits
+                else {
+                    q.add((num * 10) + (last_digit - 1));
+                    q.add((num * 10) + (last_digit + 1));
+                }
+            }
+        }
+    }
+
+    // Prints all jumping numbers smaller than or equal to
+    // a positive number x
+    public void printJumping(int x)
+    {
+        System.out.print("0 ");
+
+        for (int i = 1; i <= 9 && i <= x; i++) {
+            this.bfs(x, i);
+        }
+    }
+
+    // Driver program
+    public static void main(String[] args) throws IOException
+    {
+        int x = 40;
+        GFG obj = new GFG();
+        obj.printJumping(x);
+    }
+}

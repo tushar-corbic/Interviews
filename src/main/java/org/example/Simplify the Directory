@@ -1,0 +1,28 @@
+Simplify the Directory
+You are given a path to a file/directory in Unix-style of length N, In a Unix-style file system, a dot(.) refers to the current directory. A double dot(..) refers to the previous directory in reference to the current directory. If there are multiple slashes between two directories you should consider it as a single slash.
+
+Now, for a given directory path as a string, you are required to simplify the same and tell the final destination in the directory structure or the path.
+
+The simplified path should always begin with a slash(/) and there must be a single slash between two directory names. There should not be a trailing slash
+
+import java.util.*;
+public class Solution {
+	public static String simplifyDirectory(String str) {
+		// write your code here
+		List<String> temp = new ArrayList<>();
+		for(String st : str.split("/")){
+			if(st.isEmpty() || st.equals(".")){
+				continue;
+			}
+			if(st.equals("..")){
+				if(temp.isEmpty()==false){
+					temp.remove(temp.size()-1);
+				}
+			}else{
+				temp.add(st);
+			}
+		}
+		return "/" + String.join("/", temp);
+	}
+
+}

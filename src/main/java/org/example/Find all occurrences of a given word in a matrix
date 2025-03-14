@@ -1,0 +1,48 @@
+Find all occurrences of a given word in a matrix
+
+Given a 2D grid of characters and a word, find all occurrences of given word in grid. A word can be matched in all 8 directions at any point. Word is said be found in a direction if all characters match in this direction (not in zig-zag form). 
+The solution should print all coordinates if a cycle is found. i.e. 
+The 8 directions are, Horizontally Left, Horizontally Right, Vertically Up, Vertically Down and 4 Diagonal
+
+import java.util.*;
+public class Solution {
+	public static int wordSearch(String grid[], int n, int m, String word) {
+		// Write your code here.
+		int[]ans = {0};
+		char[][]arr = new char[n][m];
+		for(int i=0; i<n; i++){
+			arr[i] = grid[i].toCharArray();
+		}
+		int index =0;
+		for(int i =0; i<n; i++){
+			for(int j =0;j<m; j++){
+				if(arr[i][j]==word.charAt(index)){
+					helper(arr, n, m, i,j, index, word, ans);
+				}
+			}
+		}
+		return ans[0];
+	}
+	public static void helper(char[][]arr, int n, int m, int i, int j, int index, String word, int[]ans){
+		if(index==word.length()){
+			// System.out.println(word);
+			ans[0]++;
+			return ;
+		}
+		if(i<0 || i>=n || j<0 || j>=m || arr[i][j]!=word.charAt(index) || arr[i][j]=='!'){
+			return;
+		}
+		char tempchar = arr[i][j];
+		arr[i][j] = '!';
+		helper(arr, n, m, i+1,j, index+1, word, ans);
+		helper(arr, n, m, i+1, j+1, index+1, word, ans);
+		helper(arr, n, m, i, j+1, index+1, word, ans);
+		helper(arr, n, m, i-1, j+1, index+1, word, ans);
+		helper(arr, n, m, i-1, j, index+1, word, ans);
+		helper(arr, n, m, i-1, j-1, index+1, word, ans);
+		helper(arr, n, m, i, j-1, index+1, word, ans);
+		helper(arr, n, m, i+1, j-1, index+1, word, ans);
+		arr[i][j] = tempchar;
+		return;
+	}
+}

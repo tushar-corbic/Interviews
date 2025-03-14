@@ -1,0 +1,37 @@
+Word Search
+Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+
+public class Solution {
+    public static boolean present(char [][]board, String word, int n, int m) {
+        // Write your code here.
+        int index = 0;
+        for(int i =0; i<n; i++){
+            for(int j = 0; j<m; j++){
+                if(board[i][j]==word.charAt(index)){
+                    if(helper(board, word, i, j, index, n, m)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    public static boolean helper(char[][]board, String word, int row, int col, int index, int n, int m){
+        if(index==word.length()){
+            return true;
+        }
+        if(row<0 || col<0 || row>=n || col>=m || board[row][col]!=word.charAt(index) || board[row][col]=='!')
+            return false;
+        char c = board[row][col];
+        board[row][col] = '!';
+        boolean a1 = helper(board, word, row+1, col, index+1, n, m);
+        boolean a2 = helper(board, word, row-1, col, index+1, n, m);
+        boolean a3 = helper(board, word, row, col+1, index+1, n, m);
+        boolean a4 = helper(board, word, row, col-1, index+1, n, m);
+        board[row][col] = c;
+        return a1|| a2|| a3 || a4;
+    }
+}

@@ -1,0 +1,81 @@
+212. Word Search II
+
+Given an m x n board of characters and a list of strings words, return all words on the board.
+
+Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.
+
+class Solution {
+    class Node{
+        boolean flag;
+        Node[] links;
+        public Node(){
+            flag = false;
+            links = new Node[26];
+        }
+        public void put(char ch, Node node){
+            links[ch-'a'] = node;
+        }
+        public Node get(char ch){
+            return links[ch-'a'];
+        }
+        public boolean containsKey(char ch){
+            return links[ch-'a']!=null;
+        }
+        public void setFlag(){
+            flag = true;
+        }
+        public boolean getFlag(){
+            return flag;
+        }
+        public void putFlag(){
+            flag=false;
+        }
+    }
+    class Trie{
+        public Node node;
+        public Trie(){
+            node = new Node();
+        }
+        public void insert(String str){
+            Node root = node;
+            for(int i =0; i<str.length(); i++){
+                if(!root.containsKey(str.charAt(i))){
+                    root.put(str.charAt(i), new Node());
+                }
+                root = root.get(str.charAt(i));
+            }
+            root.setFlag();
+        }
+        public void search(char[][] arr, int i, int j, int n, int m, Node root, List<String> ans, String temp){
+            if(i<0 || j<0 || i>=n || j>=m || root==null || arr[i][j]=='*'|| !root.containsKey(arr[i][j]))
+                return;
+            temp+= arr[i][j];
+            root= root.get(arr[i][j]);
+            if(root.getFlag()==true){
+                ans.add(temp);
+                root.putFlag();
+            }
+            char ch = arr[i][j];
+            arr[i][j]='*';
+            search(arr, i+1, j, n, m, root, ans, temp);
+            search(arr, i-1, j, n,m, root, ans, temp);
+            search(arr, i, j+1, n, m, root, ans, temp);
+            search(arr, i, j-1, n, m, root, ans, temp);
+            arr[i][j]= ch;
+        }
+    }
+    public List<String> findWords(char[][] board, String[] words) {
+        List<String> ans = new ArrayList<>();
+        Trie trie = new Trie();
+        for(String str: words){
+            trie.insert(str);
+        }
+        for(int i =0; i<board.length;i++){
+            for(int j =0; j<board[i].length; j++){
+                trie.search(board, i, j, board.length, board[0].length,trie.node, ans, "" );
+            }
+        }
+        return ans;
+
+    }
+}

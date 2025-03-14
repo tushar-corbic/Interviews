@@ -1,0 +1,48 @@
+Next Greater Element - I in 2 arrays
+
+You are given an array ‘A’ containing a permutation ‘N’ numbers (0 ≤ A[i] < N). You are also given another array ‘B’ containing a permutation ‘M’ numbers (0 ≤ B[j] < M) and it is also given that N ≤ M.
+
+For each element in array ‘A’ you need to find the first greater element to the right of the element in array ‘B’ that has the same value as the current array A’s element. In other words, for each ‘i’ from 0 to N - 1 in array ‘A’, you need to find an index ‘j’ in array ‘B’ such that A[i] = B[j], now you need to print the element that lies on the right of the j’th index and is also greater than B[j]. Print -1 if there is no greater element.
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int[] nextGreaterElement(int n, int ar[], int m, int arr[]) {
+        // Write your code here..
+        Map<Integer,Integer> map = new HashMap<>();
+        for(int i =0; i<arr.length; i++){
+            map.put(arr[i], i);
+        }
+        List<Integer> temp = helper(arr);
+        List<Integer> ans= new ArrayList<>();
+        for(int i =0; i<ar.length; i++){
+            int tempindex = map.get(ar[i]);
+            int value = temp.get(tempindex);
+            if(value==-1){
+                ans.add(-1);
+            }else{
+                ans.add(arr[value]);
+            }
+        }
+        return ans.stream().mapToInt(Integer::intValue).toArray();
+    }
+    static List<Integer> helper(int[]arr){
+        int n = arr.length;
+        List<Integer> ans = new ArrayList<>();
+        Stack<Integer> st = new Stack<>();
+        for(int i = n-1;i>=0; i--){
+            while(st.isEmpty()==false && arr[st.peek()]<=arr[i]){
+                st.pop();
+            }
+            if(st.isEmpty()){
+                ans.add(-1);
+            }else{
+                ans.add(st.peek());
+            }
+            st.push(i);
+        }
+        Collections.reverse(ans);
+        return ans;
+    }
+
+}

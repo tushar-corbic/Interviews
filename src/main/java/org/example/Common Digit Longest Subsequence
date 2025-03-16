@@ -1,0 +1,92 @@
+ Common Digit Longest Subsequence
+ou have been given an array of 'N' Integers. Find the length of the longest subsequence such that each adjacent element of the subsequence has at least one digit in common.
+
+Note :
+A sequence 'A' is a subsequence of a sequence 'B' if 'A' can be obtained from 'B' by deletion of several (possibly, zero) elements. For example, [3,1] is a subsequence of [3,2,1] and [4,3,1], but not a subsequence of [1,3,3,7] and [3,10,4].
+
+import java.util.*;
+public class Solution {
+
+    public static int commonDigitLongestSubsequence(int[] arr) {
+        //Write your code here
+        int[] predigit = new int[10];
+        Arrays.fill(predigit, 1);
+        // return helper2(arr);
+        return helper3(arr);
+        // return helper1(arr, 0, predigit);
+    }
+    static int helper1(int[]arr, int index, int[]predigit){
+        if(index>=arr.length)
+            return 0;
+        int res = helper1(arr, index+1, predigit);
+        boolean hascomman = false;
+        String numstr = Integer.toString(arr[index]);
+        for(char ch : numstr.toCharArray()){
+            int digit = ch-'0';
+            if(predigit[digit]==1){
+                hascomman = true;
+                break;
+            }
+        }
+        if(hascomman){
+            Arrays.fill(predigit, 0);
+            for(char ch : numstr.toCharArray()){
+                predigit[ch-'0'] = 1;
+            }
+            res = Math.max(res, 1 + helper1(arr, index+1, predigit));
+        }
+        return res;
+    }
+    static int helper2(int[]arr){
+        int n = arr.length;
+        int[] dp = new int[n];
+        int ans = 0;
+        for(int i = 0; i<n; i++){
+            dp[i] = 1;
+            int[]vis = new int[10];
+            String str = Integer.toString(arr[i]);
+            for(char ch : str.toCharArray()){
+                vis[ch-'0'] = 1;
+            }
+
+            for(int j = 0; j<i; j++){
+                String st = Integer.toString(arr[j]);
+                for(char ch : st.toCharArray()){
+                    if(vis[ch-'0']==1){
+                        dp[i] = Math.max(dp[i], dp[j]+1);
+                        break;
+                    }
+                }
+            }
+            ans = Math.max(ans, dp[i]);
+        }
+        return ans;
+    }
+    static int helper3(int[] arr){
+        int n = arr.length;
+        int[][] dp =new int[n+1][10];
+        for(int i = 1; i<=n; i++){
+            int curmax = 0;
+            int temp = arr[i-1];
+            boolean[] occurance = new boolean[10];
+            while(temp>0){
+                int digit = temp%10;
+                occurance[digit] = true;
+                curmax = Math.max(curmax, dp[i-1][digit]+1);
+                temp = temp/10;
+            }
+            for(int j =0; j<10; j++){
+                if(occurance[j]==true){
+                    dp[i][j] =  curmax;
+                }else{
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        int ans = 0;
+        for(int i =0; i<10; i++){
+            ans = Math.max(ans, dp[n][i]);
+        }
+        return ans;
+    }
+}

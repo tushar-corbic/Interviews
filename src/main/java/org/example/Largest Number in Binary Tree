@@ -1,0 +1,98 @@
+ Largest Number in Binary Tree
+You have been given a Binary Tree of 'N' nodes where the nodes have integer values.
+
+Your task is to find the largest number that could be formed by concatenating all its nodes values.
+
+For example:
+For the given binary tree:   
+
+Output: 96553210    
+
+Explanation: After concatenating all the numbers in the above binary tree this is the largest number that can be formed. 
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+1 <= T <= 5
+0 <= N <= 10^4
+0 <= data <= 10^3    
+
+Where 'N' denotes the total number of nodes and 'data' denotes the node value of the Binary Tree.
+
+Time limit: 1 sec
+Sample Input 1:
+2
+1 2 3 -1 -1 -1 -1
+6 4 -1 -1 5 -1 -1
+Sample Output 1:
+321
+654
+Explanation to Sample Output 1:
+In test case 1, the input Binary Tree will be represented as:
+
+From all possible permutations of concatenated integers in the above Binary Tree, the largest number possible is 321.  
+
+In test case 2, the input Binary Tree will be:
+
+From all possible permutations of concatenated integers in the above Binary Tree, the largest number possible is 654.
+Sample Input 2:
+2
+1 2 3 -1 4 4 -1 -1 5 6 -1 -1 -1 -1 -1
+1 2 3 4 -1 5 6 -1 7 -1 -1 -1 -1 -1 -1
+Sample Output 2:
+6544321
+7654321
+Explanation to Sample Output 2:
+In test case 1, the input Binary Tree will be represented as:
+
+From all possible permutations of concatenated integers in the above Binary Tree, the largest number possible is 6544321.  
+
+In test case 2, the input Binary Tree will be represented as shown in the Input Format section above. From all possible permutations of concatenated integers in the above Binary Tree, the largest number possible is
+
+
+import java.util.* ;
+import java.io.*; 
+/***********************************************************
+
+    Following is the Binary Tree Node class structure:
+
+	class BinaryTreeNode<T> {
+        T data;
+        BinaryTreeNode<T> left;
+        BinaryTreeNode<T> right;
+
+        public BinaryTreeNode(T data) {
+            this.data = data;
+            left = null
+            right = null
+        }
+    }
+
+***********************************************************/
+
+public class Solution {
+    public static void collectValues(BinaryTreeNode<Integer> root, List<String> ans){
+        if(root==null)
+            return;
+        ans.add(String.valueOf(root.data));
+        collectValues(root.left, ans);
+        collectValues(root.right, ans);
+    }
+    public static String printLargest(BinaryTreeNode<Integer> root) {
+        // Write your code here.
+        List<String>values = new ArrayList<>();
+        collectValues(root, values);
+        Collections.sort(values, new CustomComparator());
+        if(values.size()>0 && values.get(0).equals("0"))
+            return "0";
+        StringBuilder sb = new StringBuilder();
+        for(String ab : values){
+            sb.append(ab);
+        }
+        return sb.toString();
+    }
+    public static class CustomComparator implements Comparator<String>{
+        @Override
+        public int compare(String a, String b){
+            return -(a+b).compareTo(b+a);
+        }
+    }
+}

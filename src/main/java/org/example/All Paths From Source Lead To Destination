@@ -1,0 +1,54 @@
+All Paths From Source Lead To Destination
+There is a directed graph consisting of ‘N’ nodes numbered from 0 to ‘N’-1. You are given a list ‘EDGES’ of size ‘M’, consisting of all the edges of this directed graph, and two nodes ‘SRC’ and ‘DEST’ of this graph. Determine whether or not all paths starting from node ‘SRC’ eventually end at node ‘DEST’, that is -:
+
+1. At least one path exists from node ‘SRC’ to node ‘DEST’.
+
+2. If there exists a path from the node ‘SRC’ to a node with no outgoing edges, then that node must be ‘DEST’.
+
+3. There should be a finite number of paths from ‘SRC’ to ‘DEST’.
+
+You should return True if all paths starting from node ‘SRC’ eventually end at node ‘DEST’, Otherwise, return False. See the example for more clarity.
+
+Note :
+
+1. The given graph may have self-loops and parallel edges.
+
+import java.util.* ;
+import java.io.*; 
+enum Color{
+    WHITE,
+    GREY,
+    BLACK;
+};
+public class Solution {
+    public static boolean leadsToDestination(int n, int m, int src, int dest, int edges[][]) {
+        // Write your code here.
+        List<List<Integer>> graph = new ArrayList<>();
+        for(int i =0; i<n; i++){
+            graph.add(new ArrayList<>());
+        }
+        for(int i =0; i<m; i++){
+            graph.get(edges[i][0]).add(edges[i][1]);
+        }
+
+        Color[] state = new Color[n];
+        Arrays.fill(state, Color.WHITE);
+        return dfs(src, dest, graph, state);
+    }
+    public static boolean dfs(int node, int destination, List<List<Integer>> graph, Color[] state){
+        if(state[node]!=Color.WHITE){
+            return state[node]==Color.BLACK;
+        }
+       if(graph.get(node).isEmpty()){
+            return node==destination;
+        }
+        state[node] = Color.GREY;
+        for(Integer nbr : graph.get(node)){
+            boolean reached = dfs(nbr, destination, graph, state);
+            if(!reached)
+                return false;
+        }
+        state[node] = Color.BLACK;
+        return true;
+    }
+}
